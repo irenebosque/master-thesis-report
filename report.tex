@@ -1,0 +1,88 @@
+\documentclass{layout/tudelft-report}
+
+%% Setting up the bibliography
+
+\usepackage[
+backend=biber,
+style=apa,
+citestyle=authoryear
+]{biblatex}
+\addbibresource{report.bib}
+
+
+
+%% Additional packages
+\usepackage{pdfpages} % Insert .pdf directly as pages
+%\usepackage{minted} % Display code - use 'listings' offline without shell escape
+%\usepackage[none]{hyphenat} % Disables word breaking
+
+%% Additional commands
+\renewcommand{\deg}{\si{\degree}\xspace}
+
+%%%%% Begin of document %%%%%
+
+\begin{document}
+
+%% Roman numerals
+\frontmatter
+
+%% Defining the main parameters
+\title{Towards Off-Policy Corrective Imitation Learning}
+\subtitle{Helping robots to learn faster \\ by leveraging human knowledge} % Two lines recommended
+\author{Irene López Bosque}
+\subject{Master Thesis}
+
+\coverimage{figures/cover_robots_2.jpg} % Aspect ratio of 2:3 (portrait) recommended
+\definecolor{title}{HTML}{d4e6ff} % Color for the title  original: 4884d6
+
+\makecover
+
+\input{frontmatter/title}
+
+
+\input{frontmatter/abstract}
+\input{frontmatter/epigraph}
+\input{frontmatter/acknowledgements}
+
+\tableofcontents
+
+%% List of abbreviations, symbols, figures and tables
+%\input{frontmatter/nomenclature}
+%\listoffigures
+%\listoftables
+
+%% Arabic numerals
+\mainmatter
+
+\input{mainmatter/chapter-1}
+
+\input{mainmatter/chapter-2}
+
+\input{mainmatter/chapter-3}
+
+\input{mainmatter/chapter-4}
+
+\input{mainmatter/chapter-5}
+
+\input{mainmatter/chapter-6}
+
+
+%% Prevent urls running into margins in bibliography
+\setcounter{biburlnumpenalty}{7000}
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{7000}
+
+%% Bibliography is numeric style
+\printbibliography[title=References]
+\addcontentsline{toc}{chapter}{References}
+
+%% Using letters for chapters
+\appendix
+
+\input{appendix/appendix-a}
+
+\input{appendix/appendix-b}
+
+
+
+\end{document}

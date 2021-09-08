@@ -1,0 +1,58 @@
+\begin{titlepage}
+
+\begin{center}
+
+%% Print the title
+{\makeatletter
+\largetitlestyle\fontsize{45}{45}\selectfont\@title
+\makeatother}
+
+%% Print the subtitle
+{\makeatletter
+\ifdefvoid{\@subtitle}{}{\titlestyle\fontsize{20}{20}\selectfont\@subtitle}
+\makeatother}
+
+\bigskip
+\bigskip
+
+by
+
+\bigskip
+\bigskip
+
+%% Print the name of the author
+{\makeatletter
+\largetitlestyle\fontsize{25}{25}\selectfont\@author
+\makeatother}
+
+\bigskip
+\bigskip
+
+to obtain the degree of Master of Science \\
+at the Delft University of Technology, \\
+to be defended publicly on Thursday May 14, 2021 at 01:00 PM.
+
+\vfill
+
+%% Print some more information at the bottom
+\begin{tabular}{lll}
+    Student number: & 5051487 \\
+        Project duration: & \multicolumn{2}{l}{January, 2021 -- October, 2021} \\
+    Thesis committee: & Dr.\ ir.\ J.\ Kober, & TU Delft, supervisor \\
+        & Dr.\ C.\ Celemin Paez, & TU Delft, supervisor \\
+        & Ir.\ R.\ Pérez Dattari , & TU Delft, supervisor
+\end{tabular}
+
+\vspace{1cm}
+\small{Cover Image: "Two robot arms" by David Levêque, found on Unsplash}
+
+\end{center}
+
+%% Insert the TU Delft logo at the bottom of the page
+\begin{tikzpicture}[remember picture, overlay]
+    \node at (current page.south)[anchor=south,inner sep=10pt]{
+        \includegraphics{layout/tudelft/logo-black}
+    };
+\end{tikzpicture}
+
+\end{titlepage}

@@ -1,0 +1,86 @@
+\chapter{Appendix}
+\label{appendix:Appendix}
+\appendix
+
+
+
+
+\section{Artificial Neural Networks}
+
+An Artificial Neural Network or ANN is a computational model formed by a connection of artificial neurons arranged in structures called layers, \cite{ANN-graupe:2013}. Every ANN possesses three types of layers, the input layer, the hidden layer(s) and the output layer, see figure \ref{fig:ANN}.
+\input{tikz/neural_network_tikz}
+
+An artificial neuron, see figure \ref{fig:neuron}, is the simplest element of an ANN. Similar to a biological neuron, an artificial neuron has input connections through which it receives external stimuli, the input data $x$, \cite{ANN-graupe:2013}; With these inputs, the neuron makes a computation and generates an output value. This computation is a weighted sum of the input data where the weights $w$ are the parameters of the model that have to be adjusted in order for the model to learn. Furthermore, there is an additional input connection to the neuron, the parameter bias $b$ that also gets added to the weighted sum, $wx + b$. The final element of the artificial neuron is the activation function $f$ that takes as input the previous weighted sum and distorts it by adding non-linear deformations, $f(wx + b)$.
+
+\input{tikz/neuron_tikz}
+
+ANNs can be classified according to multiple taxonomies, one of them refers to the direction in which the data is propagated through the layers, giving as a result two main groups: feedforward neural networks (FNN) and recurrent neural networks (RNN), \cite{Classification-Artificial-Neural-Networks:2017}.
+
+\subsection{Feedforward Neural Networks (FNNs)}
+
+A feedworward neural network (FNN) is a type of artificial neural network where information flows in only one direction from the input layer to the output layer without going through any loop.
+  \vspace{1mm} \\
+
+
+\subsection{Recurrent Neural Networks (RNNs)}
+
+Opposite to feedforward neural networks, recurrent neural networks (RNNs) propagate data both forwards and backwards through the layers endowing the model with memory. RNNs are specially useful when dealing with sequential or time dependent where some information underlays hidden, e.g., temporal information.
+
+\vspace{5mm} 
+\textbf{1. Vanilla RNN}
+
+Vanilla RNNs are the simplest version of recurrent networks (Figure \ref{fig:rnn} shows an unrolled Vanilla RNN cell). The hidden state $h$ is a parameter whose dimension is defined by the user and it is this parameter $h$ the one that forms the recurrent connection within the cell. The hidden state at time $t$, $h_t$ is computed by adding the input data at that time, $x_t$, plus the hidden state from the previous time step $h_{t-1}$, see equation \ref{eq:vanilla_rnn}. It is precisely the fact of adding information from previous states, which makes the model able to remember.
+
+%\input{rnn_tikz}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\textwidth]{Figures/rnn.png}
+    \caption{Vanilla Recurrent Neural Network, \cite{Vanilla-RNN-image}}
+    \label{fig:rnn}
+\end{figure}
+
+
+
+\begin{equation}
+h_t=tanh(W_{xh}x_t+W_{hh}h_{t−1})
+\end{equation}
+
+
+\begin{equation}
+h_t = tanh\left(\begin{pmatrix}
+W_{xh} & W_{hh}
+\end{pmatrix}
+\begin{pmatrix}
+x_t \\
+h_{t−1} \\
+\end{pmatrix}\right)
+\label{eq:vanilla_rnn}
+\end{equation}
+
+
+Vanilla RNNs suffer from a problem called vanishing/exploding gradient that makes them unable to work properly with big temporal horizons. Here is where long short-term memory (LSTM) come to play.
+
+\vspace{5mm} 
+\textbf{2. Long Short-Term Memory (LSTM)}
+
+LSTMs are an improved version of the Vanilla RNN; They are able to learn long term dependencies by maintaining not only the hidden state $h$ but also a cell state $c$ which is the key of these networks. Furthermore, an LSTM cell includes four gates that control the flow of information to the cell state.
+
+\subsection{Convolutional Neural Networks (CNNs)}
+
+
+A convolutional neural network is a special type of ANN mostly used when the input data are images from which we want to extract information. To achieve this, filters (also called kernels) convolve on the input data producing feature maps. An example of how this convolution is done, can be seen in figure \ref{fig:cnn}. The filter (blue) slides over the input image (red) and at every location, a matrix multiplication takes place giving as a result a feature map (green). The objective of these CNNs is to learn the filters in order to detect patterns in the input images.
+\input{tikz/cnn_tikz}
+
+
+
+
+
+
+
+
+\subsection{Autoencoders}
+
+An autoencoder, see figure \ref{fig:autoencoder} is neural network technique whose objective is to learn how to reduce the dimensionality of the input data, normally images, without losing their most important features. To do this, an autoencoder has three main parts: An encoder $e$, a latent space $L$ and a decoder $d$. The encoder $e(x)$, takes the input data and encodes it into a latent space $L$, a space of lower dimensionality. Then, the decoder takes this $L$ as input, and tries to reconstruct it so the output of the decoder is as similar as possible to the input $x$. The more similar is $\hat{x}$ to $x$, the better the relevant features have been captured into the latent space.
+
+\input{tikz/autoencoder_tikz}
