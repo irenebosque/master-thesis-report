@@ -50,7 +50,7 @@
 
 
 % My Packages
-% For the pseudocodes:
+\usepackage{svg}
 \RequirePackage{algorithm} 
 \RequirePackage{algpseudocode} 
 \usepackage[normalem]{ulem}

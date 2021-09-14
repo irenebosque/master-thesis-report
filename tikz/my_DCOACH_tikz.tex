@@ -27,3 +27,28 @@ line/.style={-latex}
 \end{tikzpicture}  
 \caption{Autoencoder, \cite{Autoencoder-tikz}} \label{fig:autoencoder}
 \end{figure}
+
+
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+  [block/.style={draw,minimum width=#1,minimum height=2em},
+  block/.default=10em,high/.style={minimum height=3em},auto,
+  node distance=5mm]
+  %node distance=5em,auto]
+  % Nodes
+  \node[block=3cm,high] (n0) {Input};
+  \node[block=3cm,high,right=1cm of n0] (env) {Environment};
+  \node[block=3cm,high,below=of env] (policy) {Policy};
+  \node[block=3cm,high,right=of policy] (PSL) {Policy Supervise Learner};
+  \node[block=3cm,high,right=of policy] (HM) {Human Model};
+  \node[right=1cm of PSL,align=center] (n4) {Measurement\\File};
+  
+  
+  \draw[double,double distance=3pt,{<[policy]}-{>[US]},bend left](A)to(B){};
+  \draw[double,double distance=3pt,{<[UK]}-{>[UK]},bend left](B)to(A){};
+
+\end{tikzpicture}
+\caption{Autoencoder, \cite{Autoencoder-tikz}} \label{fig:autoencoder}
+\end{figure}

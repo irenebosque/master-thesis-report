@@ -8,12 +8,7 @@
 In order to truly leverage the advantages of experience replay it is necessary  to develop a novel off-policy D-COACH algorithm. To do so, it is proposed to incorporate a model that learns to predict the teacher’s feedback and include it in the D-COACH framework. This new model, that we call the Human Model and which is represented by a neural network, should learn which feedback is required for a given state/action pair. The Human Model will be updated with batches of states and actions stored in a replay buffer. Then, the model will output a batch of feedback predictions that, together with the correspondent batch of feedback provided by the human from the buffer, will update the Human Model's weights via supervised learning, see figure \ref{fig:update_human_model}. 
 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.7\textwidth]{figures/train_human_model.png}
-    \caption{Update of the Human Model}
-    \label{fig:update_human_model}
-\end{figure}
+
 
 
 \section{The Human Model}
@@ -23,18 +18,22 @@ In order to truly leverage the advantages of experience replay it is necessary  
 Figure \ref{fig:update_agent} depicts how the agent's policy will be updated with off-policy corrections indirectly through the Human Model. The Human Model will be able to provide feedback to the newest version of the agent’s policy from a batch of states sampled from the replay buffer. This batch of states will be pass to both the agent's policy and the human model. Then, the agent's policy will output a batch of actions that will be fed to the human model. This batch of actions together with the output of the Human Model, will serve to update the weights of the agent's policy. Both models, the agent and the human ones could be learned in parallel.
 
 
+\section{The Agent}
+\label{section:The Human Model}
+
+
+
+
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\textwidth]{figures/train_agent.png}
-    \caption{Update of the agent's policy}
-    \label{fig:update_agent}
+    \includesvg[width=.8\textwidth]{figures/method.svg}
+    \caption{Proposed method}
+    \label{fig:method_diagram}
 \end{figure}
 
 
-
-\input{tikz/my_DCOACH_tikz}
 
 \section{Complete algorithm}
 \label{section:Complete algorithm}
