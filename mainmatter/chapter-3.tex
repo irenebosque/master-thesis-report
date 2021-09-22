@@ -1,37 +1,106 @@
-\chapter{Proposed Method: DCOACH + Human Model}
+\chapter{Deep COACH with an Off-Policy Oracle}
 \label{chapter:Proposed Method}
 
-\section{Objective: Off-policy D-COACH}
-\label{section:Objective: Off-policy D-COACH}
 
 
-In order to truly leverage the advantages of experience replay it is necessary  to develop a novel off-policy D-COACH algorithm. To do so, it is proposed to incorporate a model that learns to predict the teacher’s feedback and include it in the D-COACH framework. This new model, that we call the Human Model and which is represented by a neural network, should learn which feedback is required for a given state/action pair. The Human Model will be updated with batches of states and actions stored in a replay buffer. Then, the model will output a batch of feedback predictions that, together with the correspondent batch of feedback provided by the human from the buffer, will update the Human Model's weights via supervised learning, see figure \ref{fig:update_human_model}. 
+The corrective imitation learning algorithm D-COACH performs the experience replay technique by incorporating a buffer with which experience gathered by the agent's policy is used to perform batch updates of that same policy. As we saw in section \ref{subsection:Experience Replay}, experience gathered by an older version of a policy may not be useful for updating the current version of that same policy. Therefore a new method is needed in order to maximize the full potential of experience replay. In this chapter we present Deep COACH with an Off-Policy Oracle (D-COPO) a new framework that adds an oracle teacher called the Human Model which learns the feedback from the human teacher in order to improve the updating of the agent's policy.
 
+Section \ref{section:Difference between D-COACH and D-COPO} focuses on the main difference between D-COACH and D-COPO.
 
+Section \ref{section:Proposed method: D-COPO} explains the modules that form the agent of D-COPO.
 
+Section \ref{section:Complete algorithm} displays the complete algorithm. 
 
-
-\section{The Human Model}
-\label{section:The Human Model}
-
-
-Figure \ref{fig:update_agent} depicts how the agent's policy will be updated with off-policy corrections indirectly through the Human Model. The Human Model will be able to provide feedback to the newest version of the agent’s policy from a batch of states sampled from the replay buffer. This batch of states will be pass to both the agent's policy and the human model. Then, the agent's policy will output a batch of actions that will be fed to the human model. This batch of actions together with the output of the Human Model, will serve to update the weights of the agent's policy. Both models, the agent and the human ones could be learned in parallel.
-
-
-\section{The Agent}
-\label{section:The Human Model}
+Finally, section \ref{section:Algorithm-Discussion} gathers the conclusions about the new method D-COPO.  
 
 
 
+\section{Difference between D-COACH and D-COPO}
+\label{section:Difference between D-COACH and D-COPO}
+
+The main difference between D-COACH and D-COPO lies in the batch update of the agent's policy. On the one hand, as we saw in section \ref{subsection:D-COACH}, the base method D-COACH performs a batch update of the agent's policy every time step that the teacher gives feedback, and also every $b$ time steps independently of having received feedback or not. Is with these batch updates that D-COACH applies experience replay but the batches used for updating the agent are experiences gathered by the same agent's policy at some point in the past.
+
+On the other hand, D-COPO includes a new oracle module, the human model whose policy is updated with batches of experience gathered by the agent's policy and therefore the learning or update of the Human Model is off-policy.
+
+
+\vspace{10mm} 
+
+
+\section{Proposed method: D-COPO}
+\label{section:Proposed method: D-COPO}
+
+Figure \ref{fig:method_diagram} depicts the modules that compose the agent of the proposed method D-COPO. The coloured arrows other than black identify the different updates of the Main Policy Model and the Human Model. Specifically, the red arrows show the flow of information for a single update of the main policy while the green ones are used for the batch update of the same policy. Finally, the blue arrows indicate a batch update of the Human Model. 
 
 
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=.8\textwidth]{figures/method.svg}
-    \caption{Proposed method}
+    \includesvg[width=.9\textwidth]{figures/D-COPO.svg}
+    \caption{Proposed method D-COPO}
     \label{fig:method_diagram}
 \end{figure}
+
+\subsection*{Main policy}
+
+The main policy $P(s)$ is the core of the agent. This function, represented by a neural network, observes the state of the environment and emits an action accordingly. The main policy is learnt during training with both single updates and batch updates. 
+
+
+\subsection*{Buffer}
+The buffer $\mathcal{B}$ is an artificial memory  used to store the experience gathered by the main policy of the agent. This information consists on a 3-tuple formed by the state of the environment at time step $t$,  $s_t$, the correspondent action from the main policy, $a_t$ and the feedback signal from the human $h_t$. Therefore information is fed to the buffer only when the human teacher provides a correction.
+
+\subsection*{Policy supervised learner}
+If at a particular time step during the training the human teacher considers that the action emitted by the main policy, $P(s) = a$, should be modified, he/she provides a feedback signal $h$ to correct the action in the desired direction. This signal is fed directly to the Policy Supervised Learner module (red arrow of figure \ref{fig:method_diagram}) to perform a single update of the weights $\theta$ of the main policy. Specifically, the Policy supervised learner, follows a SGD optimization strategy to find the network parameters $\theta$ that minimize the difference between the actual action and the desired or target action. Because knowing the exact value of the desired action can be hard for a human teacher, he/she simply provides $h$ which is the direction of the correction to compute the magnitude of the error, $h$ is multiplied by the hyperparameter $e$ that is chosen beforehand according to the task.
+
+
+\begin{equation}
+{error}_t = h_t \cdot  e
+\label{eq:error-D-COACH}
+\end{equation}
+
+The value of the desired action can then be obtained by adding the error to the actual action from the main policy.
+
+\begin{equation}
+a^{target}_t = a_t + {error}_t
+\label{eq:a-target}
+\end{equation}
+
+
+The mean of the square of the difference between the target and the actual action is used as the cost function $J(\theta)$ that is minimized by the SGD optimizer. Equation \ref{eq:first-update-rule} shows the update rule of the main policy where $\alpha$ is the learning rate.
+
+
+\begin{equation}
+\theta \leftarrow \theta - \alpha \cdot \nabla_\theta J(\theta)
+\label{eq:first-update-rule}
+\end{equation}
+
+Batch  update\\ is also the 
+
+
+
+
+\subsection*{Human Model}
+The Human Model,  $H(s, a)$, is a model that learns to predict the corrective feedback given by the human teacher for a state and the action that the agent took at that particular state, $H : S \times A \rightarrow{} h$. This model is represented by a Neural Network and is learned in parallel together with the main policy during the training. The states and actions that are the input to the Human Model come from the buffer $B$ and the output has the same dimension as the action.
+This component in the key to batch update of the agent's policy, in figure \ref{fig:method_diagram} the flow of information of this step is represented in color green.
+
+
+- Batch update of the agent policy
+Figure \ref{fig:update_agent} depicts how the agent's policy will be updated with off-policy corrections indirectly through the Human Model. The Human Model will be able to provide feedback to the newest version of the agent’s policy from a batch of states sampled from the replay buffer. This batch of states will be pass to both the agent's policy and the human model. 
+
+Then, the agent's policy will output a batch of actions that will be fed to the human model. This batch of actions together with the output of the Human Model, will serve to update the weights of the agent's policy. Both models, the agent and the human ones could be learned in parallel.
+
+
+
+\subsection*{Human supervised learner}
+
+The Human supervised learner module is in charge of updating the weights of the network that represents the Human Model. 
+
+This Human model is going to be trained with samples stored in a buffer, applying like this the Experience Replay technique
+
+Specifically, batches of states and actions are feed to the human model which outputs a bath of h predictions. 
+This, together with the correspondent batch of feedback from the buffer, is used to update the weights of the human model
+
+
+
 
 
 
@@ -40,7 +109,7 @@ Figure \ref{fig:update_agent} depicts how the agent's policy will be updated wit
 
 
 \begin{algorithm}[H]
-\caption{Deep COACH + HM}\label{algorithm:DeepCOACH}
+\caption{D-COPO}\label{algorithm:D-COPO}
 \begin{algorithmic}[1]
 \State \textbf{Require:} error magnitude $e$, buffer update interval $b$
 \State \textbf{Init:} $\mathcal{D} = [\quad]$  \emph{\# initialize memory buffer}
@@ -61,7 +130,7 @@ Figure \ref{fig:update_agent} depicts how the agent's policy will be updated wit
 \If{mod(t, b) is 0 }
 \State \textbf{update} $\text{HumanModel}_\omega$ using SGD with a mini-batch sampled from $\mathcal{D}$
 \State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations sampled from $\mathcal{D}$}
-\State  $\hat{h}=\text{HumanModel}_\omega(a, o)$
+\State  $\hat{h}=H_\omega(a, o)$
 \State \textbf{update} $\pi_{\theta}$ using SGD with batch $a$ and batch $\hat{h}$
 \EndIf
 \EndFor
@@ -72,4 +141,10 @@ Figure \ref{fig:update_agent} depicts how the agent's policy will be updated wit
 
 \section{Discussion}
 \label{section:Algorithm-Discussion}
-Tell about the problem that at the beginning, the Human Model is not learnt yet and can be a drawback and that is why we put a smaller learning rate
+This chapter has explained in detail the proposed new method D-COPO. 
+
+
+However D-COPO has its limitations. Computationally speaking, it is more expensive than D-COACH as two models are learnt in parallel which results in a delay of the trainings performed with oracle teachers. Regarding performance, it is minimally affected at the beginning of training when the Human Model hasn't learn yet to predict suitable feedback 
+To ameliorate this issue 2 measures. First, it is establish that until a minimum amount of feedback signals.
+
+The learning rate of the batch update for the human model indicates the influence of the oracle
