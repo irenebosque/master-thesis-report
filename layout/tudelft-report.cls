@@ -36,7 +36,7 @@
 
 \RequirePackage{graphicx}   % Adding images
 \RequirePackage{float}      % Additional float parameters
-\RequirePackage[labelfont=bf,justification=centering,footnotesize]{caption} % Captions
+\RequirePackage[labelfont=bf,justification=left,footnotesize]{caption} % Captions
 \RequirePackage{subcaption} % Subfigures and subcaptions
 \RequirePackage{xcolor}     % Using colours in documents
 \RequirePackage{tikz}       % Create graphic elements
@@ -55,6 +55,7 @@
 \RequirePackage{algpseudocode} 
 \usepackage[normalem]{ulem}
 \useunder{\uline}{\ul}{}
+\captionsetup[subfigure]{labelformat=empty}
 
 %%%%% 1. General Definitions for the Document and Bibliography %%%%%
 

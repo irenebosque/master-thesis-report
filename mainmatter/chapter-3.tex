@@ -3,41 +3,49 @@
 
 
 
-The corrective imitation learning algorithm D-COACH performs the experience replay technique by incorporating a buffer with which experience gathered by the agent's policy is used to perform batch updates of that same policy. As we saw in section \ref{subsection:Experience Replay}, experience gathered by an older version of a policy may not be useful for updating the current version of that same policy. Therefore a new method is needed in order to maximize the full potential of experience replay. In this chapter we present Deep COACH with an Off-Policy Oracle (D-COPO) a new framework that adds an oracle teacher called the Human Model which learns the feedback from the human teacher in order to improve the updating of the agent's policy.
+The corrective imitation learning algorithm D-COACH performs the experience replay technique by incorporating a buffer with which experience gathered by the agent's policy is used to perform batch updates of that same policy. As we saw in section \ref{subsection:Experience Replay}, experience gathered by an older version of a policy may not be useful for updating the current version of that same policy. Therefore a new method is needed in order to maximize the full potential of experience replay. In this chapter we present Deep COACH with an Off-Policy Oracle (R-CIL) a new framework that adds an oracle teacher called the Human Model which learns the feedback from the human teacher in order to improve the updating of the agent's policy.
 
-Section \ref{section:Difference between D-COACH and D-COPO} focuses on the main difference between D-COACH and D-COPO.
+Section \ref{section:Difference between D-COACH and R-CIL} focuses on the main difference between D-COACH and R-CIL.
 
-Section \ref{section:Proposed method: D-COPO} explains the modules that form the agent of D-COPO.
+Section \ref{section:Proposed method: R-CIL} explains the modules that form the agent of R-CIL.
 
 Section \ref{section:Complete algorithm} displays the complete algorithm. 
 
-Finally, section \ref{section:Algorithm-Discussion} gathers the conclusions about the new method D-COPO.  
+Finally, section \ref{section:Algorithm-Discussion} gathers the conclusions about the new method R-CIL.  
 
 
 
-\section{Difference between D-COACH and D-COPO}
-\label{section:Difference between D-COACH and D-COPO}
+\section{Difference between D-COACH and R-CIL}
+\label{section:Difference between D-COACH and R-CIL}
 
-The main difference between D-COACH and D-COPO lies in the batch update of the agent's policy. On the one hand, as we saw in section \ref{subsection:D-COACH}, the base method D-COACH performs a batch update of the agent's policy every time step that the teacher gives feedback, and also every $b$ time steps independently of having received feedback or not. Is with these batch updates that D-COACH applies experience replay but the batches used for updating the agent are experiences gathered by the same agent's policy at some point in the past.
+The main difference between D-COACH and R-CIL lies in the batch update of the agent's policy. On the one hand, as we saw in section \ref{subsection:D-COACH}, the base method D-COACH performs a batch update of the agent's policy every time step that the teacher gives feedback, and also every $b$ time steps independently of having received feedback or not. Is with these batch updates that D-COACH applies experience replay but the batches used for updating the agent are experiences gathered by the same agent's policy at some point in the past.
 
-On the other hand, D-COPO includes a new oracle module, the human model whose policy is updated with batches of experience gathered by the agent's policy and therefore the learning or update of the Human Model is off-policy.
+On the other hand, R-CIL includes a new oracle module, the human model whose policy is updated with batches of experience gathered by the agent's policy and therefore the learning or update of the Human Model is off-policy.
 
 
 \vspace{10mm} 
 
 
-\section{Proposed method: D-COPO}
-\label{section:Proposed method: D-COPO}
+\section{Proposed method: R-CIL}
+\label{section:Proposed method: R-CIL}
 
-Figure \ref{fig:method_diagram} depicts the modules that compose the agent of the proposed method D-COPO. The coloured arrows other than black identify the different updates of the Main Policy Model and the Human Model. Specifically, the red arrows show the flow of information for a single update of the main policy while the green ones are used for the batch update of the same policy. Finally, the blue arrows indicate a batch update of the Human Model. 
+Figure \ref{fig:method_diagram} depicts the modules that compose the agent of the proposed method R-CIL. The coloured arrows other than black identify the different updates of the Main Policy Model and the Human Model. Specifically, the red arrows show the flow of information for a single update of the main policy while the green ones are used for the batch update of the same policy. Finally, the blue arrows indicate a batch update of the Human Model. 
 
 
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=.9\textwidth]{figures/D-COPO.svg}
-    \caption{Proposed method D-COPO}
-    \label{fig:method_diagram}
+    \includesvg[width=.9\textwidth]{figures/agent_RCIL.svg}
+    \caption{Proposed method R-CIL}
+    \label{fig:RCIL_diagram}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=.9\textwidth]{figures/agent_DCOACH.svg}
+    \caption{Base method D-COACH}
+    \label{fig:DCOACH_diagram}
 \end{figure}
 
 \subsection*{Main policy}
@@ -79,7 +87,7 @@ Batch  update\\ is also the
 
 
 \subsection*{Human Model}
-The Human Model,  $H(s, a)$, is a model that learns to predict the corrective feedback given by the human teacher for a state and the action that the agent took at that particular state, $H : S \times A \rightarrow{} h$. This model is represented by a Neural Network and is learned in parallel together with the main policy during the training. The states and actions that are the input to the Human Model come from the buffer $B$ and the output has the same dimension as the action.
+The Human Model,  $H(s, a)$, is a model that learns to predict the corrective feedback given by the human teacher for a state and the action that the agent took at that particular state. This model is represented by a Neural Network and is learned in parallel together with the main policy during the training. The states and actions that are the input to the Human Model come from the buffer $B$ and the output has the same dimension as the action.
 This component in the key to batch update of the agent's policy, in figure \ref{fig:method_diagram} the flow of information of this step is represented in color green.
 
 
@@ -105,11 +113,13 @@ This, together with the correspondent batch of feedback from the buffer, is used
 
 
 \section{Complete algorithm}
+
+
 \label{section:Complete algorithm}
 
 
 \begin{algorithm}[H]
-\caption{D-COPO}\label{algorithm:D-COPO}
+\caption{R-CIL}\label{algorithm:R-CIL}
 \begin{algorithmic}[1]
 \State \textbf{Require:} error magnitude $e$, buffer update interval $b$
 \State \textbf{Init:} $\mathcal{D} = [\quad]$  \emph{\# initialize memory buffer}
@@ -141,10 +151,11 @@ This, together with the correspondent batch of feedback from the buffer, is used
 
 \section{Discussion}
 \label{section:Algorithm-Discussion}
-This chapter has explained in detail the proposed new method D-COPO. 
+This chapter has explained in detail the proposed method R-CIL. This new framework is similar to the state-of-the-art algorithm D-COACH and it can be used by non-expert human teachers to accelerate the learning of a robot when facing a new task. Through corrective feedback signals, the teacher corrects the action taken by the robot when it behaves wrongly. We saw that the main difference of R-CIL and its inspirator lies in the way that the agent's main policy is updated with batches. R-CIL incorporates an off-policy oracle module called the Human Model that learns through the replay of experience collected my the main policy and which provides feedback for the batch update of the main policy.
 
 
-However D-COPO has its limitations. Computationally speaking, it is more expensive than D-COACH as two models are learnt in parallel which results in a delay of the trainings performed with oracle teachers. Regarding performance, it is minimally affected at the beginning of training when the Human Model hasn't learn yet to predict suitable feedback 
-To ameliorate this issue 2 measures. First, it is establish that until a minimum amount of feedback signals.
+However R-CIL has its limitations. Computationally speaking, it is more expensive than D-COACH as two models are learnt in parallel which results in a delay of the trainings performed with oracle teachers. Regarding performance, it is minimally affected at the beginning of training when the Human Model hasn't learn yet to predict suitable feedback.
+To ameliorate this issue two measures are taken. First, batch updates of the main policy start to take place when a minimum of $m$ signals of feedback from the teacher have been received. Meaning that the Human Model $H$ has been updated at least $m$ times
+
 
 The learning rate of the batch update for the human model indicates the influence of the oracle
