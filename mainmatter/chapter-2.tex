@@ -525,6 +525,14 @@ D-COACH \cite{ResearchAssignmentpaper} is the \quotes{deep} version of the COACH
 \label{al:D-COACH}
 \end{algorithm}
 
+\begin{figure}[H]
+    \centering
+    \adjustbox{trim=0cm 2cm 0cm 0cm}{%
+  \includesvg[width=.9\textwidth]{figures/DCOACH-diagram.svg}}
+    \caption{D-COACH agent}
+    \label{fig:DCOACH_diagram}
+\end{figure}
+
 The current version of D-COACH already implements experience replay to be more data efficient and it does this by incorporating a memory buffer $\mathcal{B}$ (see pseudocode \ref{al:D-COACH}) which the basic version of COACH lacks. During learning, tuples of recent corrections, $(o_t, a^{\text{target}}_t)$, are stored in said memory buffer and then they are replayed. In section \ref{sec:experience-replay} it was mentioned that ER requires off-policy algorithms to work properly, but current D-COACH is on-policy because the policy is updated with data that depends on its most recent version. In this case, the replay buffer $\mathcal{B}$ works by assuming that \textit{recent} feedback is still being valid to update the most recent version of the policy. Due to this assumption, the size of the buffer that D-COACH implements needs to be drastically reduced in comparison with normal ER buffers, otherwise old corrections could update the policy in undesired directions of the policy’s parameter space. On the other hand, a very small ER buffer will provoke an  overfitting of the policy to data generated in the most recent trajectories, which limits the current version of D-COACH to work in short horizon problems.
 
 
