@@ -1,12 +1,12 @@
 \chapter{Experimental Setting}
 \label{chapter:Experimental Setting}
 
-This chapter provides information about the experimental setting for the evaluation of the proposed method Robust Corrective Interactive deep Learning (R-CIdL). Experiments are done both in simulation with a simulated teacher and in a real setup with a human teacher.
+This chapter provides information about the experimental setting for the evaluation of the proposed method Batch Deep COACH (BD-COACH). Experiments are done both in simulation with a simulated teacher and in a real setup with a human teacher.
 
 
 \section{Meta-World benchmark}
 \label{section:Meta-World Benchmark}
-To evaluate R-CIdL and compare its performance to the base method D-COACH, we use two simulated environments from the open-source benchmark Meta-World \cite{metaworld}. Meta-World 
+To evaluate BD-COACH and compare its performance to the base method D-COACH, we use three simulated environments from the open-source benchmark Meta-World \cite{metaworld}. Meta-World 
 provides 50 standardized manipulation tasks that use a simulated Sawyer robot arm. Even if this benchmark was specifically designed for multi-task and meta-reinforcement learning, it is possible to simply access single goal environments as we do for this thesis. All Meta-World tasks are implemented in the MuJoCo physics engine \cite{mujoco} and it is interfaced with OpenAI Gym \cite{openai} making it easy to use. 
 For each task, Meta-World includes an oracle policy that commands the best action for the environment at a given time step. This action is equal to 
 $[\delta x, \delta y, \delta z, \textrm{gripper effort}]$
@@ -14,7 +14,7 @@ where a value of 1 for the gripper effort keeps the fingers of the end effector 
 
 
 
-In order to properly evaluate the method under controlled conditions, a high performance policy teacher provided by the Meta-World benchmark was used. The simulated teacher generates feedback computing $h = sign(a_\text{teacher} - a_\text{agent})$, whereas the decision on whether to provide feedback at each time step is given by the probability $P_h = \alpha \cdot exp(-\tau \cdot timestep)$, where $\{\alpha \in \mathbb{R}\, | 0 \leq \alpha \leq 1 \}$; $\{\tau \in \mathbb{R} \, | 0 \leq \tau\}$
+In order to properly evaluate the method under controlled conditions, a high performance policy teacher provided by the Meta-World benchmark was used. The simulated teacher generates feedback computing $h = sign(a_\text{teacher} - a_\text{agent})$, whereas the decision on whether to provide feedback at each time step is given by the probability $P_h = \alpha \cdot exp(-\tau \cdot timestep)$, where $\{\alpha \in \mathbb{R}\, | 0 \leq \alpha \leq 1 \}$; $\{\tau \in \mathbb{R} \, | 0 \leq \tau\}$. Furthermore, this binary feedback $h$ is only provided if the difference between the action of the policy and the action of the teacher is smaller than a threshold $\theta$.
 
 The Meta-World benchmark defines a success metric as the evaluation criterion for their tasks. This metric, ${\left\lVert object-goal \right\rVert}_2 < \epsilon$, is based on the euclidean distance between the object position and the goal position where $\epsilon$ is a small distance threshold that varies from task to task.
 
@@ -24,7 +24,7 @@ The Meta-World benchmark defines a success metric as the evaluation criterion fo
 \subsection{Task plate-slide-v2}
 \label{subsection:metaworld-hockey-task}
 
-The sequence of the plate-slide-v2 task can be seen in figure \ref{fig:sequence-plate-slide}; the gripper of the end effector has to approach the puck, press it vertically and then slide the puck to the goal. If the puck goes inside the goal in less than 500 time steps, the episode is considered successful and a fail otherwise. The task starts with the gripper and the object always initiated at the same position whereas the goal is initiated randomly within an area of  $0.01m^2$. During all the episode the gripper remains closed as the policy teacher commands a gripper effort of $-1$.
+The sequence of the plate-slide-v2 task can be seen in Figure \ref{fig:sequence-plate-slide}; the gripper of the end effector has to approach the puck, press it vertically and then slide the puck to the goal. If the puck goes inside the goal in less than 500 time steps, the episode is considered successful and a fail otherwise. The task starts with the gripper and the object always initiated at the same position whereas the goal is initiated randomly within an area of  $0.01m^2$. During all the episode the gripper remains closed as the policy teacher commands a gripper effort of $-1$.
 
 
 The success metric that Meta-World defines for this task is ${\left\lVert object-goal \right\rVert}_2 < 0.07$.
@@ -45,7 +45,9 @@ The success metric that Meta-World defines for this task is ${\left\lVert object
 
 \subsection{Task drawer-open-v2}
 \label{subsection:metaworld-open-drawer-task}
-The second simulated Meta-World task is called drawer-open-v2, see figure \ref{fig:sequence-drawer}. For an episode to be considered a success, the end effector has to approach the handle of the drawer which is always initiated closed, hook to it and pull to open it in less that 500 time steps.
+
+
+The second simulated Meta-World task is called drawer-open-v2, see Figure \ref{fig:sequence-drawer}. For an episode to be considered a success, the end effector has to approach the handle of the drawer which is always initiated closed, hook to it and pull to open it in less that 500 time steps.
 For this task the gripper remains open during all the episode as the gripper effort commanded by the simulated teacher is always 1. The gripper is initiated always at the same position and the drawer can appear at a random position within a length of $0.2m$. The success metric for this task is ${\left\lVert object-goal \right\rVert}_2 < 0.03$.
  
 
@@ -67,8 +69,25 @@ For this task the gripper remains open during all the episode as the gripper eff
 \end{figure}
 
 
+\subsection{Task button-press-topdown-v2}
+\label{subsection:metaworld-button-press-topdown-v2}
 
+The final simulated Meta-World task is called button-press-topdown-v2, see Figure \ref{fig:sequence-button}. For an episode to be considered a success, the end effector has to reach the button which is placed perpendicular to the surface of the table, and press it vertically in less that 500 time steps.
+For this task the gripper remains closed during all the episode as the gripper effort commanded by the simulated teacher is always -1. The gripper is initiated always at the same position whereas the button is initiated randomly within an area of  $0.02m^2$.The success metric for this task is ${\left\lVert object-goal \right\rVert}_2 < 0.02$.
 
+ \begin{figure}[H]
+  \centering
+  \hspace*{\fill}%
+  \subfloat[1 - Approach to button]{\includegraphics[width=0.25\textwidth]{figures/button_1.png}\label{fig:button_pos_0}}
+   \hfill
+  \subfloat[2 - Reach button]{\includegraphics[width=0.25\textwidth]{figures/button_2.png}\label{fig:button_pos_1}}
+   \hfill
+  \subfloat[3 - Press button vertically]{\includegraphics[width=0.25\textwidth]{figures/button_3.png}
+  \label{fig:button_pos_2}}
+  \hspace*{\fill}%
+  \caption{Sequence of the button-press-topdown-v2 task in Meta-World}.
+  \label{fig:sequence-button}
+\end{figure}
 
 
 \begin{table}[H]
@@ -98,7 +117,7 @@ Max time steps per episode &   500\\
 \section{Experiments with KUKA robot arm}
 \label{section:Experiments with KUKA robot arm}
 
-In order to validate the new proposed method RCIdL on a real robotic setup, we devised two tasks involving a KUKA LBR iiwa 7 robot arm pushing a box placed on top of a table; These 2 tasks will be explained later in more detail.
+In order to validate the new proposed method BD-COACH on a real robotic setup, we devised two tasks involving a KUKA LBR iiwa 7 robot arm pushing a box placed on top of a table; These 2 tasks will be explained later in more detail.
 
 Several reflecting markers were attached to the box so its pose could be tracked by an OptiTrack motion capture system. The pose captured by the 8 cameras of the available OptiTrack system, consists on the position and orientation of the center point on the box created by the reflecting markers. 
 
@@ -137,7 +156,7 @@ For the first task called push-box, the KUKA arm has to push a box placed on one
   \label{fig:planar-motion-problem}
 \end{figure}
 
-Figure \ref{fig:sequence-push-box} shows a sequence of the task once the agent has been trained using R-CIdL. The box is initialized at random positions and disturbances are manually introduced. The agent is able to succesfully reach the goal by learning a continuous back and forth motion that makes possible to quickly correct the misalignments of the box when it starts changing its orientation.
+Figure \ref{fig:sequence-push-box} shows a sequence of the task once the agent has been trained using BD-COACH. The box is initialized at random positions and disturbances are manually introduced. The agent is able to succesfully reach the goal by learning a continuous back and forth motion that makes possible to quickly correct the misalignments of the box when it starts changing its orientation.
 
  \begin{figure}[H]
   \centering
@@ -163,7 +182,7 @@ Figure \ref{fig:sequence-push-box} shows a sequence of the task once the agent h
 \subsection{Task park-box}
 \label{subsection:Park a box}
 
-The second task also involves pushing a box but this time the sequence of movements is more complex. To achieve the goal, the robot has to push is both axes parallel to the surface of the table. Once it has pushed it and center it until it faces the 2 brown boxes (third frame of figure \ref{fig:sequence-park-box}), the end effector moves around the corner of the pink box and starts pushing from the other side until the box is fit between the 2 walls. Figure \ref{fig:sequence-park-box} shows the sequence of movements for this task.
+The second task also involves pushing a box but this time the sequence of movements is more complex. To achieve the goal, the robot has to push is both axes parallel to the surface of the table. Once it has pushed it and center it until it faces the 2 brown boxes (third frame of Figure \ref{fig:sequence-park-box}), the end effector moves around the corner of the pink box and starts pushing from the other side until the box is fit between the 2 walls. Figure \ref{fig:sequence-park-box} shows the sequence of movements for this task.
 
 
  \begin{figure}[H]

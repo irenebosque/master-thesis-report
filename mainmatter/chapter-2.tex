@@ -1,20 +1,25 @@
 \chapter{Theoretical Framework and Related Work}
 \label{chapter:Theoretical Framework and Related Work}
 
-WRITE SOMETHING
+
+
+This chapter provides an overview of the theoretical framework and the relevant literature required for this master thesis. In Section \ref{section:Reinforcement Learning}, the basics of reinforcement learning are presented, a theoretical background that is necessary for later better understand imitation learning and the terms on-policy and off-policy. In Section \ref{section:Imitation Learning}, after explaining what is imitation learning, several IL algorithms are gathered and classified according to our proposed definitions of on-policy and off-policy imitation learning. Lastly, Section \ref{section:Corrective Imitation Learning} focuses on D-COACH and the proposal of how to transform it into an off-policy version to better leverage the benefits of experience replay.
+
+
+
 
 \section{Reinforcement Learning}
 \label{section:Reinforcement Learning}
 
-Reinforcement learning is a machine learning technique where a learner interacts with an environment with the objective of finding which of the actions it can take will maximize the cumulative reward or \textit{return} it will receive in the long run\cite{Sutton:1998}. The learner or decision maker is known as the \textit{agent} and everything with which the agent interacts is the \textit{environment}. How the agent behaves is defined by the \textit{policy} normally referred as $\pi$. The policy that the agent follows specifies which \textit{actions}, $a$, the agent takes depending on the situation of the environment and, as the learning process goes on, the policy tends to improve if the problem is well formulated.  A policy can be as simple as a deterministic lookup table where for each situation the table provides an action. On the other hand, more complex stochastic policies provide a probability for each action that can be taken at each situation.
+Reinforcement learning is a machine learning technique where a learner interacts with an environment with the objective of finding which of the actions it can take will maximize the cumulative reward or \textit{return} it will receive in the long run \cite{Sutton:1998}. The learner or decision maker is known as the \textit{agent} and everything with which the agent interacts is the \textit{environment}. How the agent behaves is defined by the \textit{policy} normally referred as $\pi$. The policy that the agent follows specifies which \textit{actions}, $a$, the agent takes depending on the situation of the environment and, as the learning process goes on, the policy tends to improve if the problem is well formulated.  A policy can be as simple as a deterministic lookup table where for each situation the table provides an action. On the other hand, more complex stochastic policies provide a probability for each action that can be taken at each situation.
 
-The different situations of the environment in which the agent may find itself, are the \textit{states}. A state, $s$, is a sufficient summary of what is going on in the environment and when it is possible to access to all this sufficient information, the environment is said to be \textit{fully observable}. At every time step, the agent perceives an \textit{observation} that is a consequence of the state of the environment at that moment. Sometimes, just from the available observation, it is not possible to extract the state underneath and then, the environment is said to be \textit{partially observable}. The goal of the agent is to select those actions that will maximize the expected discounted return $G_t$ after $k$ time steps, see equation \ref{eq:expected-discounted-return}.
+The different situations of the environment in which the agent may find itself, are the \textit{states}. A state, $s$, is a sufficient summary of what is going on in the environment and when it is possible to access to all this sufficient information, the environment is said to be \textit{fully observable}. At every time step, the agent perceives an \textit{observation} that is a consequence of the state of the environment at that moment. Sometimes, just from the available observation, it is not possible to extract the state underneath and then, the environment is said to be \textit{partially observable}. The goal of the agent is to select those actions that will maximize the expected discounted return $G_t$ after $k$ time steps, see Equation \eqref{eq:expected-discounted-return}.
 \begin{equation}
 G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} +... = \sum_{k=0}^{\infty} \gamma ^k R_{t+k+1}
 \label{eq:expected-discounted-return}
 \end{equation}
 
-In previous equation \ref{eq:expected-discounted-return}, $\gamma$ is the \textit{discount rate}, a parameter in the range $0 \leq \gamma \leq 1$ that represents the value that future rewards have at the current time step $t$. A $\gamma$ closer to $0$ indicates that the agent favour immediate rewards whereas a $\gamma$ closer to $1$ shows an agent that strongly takes into account future rewards. At each time step $t$, the environment sends a \textit{reward signal} to the agent that indicates how well the agent is performing in the \textit{immediate} sense. On the other hand, the \textit{value} of a state indicates how desirable is a state in the \textit{long-run}. In other words, the value of a state $s$, $v_\pi \left(s\right) $, is the expected discounted return $G_t$ that an agent will receive over the future if it starts interacting at that state $s$ and continues following its policy $\pi$. This is captured by the \textit{value function} shown in equation \ref{eq:value-function}:
+In previous Equation \eqref{eq:expected-discounted-return}, $\gamma$ is the \textit{discount rate}, a parameter in the range $0 \leq \gamma \leq 1$ that represents the value that future rewards have at the current time step $t$. A $\gamma$ closer to $0$ indicates that the agent favour immediate rewards whereas a $\gamma$ closer to $1$ shows an agent that strongly takes into account future rewards. At each time step $t$, the environment sends a \textit{reward signal} to the agent that indicates how well the agent is performing in the \textit{immediate} sense. On the other hand, the \textit{value} of a state indicates how desirable is a state in the \textit{long-run}. In other words, the value of a state $s$, $v_\pi \left(s\right) $, is the expected discounted return $G_t$ that an agent will receive over the future if it starts interacting at that state $s$ and continues following its policy $\pi$. This is captured by the \textit{value function} shown in Equation \eqref{eq:value-function}:
 
 
 
@@ -28,7 +33,7 @@ v_\pi \left(s\right) = E_\pi \left[G_{t}\mid S_{t}=s\right]
 
 
 
-Similarly, the \textit{action-value function} or \textit{Q-function}, denoted as $q_\pi$ and shown in equation \ref{eq:q-function}, tells us how good it is for the agent to take an action at a given state while following a policy $\pi$. In other words, it gives us the \textit{value of an action} under $\pi$.
+Similarly, the \textit{action-value function} or \textit{Q-function}, denoted as $q_\pi$ and shown in Equation \eqref{eq:q-function}, tells us how good it is for the agent to take an action at a given state while following a policy $\pi$. In other words, it gives us the \textit{value of an action} under $\pi$.
 
 \begin{equation}
 q_\pi \left( s,a \right) = E_\pi \left[ G_{t}\mid S_{t}=s,A_{t}=a \right] 
@@ -51,7 +56,7 @@ An MDP is defined by a tuple $(\mathcal{S}, \mathcal{A}, \mathcal{T}, \mathcal{R
 \begin{figure}[H]
     \centering
     \includegraphics[width=.7\textwidth]{figures/reinforcement_learning.png}
-    \caption{Reinforcement Learning}
+    \caption{Interaction between the agent and the environment in reinforcement learning \cite{Sutton:1998}.}
     \label{fig:reinforcement_learning}
 \end{figure}
 
@@ -60,7 +65,7 @@ Figure \ref{fig:reinforcement_learning} shows the interaction between an agent a
 
 \begin{equation}
 \tau = s_0, a_0, r_1,s_1, a_1, r_2,s_2, a_2, r_3, ...
-\label{eq:value-function}
+\label{eq:transition}
 \end{equation}
 
 
@@ -72,7 +77,7 @@ One of the objectives of this literature review is to establish a clear definiti
 According to Sutton and Barto, on-policy methods use a a single policy, the same policy that is evaluated or improved, is the one used to generate behavior. On the other hand, off-policy methods use two policies: They evaluate or improve a policy, the target policy, while using a different policy to generate the data, the behavior policy. In this case we say that learning is from data \quotes{off} the target policy, and the overall process is termed off-policy learning. \cite{Sutton:1998}. These definitions are the most accepted and used in reinforcement learning and therefore we will use them as reference further in this review. To better understand the terms, we are going to briefly explore two popular RL algorithms, Q-Learning and SARSA to understand what makes the former off-policy and the later on-policy.
 
 \subsection*{Sarsa and Q-learning}
-SARSA and Q-learning are Temporal Difference (TD) algorithms that update the knowledge of the agent at every time step by bootstrapping which means that the update is partly based on other learned estimates, without waiting to know the final outcome \cite{Sutton:1998}. Equation \ref{eq:TD} shows the general update rule of these TD methods \cite{TD:equation:2019}, here \textit{step size} is equivalent to learning rate.
+SARSA and Q-learning are Temporal Difference (TD) algorithms that update the knowledge of the agent at every time step by bootstrapping which means that the update is partly based on other learned estimates, without waiting to know the final outcome \cite{Sutton:1998}. Equation \eqref{eq:TD} shows the general update rule of these TD methods \cite{TD:equation:2019}, here \textit{step size} is equivalent to learning rate.
 
 
 \begin{equation}
@@ -80,7 +85,7 @@ SARSA and Q-learning are Temporal Difference (TD) algorithms that update the kno
 \label{eq:TD}
 \end{equation}
 
-Q-Learning was first introduced by \cite{Watkins:1989} and it is considered an off-policy method because if follows a behaviour policy $\beta$ while evaluating another policy $\pi$. Equation \ref{eq:Q-learning} shows the update rule for this method where $s_t$ and $a_t$ are the state and action at time step $t$, $R$ is the reward obtained for taking $a_t$ at state $s_t$, $\alpha$ is the step size or learning rate and $\gamma$ is  the discount rate. The term $\max_{a} Q(s_{t+1}, a)$ represents  the best estimated value for the next state $s_{t+1}$ and it is independent of the policy being followed.
+Q-Learning was first introduced by \cite{Watkins:1989} and it is considered an off-policy method because if follows a behaviour policy $\beta$ while evaluating another policy $\pi$. Equation \eqref{eq:Q-learning} shows the update rule for this method where $s_t$ and $a_t$ are the state and action at time step $t$, $R$ is the reward obtained for taking $a_t$ at state $s_t$, $\alpha$ is the step size or learning rate and $\gamma$ is  the discount rate. The term $\max_{a} Q(s_{t+1}, a)$ represents  the best estimated value for the next state $s_{t+1}$ and it is independent of the policy being followed.
 
 \begin{equation}
 Q^{\text{new}}(s_t, a_t)  \leftarrow Q(s_t, a_t) + \alpha \left[ R  + \gamma {\max_{a} Q(s_{t+1}, a)} - Q(s_t, a_t)\right]
@@ -88,22 +93,24 @@ Q^{\text{new}}(s_t, a_t)  \leftarrow Q(s_t, a_t) + \alpha \left[ R  + \gamma {\m
 \end{equation}
 
 
-SARSA algorithm was first introduced by \cite{Rummery+Niranjan:1994} with the name \quotes{Modified Connectionist Q-Learning (MCQ-L)} and it was Richard Sutton who suggested, in the same publication of Rummery and Niranjan, the name SARSA, as you need to know State-Action-Reward-State-Action before performing an update.  Unlike Q-learning, the policy that SARSA evaluates, is the same with which it generates samples. Equation \ref{eq:SARSA} shows its update rule.
+SARSA algorithm was first introduced by \cite{Rummery+Niranjan:1994} with the name \quotes{Modified Connectionist Q-Learning (MCQ-L)} and it was Richard Sutton who suggested, in the same publication of Rummery and Niranjan, the name SARSA, as you need to know State-Action-Reward-State-Action before performing an update.  Unlike Q-learning, the policy that SARSA evaluates, is the same with which it generates samples. Equation \eqref{eq:SARSA} shows its update rule.
 
 \begin{equation}
 Q^{\text{new}}(s_t, a_t)  \leftarrow Q(s_t, a_t) + \alpha \left[R+ \gamma  Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t)\right]
 \label{eq:SARSA}
 \end{equation}
-When comparing both updating rules in equations \ref{eq:Q-learning} and \ref{eq:SARSA}, we can see that in Q-learning the agent learns the optimal policy by using a greedy policy when updating the Q-value (see the \textit{max} in equation \ref{eq:Q-learning}). This is what makes Q-learning off-policy, the fact that it can use a policy for generating behaviour different from the greedy policy with which it updates the Q-values. This is key to understand why Q-learning can make use of the experience replay technique as we will see in section \ref{subsection:Experience Replay}.
+When comparing both updating rules in Equations \eqref{eq:Q-learning} and \ref{eq:SARSA}, we can see that in Q-learning the agent learns the optimal policy by using a greedy policy when updating the Q-value (see the \textit{max} in Equation \eqref{eq:Q-learning}). This is what makes Q-learning off-policy, the fact that it can use a policy for generating behaviour different from the greedy policy with which it updates the Q-values. This is key to understand why Q-learning can make use of the experience replay technique as we will see in Section \ref{subsection:Experience Replay}.
 
 
 
 \subsection{Online and Offline} 
 \label{subsection:Online and Offline}
 
-Reinforcement learning algorithms can also be classified according to how data is collected. Traditional RL algorithms are active or online frameworks \cite{youtube_offline_RL}, where an agent iteratively interacts in its environment collecting experience and using it to update its policy. Online RL algorithms can be on-policy, if  they use data exclusively collected by the current agent, or off-policy, see table \ref{tab:RL-classification}; off-policy RL algorithms are able to use previous data but the agent continues interacting with the environment collecting more data that is added to a buffer and then uses the data from the buffer to improve its policy. This online approach works well in very specific and  simulated environments however, for real world settings, online learning is impractical because the agent still needs to collect a diverse and huge data set at each iteration. 
+Reinforcement learning algorithms can also be classified according to how data is collected. Traditional RL algorithms are active or online frameworks \cite{youtube_offline_RL}, where an agent iteratively interacts in its environment collecting experience and using it to update its policy. Online RL algorithms can be on-policy if  they use data exclusively collected by the current agent, or off-policy, see Table \ref{tab:RL-classification}; some off-policy RL algorithms are able to use previous data but the agent continues interacting with the environment collecting more data that is added to a buffer and then uses the data from the buffer to improve its policy. A remark from the authors of the previous classification is that the algorithm Q-learning is an extreme case where the buffer size is  equal to 1 \cite{Offline-RL-Levine:2020}.
 
-Offline reinforcement learning, see table \ref{tab:RL-classification}, also called batch RL, data-driven RL or fully off-policy RL,  addresses the aforementioned problem. The key idea is that a large and diverse dataset is previously collected by some behaviour policy and added into a buffer. Then using only that data, the agent has to learn the best possible policy without further interacting with the environment. With this offline framework, it is possible to apply RL to real world domains like robotics where the agent, the robot, could easily get damaged while collecting data iteratively in an online manner. The downside of offline learning resides in collecting a suitable dataset for training which for many real-world applications, data can be very expensive to acquire \cite{collecting_data_for_offline_learning}.
+The online approach works well in very specific and  simulated environments however, for real-world settings, online learning is impractical because the agent still needs to collect a diverse and huge data set at each iteration. 
+
+Offline reinforcement learning, see Table \ref{tab:RL-classification}, also called batch RL, data-driven RL or fully off-policy RL,  addresses the aforementioned problem. The key idea is that a large and diverse dataset is previously collected by some behaviour policy and added into a buffer. Then using only that data, the agent has to learn the best possible policy without further interacting with the environment. With this offline framework, it is possible to apply RL to real-world domains like robotics where the agent, the robot, could easily get damaged while collecting data iteratively in an online manner. The downside of offline learning resides in collecting a suitable dataset for training which for many real-world applications, data can be very expensive to acquire \cite{collecting_data_for_offline_learning}.
 
 \input{tables/workshop_rl}
 
@@ -121,7 +128,7 @@ Experience Replay is a replay memory technique in which the transitions, $<s_t, 
 % Three benefits are obtained with this technique: ER is an efficient manner of taking advantage of the experience that has been already collected and use it to learn multiple times \cite{Experience-Replay-zhang:2018}. On the other hand is a way to train the policy with  uncorrelated data  which makes the Neural Network  more robust against locally overfitting to the most recent trajectories, also known as a forgetting phenomenon. 
 
 Experience replay provides several benefits. First, it is an efficient manner of taking advantage of the experience that has been already collected and use it to learn multiple times \cite{Experience-Replay-zhang:2018}. This is particularly important in the case of neural networks because it increases their stability helping to preserve old knowledge and thus reducing catastrophic forgetting \cite{Experience_replay_stability:2019}.
-Furthermore, experience replay provides uncorrelated data to train the neural network which helps it to generalize and to minimize overfitting to the most recent trajectories. \cite{Machine_learning_finance:2019}.
+Furthermore, experience replay provides uncorrelated data to train the neural network which helps it to generalize and to minimize overfitting to the most recent trajectories \cite{Machine_learning_finance:2019}.
 
  
 
@@ -148,7 +155,7 @@ Imitation learning is a problem in machine learning where an agent learns a task
 \subsubsection{Interactive Imitation Learning}
 \label{subsubsection:Interactive-Imitation-Learning}
 
-Interactive imitation learning is a branch of imitation learning \cite{lazydagger:2021}, where the teacher interacts with the agent \textit{during} its training providing feedback to improve its behaviour, see figure \ref{fig:interactive_imitation_learning}. Some authors \cite{Osa:2018} consider these interactive techniques as a special part of behavioural cloning but to make a more clear distinction it is preferable to consider them as a branch of IL.
+Interactive imitation learning is a branch of imitation learning \cite{lazydagger:2021}, where the teacher interacts with the agent \textit{during} its training providing feedback to improve its behaviour, see Figure \ref{fig:interactive_imitation_learning}. Some authors \cite{Osa:2018} consider these interactive techniques as a special part of behavioural cloning but to make a more clear distinction it is preferable to consider them as a branch of IL.
 
 
 
@@ -160,7 +167,7 @@ Interactive imitation learning is a branch of imitation learning \cite{lazydagge
 \end{figure}
 
  The nature of the feedback varies between frameworks: Feedback in the form of evaluations (e.g., the TAMER framework \cite{TAMER-Knox-Stone:2009}) inform the agent how good or bad was the action taken. This kind of evaluative feedback is easier to implement than to define a reward function and allows a faster convergence than pure autonomous learning. 
-However, the informativeness of this kind of evaluative feedback is still limited \cite{types-feedback-najar:2020}, and one way to improve it is to use corrections. Feedback as relative corrections \cite{Relative-corrections-Celemin:2019} gives name to corrective imitation learning, a branch of IIL. Corrective feedback improves the informativeness of evaluative feedback, by allowing the teacher to inform the agent whether the value of a taken action should be increased or decreased [Celemin and Ruiz-Del-Solar, 2019]. This requires less exploration compared to evaluative feedback \cite{types-feedback-najar:2020}. Section \ref{subsubsection:Corrective-Imitation-Learning} provides more details about corrective imitation learning.
+However, the informativeness of this kind of evaluative feedback is still limited \cite{types-feedback-najar:2020}, and one way to improve it is to use corrections. Feedback as relative corrections \cite{Relative-corrections-Celemin:2019} gives name to corrective imitation learning, a branch of IIL. Corrective feedback improves the informativeness of evaluative feedback, by allowing the teacher to inform the agent whether the value of a taken action should be increased or decreased [Celemin and Ruiz-Del-Solar, 2019]. This requires less exploration compared to evaluative feedback \cite{types-feedback-najar:2020}. Section \ref{section:Corrective Imitation Learning} provides more details about corrective imitation learning.
 
 
 
@@ -168,7 +175,7 @@ However, the informativeness of this kind of evaluative feedback is still limite
 \subsubsection{On-policy and off-policy Imitation Learning}
 \label{subsubsection:on and off-policy Imitation Learning}
 
-Section \ref{subsubsection:on and off-policy Reinforcement Learning} explained the meaning of the terms on-policy and off-policy in the field of reinforcement learning. When researching the literature it is clear that, for RL,  the definition provided by Sutton and Barto in 1998 is the most used. However things are not that obvious when talking about imitation learning. According to the paper \textit{An Algorithmic Perspective on Imitation Learning} \cite{Osa:2018} the first mention to the terms on-policy and off-policy regarding imitation learning is due to \cite{DBLP:journals/corr/LaskeyLHLMFG17}. These definitions are:
+Subsection \ref{subsection:on and off-policy Reinforcement Learning} explained the meaning of the terms on-policy and off-policy in the field of reinforcement learning. When researching the literature it is clear that, for RL,  the definition provided by Sutton and Barto in 1998 is the most used. However things are not that obvious when talking about imitation learning. According to the paper \textit{An Algorithmic Perspective on Imitation Learning} \cite{Osa:2018} the first mention to the terms on-policy and off-policy regarding imitation learning is due to \cite{DBLP:journals/corr/LaskeyLHLMFG17}. These definitions are:
 \setlength{\parskip}{1em} 
 
 \say{In Off-Policy imitation learning, an agent observes demonstrations from a supervisor and tries to recover the behavior via supervised learning, an example of off-policy IL is behavioral cloning. On-policy imitation learning methods sample trajectories from the agent’s current distribution and update the model based on the data received. A common on-policy algorithm is DAgger.} 
@@ -192,6 +199,8 @@ While we agree with the previous definition of on-policy IL, regarding off-polic
 
 \end{itemize}
 
+For the case of off-policy imitation learning, the \textit{different policy} could be a combination of different policies including the one of the agent, as it happens in off-policy RL.
+
 
 In \cite{DBLP:journals/corr/LaskeyLHLMFG17}, \cite{OtherLaskeydefinitions:2019} and \cite{Osa:2018} the first example of on-policy imitation learning given is DAgger (Dataset  Aggregation) \cite{DAgger-Ross:2011}; however, according to their own definitions we consider important to make a clarification regarding this classification. Algorithm \ref{al:DAgger-simplest} shows DAgger's \textit{simplest form}. For the first iteration, DAgger uses the expert’s policy $\pi^*$ (line 2), to collect a dataset of trajectories $D$ and then, it trains a policy  $\hat{\pi}_2$ that best mimics the expert on those trajectories. Then at iteration $n$, it uses $\hat{\pi}_n$ to collect more trajectories and adds those trajectories to the dataset $D$. The next policy $\hat{\pi}_{n+1}$ is the policy that best mimics the expert on the whole dataset $D$. In summary, DAgger uses its \textit{current policy} to collect a dataset at each iteration and trains the next policy under the aggregate of all collected datasets \cite{DAgger-Ross:2011}.
 
@@ -212,13 +221,14 @@ In \cite{DBLP:journals/corr/LaskeyLHLMFG17}, \cite{OtherLaskeydefinitions:2019} 
 \label{al:DAgger-simplest}
 \end{algorithm}
 
-This simple version of DAgger fits in the definition of on-policy imitation learning found in the literature because as it can be seen in lines 4 and 5 of algorithm \ref{al:DAgger-simplest}, the policy that gathers the trajectories is the current agent's policy.
+This simple version of DAgger fits in the definition of on-policy imitation learning found in the literature because as can be seen in lines 4 and 5 of Algorithm \ref{al:DAgger-simplest}, the policy that gathers the trajectories is the current agent's policy.
 
 
-However, and to better leverage the knowledge of the expert, the authors \textit{optionally} allow the algorithm to use a modified policy $\pi_i=\beta_i\pi^*+ (1−\beta_i)\hat{\pi}_i$. Depending on $\beta$,  which has values within the range $[0,1]$, the expert policy $\pi^*$, is able to collect part of the next dataset by itself. If $\beta = 1$, the expert has full control when collecting the data opposite to $\beta=0$  that means that all the data is gathered by the current agent's policy. The parameter $\beta$ can be equal to $\beta_i=p^{i−1}$ representing a decaying rate over time of the usage of the expert to collect the data.
+However, and to better leverage the knowledge of the expert, the authors \textit{optionally} allow the algorithm to use a modified policy $\pi_i=\beta_i\pi^*+ (1−\beta_i)\hat{\pi}_i$. Depending on $\beta$,  which has values within the range $[0,1]$, the expert policy $\pi^*$, is able to collect part of the next dataset by itself. If $\beta = 1$, the expert has full control when collecting the data as is the case in Behavioural Cloning, opposite to $\beta=0$  which means that all the data is gathered by the current agent's policy. The parameter $\beta$ can be equal to $\beta_i=p^{i−1}$ representing a decaying rate over time of the usage of the expert to collect the data.
 
 
-This more generic version represented in algorithm \ref{al:DAgger-general} wouldn't fit into the definition of on-policy imitation learning given by \cite{Osa:2018}, \cite{DBLP:journals/corr/LaskeyLHLMFG17}, \cite{OtherLaskeydefinitions:2019} and \cite{Anotherdefinitionfromberkeley:2020} due to the fact that during the first iterations, the expert's policy has more weight than the agent's policy when collecting the data.
+This more generic version represented in Algorithm \ref{al:DAgger-general} would not fit into the definition of on-policy imitation learning given by \cite{Osa:2018}, \cite{DBLP:journals/corr/LaskeyLHLMFG17}, \cite{OtherLaskeydefinitions:2019} and \cite{Anotherdefinitionfromberkeley:2020} because the expert's policy  intervenes in collecting the data.
+
 
 
 \begin{algorithm}[H]
@@ -238,7 +248,7 @@ This more generic version represented in algorithm \ref{al:DAgger-general} would
 \label{al:DAgger-general}
 \end{algorithm}
 
-To summarize this section, if the teacher intervenes somehow  in the gathering of the data, we consider this imitation algorithm to be off-policy.
+To summarize this section, if the teacher intervenes somehow in the actions executed by the agent, we consider this imitation algorithm to be off-policy.
 
 \subsubsection{Imitation Learning algorithms}
 \label{subsubsection:Imitation Learning algorithms}
@@ -249,10 +259,17 @@ In this section, we gather and briefly describe some Imitation Learning algorith
 
 
 \subsubsection*{Behavioural Cloning}
-Behavioural cloning (BC) \cite{Behavioural-Cloning-Pomerleau:1991}, one of the oldest Imitation Learning frameworks, consists on directly learning a policy, via supervised learning, given a data set of demonstrations provided by a teacher. The main problem with BC is known as \textit{distribution mismatch} and it happens because at the moment that the learner agent deviates from the expert trajectory, it cannot recover from that failure and go back to the expert trajectory. This provokes a cascade of errors that keep growing because the agent doesn't know how to act in those states that haven't been visited by the expert \cite{Global-overview-Attia:2018}.
+Behavioural cloning (BC) \cite{Behavioural-Cloning-Pomerleau:1991}, one of the oldest Imitation Learning frameworks, consists on directly learning a policy, via supervised learning, given a data set of demonstrations provided by a teacher. The main problem with BC is known as \textit{distribution mismatch} and it happens because at the moment that the learner agent deviates from the expert trajectory, it cannot recover from that failure and go back to the expert trajectory. This provokes a cascade of errors that keep growing because the agent does not know how to act in those states that have not been visited by the expert \cite{Global-overview-Attia:2018}.
+
+\subsubsection*{Inverse Reinforcement Learning methods}
+Inverse Reinforcement Learning (IRL) is two-step approach for learning from humans. First, based on demonstrations provided by the human expert, the agent learns the reward function $R$ that best explains the behaviour of the human. Then, with this reward function, the optimal policy is learnt using RL methods \cite{inverse-reinforcement-learning}.
+
+\subsubsection*{Learning from human preferences methods}
+Learning from human preferences, \cite{learning-from-human-preferences:2017}, \cite{learning-from-human-preferences:2018},  are methods where iteratively, a human decides which of several executions of a policy is better according to the goal of the task. Then, a reward function that explains the decisions of the human is found and with it and applying RL, the agent learns how to perform the task. The user continues deciding between executions and so,  the policy gradually improves.
+
 
 \subsubsection*{DART}
-DART (Disturbances for Augmenting Robot Trajectories) \cite{DART-Laskey:2017} is an algorithm close to behavioural cloning \cite{Behavioural-Cloning-Pomerleau:1991}. According to its authors is an off-policy imitation learning algorithm because, after the first expert's demonstration, it does not require to query the expert anymore. This method works by injecting noise into the supervisor's policy while demonstrating the task.
+DART (Disturbances for Augmenting Robot Trajectories) \cite{DART-Laskey:2017} is an algorithm close to behavioural cloning \cite{Behavioural-Cloning-Pomerleau:1991}. According to its authors is an off-policy imitation learning algorithm because, after the first expert's demonstration, it does not require to query the expert anymore. This method works by injecting noise into the supervisor's policy while demonstrating the task, in order to force visiting a wider region of the state space and get the recovery demonstrations, therefore reducing the problem of distribution mismatch.
 
 \subsubsection*{SQIL}
 SQIL (Soft Q Imitation Learning) \cite{SQIL-Reddy-Dragan-Levine:2019} is a variant of behavioural cloning that incentives the agent to match human demonstrations over a long horizon. SQIL uses reinforcement learning but doesn't learn a reward function, instead, when the agent matches a demonstrated action in a demonstrated state, it receives a reward of "1" and "0" for every other behaviour.
@@ -263,7 +280,7 @@ ValueDICE (Distribution Correction Estimation) \cite{ValueDICE-Kostrikov:2019}, 
 %% DAGGERS!%%%%%%%%%%%%%%%%%%%
 
 \subsubsection*{DAgger}
-DAgger (Data Aggregation) \cite{DAgger-Ross:2011} is one of the most well-known imitation learning algorithms and it was explained in-depth in section \ref{subsubsection:on and off-policy Imitation Learning}. Many variants of DAgger exist and some of them are going to be commented on next.
+DAgger (Data Aggregation) \cite{DAgger-Ross:2011} is one of the most well-known imitation learning algorithms and it was explained in-depth in Section \ref{subsubsection:on and off-policy Imitation Learning}. Many variants of DAgger exist and some of them are going to be commented on next.
 
 
 
@@ -272,7 +289,7 @@ DAgger by coaching \cite{DAgger-by-coaching-He-DaumeIII-Eisner:2012},  is a vers
 
 
 \subsubsection*{AggreVaTe}
-AggreVaTe (Aggregate Values to Imitate) \cite{AggreVaTe-Ross-Bagnell:2014}, is a version of DAgger \cite{DAgger-Ross:2011}, that learns to to choose actions that minimize the cost-to-go of the expert, 
+AggreVaTe (Aggregate Values to Imitate) \cite{AggreVaTe-Ross-Bagnell:2014}, is a version of DAgger \cite{DAgger-Ross:2011}, that learns to choose actions that minimize the cost-to-go of the expert, 
 \cite{Global-overview-Attia:2018}. The cost-to-go $Q$ is the cost of executing an action in a state and continue executing a policy for the next steps. The first iteration is the same as in DAgger, then for the next iterations,  at a time t, the cost-to-go $Q$ of taking an action in a state is observed and added to the the initial dataset $D$ together with the action and the state.
 
 
@@ -283,8 +300,15 @@ AggreVaTeD \cite{AggreVaTeD-Sun:2017} is a differentiable version of the AggreVa
 \subsubsection*{SafeDAgger}
 SafeDAgger \cite{SafeDAgger-Zhang-Cho:2016}, is a version of DAgger \cite{DAgger-Ross:2011}, that aims to reduce the burden of constantly querying the human teacher by incorporating a safety policy. This safety policy predicts the discrepancy between the teacher and the learner and it is only on those states where the discrepancy is high, that the teacher is queried.
 
+
+\subsubsection*{DropoutDAgger}
+DropoutDAgger \cite{DropoutDAgger} is a method similar to SafeDAgger \cite{SafeDAgger-Zhang-Cho:2016}. It uses the dropout technique to train the neural network policy applying $N$ random dropout masks. For each random configuration of the network, an action is obtained for the same input observation. Only if its distribution over actions has enough probability mass around the action suggested by the expert, the mean action of the novice is taken, otherwise the action of the expert is chosen. When the distribution of actions has high entropy it means that that region of the state-space is unfamiliar and therefore, it is safer to chose the action of the expert.
+
 \subsubsection*{EnsembleDAgger}
 EnsembleDAgger \cite{EnsembleDAgger-Menda:2019}, is an extension of DAgger where the learning agent only acts when two measures are compliant with two preset thresholds: The first measure is the \textit{discrepancy}, which is the same as in SafeDagger \cite{SafeDAgger-Zhang-Cho:2016}; discrepancy represents the deviation between the agent and the expert. The second measure is the \textit{doubt} which is the variance that indicates the familiarity of the agent with its current state; the doubt constrains the learner to only act in familiar states. 
+
+\subsubsection*{ThriftyDAgger}
+ThriftyDAgger \cite{ThriftyDAgger} is a method similar to SafeDagger \cite{SafeDAgger-Zhang-Cho:2016} and EnsembleDAgger \cite{EnsembleDAgger-Menda:2019} in the sense that it switches the control between the agent and the human supervisor depending on the novelty and the risk of a particular state. ThriftyDAgger proposes a novel metric for measuring the riskiness of a state which captures the likelihood that the agent cannot succeed in converging to the goal state.
 
 \subsubsection*{SHIV}
 SHIV (Svm-based reduction in Human InterVention) \cite{SHIV-Laskey:2016},  is a method similar to DAgger \cite{DAgger-Ross:2011} that differs from this one in the fact that the human teacher is not queried to provide labels for all the visited states but only when it is risky. The risk is described as distance to a boundary defined by a one class support vector machine.
@@ -343,9 +367,8 @@ DA-RB (DAgger Replay Buffer) \cite{DA-RB-Prakash:2020}, is an extension of the D
 
  
  \subsubsection*{COACH}
-COACH (COrrective Advice Communicated by Humans) \cite{COACH-Celemin-Ruiz-del-Solar:2015}, is an algorithm designed for non-expert humans where feedback is provided as a binary signal interpreted as an increase or decrease of the value of an action.  The feedback is immediately executed which makes it easy for the teacher to observe the change in the behaviour of the agent and continue providing further corrections. When a sequence of corrections have the same sign, it indicates that the correction to be made has a large magnitude. Opposite, if the signal alternates signs, the teacher is trying to make smaller corrections around a certain state.
+COACH (COrrective Advice Communicated by Humans) \cite{COACH-Celemin-Ruiz-del-Solar:2015}, is an algorithm designed for non-expert humans where feedback is provided as a binary signal interpreted as an increase or decrease of the value of an action.  The feedback is immediately used for updating the policy which makes it easy for the teacher to observe the change in the behaviour of the agent and continue providing further corrections. When a sequence of corrections has the same sign, it indicates that the correction to be made has a large magnitude. Opposite, if the signal alternates signs, the teacher is trying to make smaller corrections around a certain state. Furthermore, COACH includes a Human Feedback Model that helps to interpret and adapt the corrections.
 This algorithm, and more specifically its deep version \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018} are the main focus of this master thesis.
-
 
 \subsubsection*{D-COACH}
 D-COACH (Deep COrrective Advice Communicated by Humans) \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018} is the deep learning version of the COACH algorithm \cite{COACH-Celemin-Ruiz-del-Solar:2015}. It uses artificial neural networks to represent the policy and includes a buffer to replay recent experiences. As already mentioned, this algorithm is the starting point of the present master thesis.
@@ -421,7 +444,7 @@ Cycle-of-Learning \cite{Cycle-of-Learning-waytowich:2018},  is a framework that 
 \subsubsection{Classification of Imitation Learning algorithms as on-policy or off-policy}
 \label{subsubsection:Classification of Imitation Learning algorithms as on-policy or off-policy}
 
-Table \ref{tab:classification_table} shows the classification of the previous imitation learning algorithms according to the definitions shown in section \ref{subsubsection:on and off-policy Imitation Learning}.
+Table \ref{tab:classification_table} shows the classification of the previous imitation learning algorithms according to the definitions shown in Section \ref{subsubsection:on and off-policy Imitation Learning}.
 
 \input{tables/classification_table}
 
@@ -429,7 +452,7 @@ Table \ref{tab:classification_table} shows the classification of the previous im
 
 
 \section{Corrective Imitation Learning}
-\label{section:TCorrective Imitation Learning}
+\label{section:Corrective Imitation Learning}
 
 
 Section 4 concludes this review by explaining in detail the objective of this master thesis and the proposal to carry it out. 
@@ -439,14 +462,14 @@ The goal is to transform the corrective imitation learning algorithm D-COACH, wh
 
 
 
-As it was presented in section \ref{section:Interactive-Imitation-Learning}, there are different types of feedback that a teacher can provide during an interactive imitation learning training session. In this Master Thesis we are going to focus on feedback in the form of relative corrections which is the type of feedback used in D-COACH \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018}. The usage of corrective feedback names the term corrective imitation learning which we consider as a branch of IIL.
+As it was presented in Subsection \ref{subsubsection:Interactive-Imitation-Learning}, there are different types of feedback that a teacher can provide during an interactive imitation learning training session. In this Master Thesis we are going to focus on feedback in the form of relative corrections which is the type of feedback used in D-COACH \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018}. The usage of corrective feedback names the term corrective imitation learning which we consider as a branch of IIL.
 
 
 \subsection{COACH: Corrective Advice Communicated by Humans}
 \label{subsection:COACH}
 
 COACH \cite{COACH-Celemin-Ruiz-del-Solar:2015} is a CIL framework designed for non-expert humans teachers where the person supervising the learning agent, provides occasional corrections when the agent behaves wrongly. This corrective feedback $h$ is a binary signal that indicates the direction in which the executed action $a = \pi_\theta(s)$, should be modified.
-The parameters of the policy $\pi_\theta(s)$, $\theta$ are updated using a stochastic gradient descent (SGD) stategy in a supervised learning manner where the cost function $J(\theta)$ is the mean squared error between the applied and the desired action \cite{Gaussian-COACH-wout:2019}. Equation \ref{eq:first-update-rule-D-COACH} shows the general update rule of the parameters $\theta$:
+The parameters of the policy $\pi_\theta(s)$, $\theta$ are updated using a stochastic gradient descent (SGD) stategy in a supervised learning manner where the cost function $J(\theta)$ is the mean squared error between the applied and the desired action \cite{Gaussian-COACH-wout:2019}. Equation \eqref{eq:first-update-rule-D-COACH} shows the general update rule of the parameters $\theta$:
 
 
 \begin{equation}
@@ -463,7 +486,7 @@ COACH works under the assumption that teachers are non-experts and that therefor
 \end{equation}
 
 
-Equation \ref{eq:second-update-rule-D-COACH} shows the final update rule of COACH obtained from equations \ref{eq:first-update-rule-D-COACH}, \ref{eq:error-D-COACH} and the derivative of the mean squared error:
+Equation \eqref{eq:second-update-rule-D-COACH} shows the final update rule of COACH obtained from Equations \eqref{eq:first-update-rule-D-COACH}, \eqref{eq:error-D-COACH} and the derivative of the mean squared error:
 
 
 \begin{equation}
@@ -477,7 +500,7 @@ Where $\nabla_\theta \pi_\theta$ is the gradient of the policy, $\frac{\partial 
 
 
 \begin{algorithm}[H]
-\caption{Basic COACH}\label{algorithm:DeepCOACH}
+\caption{Basic COACH}
 \begin{algorithmic}[1]
 \State $e \leftarrow \text{error magnitude}$ 
 \State $\alpha \leftarrow \text{learning rate}$ 
@@ -533,7 +556,7 @@ D-COACH \cite{ResearchAssignmentpaper} is the \quotes{deep} version of the COACH
     \label{fig:DCOACH_diagram}
 \end{figure}
 
-The current version of D-COACH already implements experience replay to be more data efficient and it does this by incorporating a memory buffer $\mathcal{B}$ (see pseudocode \ref{al:D-COACH}) which the basic version of COACH lacks. During learning, tuples of recent corrections, $(o_t, a^{\text{target}}_t)$, are stored in said memory buffer and then they are replayed. In section \ref{sec:experience-replay} it was mentioned that ER requires off-policy algorithms to work properly, but current D-COACH is on-policy because the policy is updated with data that depends on its most recent version. In this case, the replay buffer $\mathcal{B}$ works by assuming that \textit{recent} feedback is still being valid to update the most recent version of the policy. Due to this assumption, the size of the buffer that D-COACH implements needs to be drastically reduced in comparison with normal ER buffers, otherwise old corrections could update the policy in undesired directions of the policy’s parameter space. On the other hand, a very small ER buffer will provoke an  overfitting of the policy to data generated in the most recent trajectories, which limits the current version of D-COACH to work in short horizon problems.
+The current version of D-COACH already implements experience replay to be more data efficient and it does this by incorporating a memory buffer $\mathcal{B}$ (see Algorithm \ref{al:D-COACH}) which the basic version of COACH lacks. During learning, tuples of recent corrections, $(o_t, a^{\text{target}}_t)$, are stored in said memory buffer and then they are replayed. In Section \ref{subsection:Experience Replay} it was mentioned that ER requires off-policy algorithms to work properly, but current D-COACH is on-policy because the policy is updated with data that depends on its most recent version. In this case, the replay buffer $\mathcal{B}$ works by assuming that \textit{recent} feedback is still being valid to update the most recent version of the policy. Due to this assumption, the size of the buffer that D-COACH implements needs to be drastically reduced in comparison with normal ER buffers, otherwise old corrections could update the policy in undesired directions of the policy’s parameter space. On the other hand, a very small ER buffer will provoke an  overfitting of the policy to data generated in the most recent trajectories, which limits the current version of D-COACH to work in short horizon problems.
 
 
 % However, it is important to remark that this replay buffer $\mathcal{B}$ is not completely correct; as it was mentioned in section \ref{sec:experience-replay}, ER techniques require an off-policy algorithm to work properly, but current D-COACH is on-policy because the policy is updated with data that depends on its most recent version. 

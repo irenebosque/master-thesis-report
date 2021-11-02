@@ -59,7 +59,8 @@
 \useunder{\uline}{\ul}{}
 \captionsetup[subfigure]{labelformat=empty}
 \RequirePackage{amsmath} 
-
+\newcommand{\quotes}[1]{``#1''}
+\usepackage{dirtytalk}
 
 
 %%%%% 1. General Definitions for the Document and Bibliography %%%%%
@@ -206,7 +207,9 @@
     \thispagestyle{empty}
 
     %% Use the Tikz library positioning
-    \usetikzlibrary{positioning}
+    \usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows, trees}
+    
+
 
     % Defining where everything needs to go
     \begin{tikzpicture}[overlay,remember picture]
@@ -221,7 +224,7 @@
 
     \node[below=2cm,fill=tudelft-black,minimum width={\paperwidth},inner ysep=25pt,opacity=0.9,text opacity=1] at (current page.north) {%
         \begin{minipage}{0.9\paperwidth}
-            \largetitlestyle\fontsize{45}{45}\selectfont\color{title}\@title \\[0.5ex]
+            \largetitlestyle\fontsize{50}{50}\selectfont\color{title}\@title \\[0.5ex]
             \ifdefvoid{\@subtitle}{}{\titlestyle\fontsize{22}{22}\selectfont\color{white}\@subtitle \\[2.5ex]}
             \ifdefvoid{\@subject}{}{\titlestyle\fontsize{22}{22}\selectfont\color{white}\@subject \\[0.5ex]}
             \largetitlestyle\fontsize{24}{24}\selectfont\color{white}\@author
