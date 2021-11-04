@@ -117,16 +117,25 @@
     \RequirePackage{fontspec} % Custom fonts
 
     %% Adding the various fonts
-    \setmainfont{Arial}
-    \setmathsf{Arial}
-    \setmathtt{Arial}
+    %\input{mainmatter/chapter-3}
+
+\setmainfont{Times New Roman}
+\setmathsf{Times New Roman}
+\setmathtt{Times New Roman}
 
     \newfontfamily\tudtitlefamily[Path=layout/tudelft/]{TUDelft-UltraLight.ttf}
     \newfontfamily\quotefont{Georgia}
+    \newfontfamily\subfont{Arial}
+    \newfontfamily\misection{Roboto}
+ 
 
     %% Defining commands to be used in layout
     \def\largetitlestyle{\tudtitlefamily}
     \def\titlestyle{\normalfont}
+    \def\mystyle{\subfont}
+    
+    
+
 
     %% Changing the quote environment to use Georgia
     \AtBeginEnvironment{quote}{\quotefont}
@@ -134,17 +143,26 @@
 
 %%%%% 3. Adjusting the Titles in Text and Table of Contents %%%%%
 
+%\renewcommand{\rmdefault}{ppl}
+
 %% Formatting chapter titles and spacing
 \titleformat{\chapter}[display]
     {\flushright}
     {\fontsize{96}{96}\selectfont\largetitlestyle\thechapter}
     {0pt}
-    {\Huge\titlestyle}
+    {\Huge\misection}
+    %{\Huge\normalfont\sffamily\huge\bfseries\color{blue}}
+   
+
+  
 \titlespacing*{\chapter}{0pt}{0pt}{2\baselineskip}
 
 %% Formatting section titles and spacing
 \titleformat{\section}
-    {\Large\titlestyle\bfseries}
+    %{\Large\titlestyle\bfseries}
+    {\Large\misection\bfseries}
+    %{\fontfamily{lmss}\large\bfseries}
+    %{\Large\selectfont\largetitlestyle\thesection.}
     {\thesection.}
     {5pt}
     {}
@@ -152,7 +170,7 @@
 
 %% Formatting subsections titles and spacing
 \titleformat{\subsection}
-    {\large\titlestyle\bfseries}
+    {\large\misection\bfseries}
     {\thesubsection.}
     {5pt}
     {}
@@ -160,14 +178,14 @@
 
 %% Formatting subsubsections titles and spacing
 \titleformat{\subsubsection}
-    {\titlestyle\bfseries}
+    {\misection\bfseries}
     {}
     {0pt}
     {}
 \titlespacing*{\subsubsection}{0pt}{\bigskipamount}{0pt}
 
 %% Changing font and spacing in the table of contents
-\dottedcontents{chapter}[1.5em]{\vspace{0.5\baselineskip}\titlestyle\bfseries}{1.5em}{0pc}
+\dottedcontents{chapter}[1.5em]{\vspace{0.5\baselineskip}\misection\bfseries}{1.5em}{0pc}
 \dottedcontents{section}[3.8em]{\titlestyle}{2.3em}{8pt}
 \dottedcontents{subsection}[7em]{\titlestyle}{3.2em}{8pt}
 
@@ -225,8 +243,8 @@
     \node[below=2cm,fill=tudelft-black,minimum width={\paperwidth},inner ysep=25pt,opacity=0.9,text opacity=1] at (current page.north) {%
         \begin{minipage}{0.9\paperwidth}
             \largetitlestyle\fontsize{50}{50}\selectfont\color{title}\@title \\[0.5ex]
-            \ifdefvoid{\@subtitle}{}{\titlestyle\fontsize{22}{22}\selectfont\color{white}\@subtitle \\[2.5ex]}
-            \ifdefvoid{\@subject}{}{\titlestyle\fontsize{22}{22}\selectfont\color{white}\@subject \\[0.5ex]}
+            \ifdefvoid{\@subtitle}{}{\subfont\fontsize{22}{22}\selectfont\color{white}\@subtitle \\[2.5ex]}
+            \ifdefvoid{\@subject}{}{\subfont\fontsize{22}{22}\selectfont\color{white}\@subject \\[0.5ex]}
             \largetitlestyle\fontsize{24}{24}\selectfont\color{white}\@author
         \end{minipage}};
 

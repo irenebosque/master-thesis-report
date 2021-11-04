@@ -14,9 +14,9 @@ where a value of 1 for the gripper effort keeps the fingers of the end effector 
 
 
 
-In order to properly evaluate the method under controlled conditions, a high performance policy teacher provided by the Meta-World benchmark was used. The simulated teacher generates feedback computing $h = sign(a_\text{teacher} - a_\text{agent})$, whereas the decision on whether to provide feedback at each time step is given by the probability $P_h = \alpha \cdot exp(-\tau \cdot timestep)$, where $\{\alpha \in \mathbb{R}\, | 0 \leq \alpha \leq 1 \}$; $\{\tau \in \mathbb{R} \, | 0 \leq \tau\}$. Furthermore, this binary feedback $h$ is only provided if the difference between the action of the policy and the action of the teacher is smaller than a threshold $\theta$.
+In order to properly evaluate the method under controlled conditions, a high performance policy teacher provided by the Meta-World benchmark was used. The simulated teacher generates feedback computing $h = \operatorname{sign}(a_\text{teacher} - a_\text{agent})$, whereas the decision on whether to provide feedback at each time step is given by the probability $P_h = \alpha \cdot \operatorname{exp}(-\tau \cdot \operatorname{time step})$, where $\{\alpha \in \mathbb{R}\, | 0 \leq \alpha \leq 1 \}$; $\{\tau \in \mathbb{R} \, | 0 \leq \tau\}$. Furthermore, this binary feedback $h$ is only provided if the difference between the action of the policy and the action of the teacher is smaller than a threshold $\theta$.
 
-The Meta-World benchmark defines a success metric as the evaluation criterion for their tasks. This metric, ${\left\lVert object-goal \right\rVert}_2 < \epsilon$, is based on the euclidean distance between the object position and the goal position where $\epsilon$ is a small distance threshold that varies from task to task.
+The Meta-World benchmark defines a success metric as the evaluation criterion for their tasks. This metric, ${\left\lVert \text{object}-\text{goal} \right\rVert}_2 < \epsilon$, is based on the euclidean distance between the object position and the goal position where $\epsilon$ is a small distance threshold that varies from task to task.
 
 
 
@@ -27,7 +27,7 @@ The Meta-World benchmark defines a success metric as the evaluation criterion fo
 The sequence of the plate-slide-v2 task can be seen in Figure \ref{fig:sequence-plate-slide}; the gripper of the end effector has to approach the puck, press it vertically and then slide the puck to the goal. If the puck goes inside the goal in less than 500 time steps, the episode is considered successful and a fail otherwise. The task starts with the gripper and the object always initiated at the same position whereas the goal is initiated randomly within an area of  $0.01m^2$. During all the episode the gripper remains closed as the policy teacher commands a gripper effort of $-1$.
 
 
-The success metric that Meta-World defines for this task is ${\left\lVert object-goal \right\rVert}_2 < 0.07$.
+The success metric that Meta-World defines for this task is ${\left\lVert \text{object}-\text{goal} \right\rVert}_2 < 0.07$.
 
  \begin{figure}[H]
   \centering
@@ -48,7 +48,7 @@ The success metric that Meta-World defines for this task is ${\left\lVert object
 
 
 The second simulated Meta-World task is called drawer-open-v2, see Figure \ref{fig:sequence-drawer}. For an episode to be considered a success, the end effector has to approach the handle of the drawer which is always initiated closed, hook to it and pull to open it in less that 500 time steps.
-For this task the gripper remains open during all the episode as the gripper effort commanded by the simulated teacher is always 1. The gripper is initiated always at the same position and the drawer can appear at a random position within a length of $0.2m$. The success metric for this task is ${\left\lVert object-goal \right\rVert}_2 < 0.03$.
+For this task the gripper remains open during all the episode as the gripper effort commanded by the simulated teacher is always 1. The gripper is initiated always at the same position and the drawer can appear at a random position within a length of $0.2m$. The success metric for this task is ${\left\lVert \text{object}-\text{goal} \right\rVert}_2 < 0.03$.
  
 
 
@@ -73,7 +73,7 @@ For this task the gripper remains open during all the episode as the gripper eff
 \label{subsection:metaworld-button-press-topdown-v2}
 
 The final simulated Meta-World task is called button-press-topdown-v2, see Figure \ref{fig:sequence-button}. For an episode to be considered a success, the end effector has to reach the button which is placed perpendicular to the surface of the table, and press it vertically in less that 500 time steps.
-For this task the gripper remains closed during all the episode as the gripper effort commanded by the simulated teacher is always -1. The gripper is initiated always at the same position whereas the button is initiated randomly within an area of  $0.02m^2$.The success metric for this task is ${\left\lVert object-goal \right\rVert}_2 < 0.02$.
+For this task the gripper remains closed during all the episode as the gripper effort commanded by the simulated teacher is always -1. The gripper is initiated always at the same position whereas the button is initiated randomly within an area of  $0.02m^2$.The success metric for this task is ${\left\lVert \text{object}-\text{goal} \right\rVert}_2 < 0.02$.
 
  \begin{figure}[H]
   \centering

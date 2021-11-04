@@ -16,7 +16,7 @@ Finally, section \ref{section:Algorithm-Discussion} gathers the conclusions abou
 \section{Difference between D-COACH and BD-COACH}
 \label{section:Difference between D-COACH and BD-COACH}
 
-As presented in Section \ref{subsection:D-COACH}, D-COACH is limited to problems that do not require big datasets for training. In order to avoid catastrophic forgetting and overfitting, D-COACH makes use of a replay buffer whose size is kept small to avoid unuseful corrections to be conveyed to the current version of the policy for its update. This limitation makes  D-COACH perform worst when facing tasks that require a lot of data. There are two aspects that determine the amount of data required for training a task. First, the dimensionality of the observation;  the higher the dimensionality of the observation is, the more data is needed. And secondly, the horizon of the task; the longer the horizon, the more data is required. Therefore a task with a combination of a high dimensionality and a long horizon would be very challenging for D-COACH to learn. In D-COACH the updates are independent of the policy as corrections from the buffer don't depend on what the policy is currently doing at those particular states; by doing so, feedback gathered by older versions of the policy may not be useful anymore.
+As presented in Section \ref{subsection:D-COACH}, D-COACH is limited to problems that do not require big datasets for training. In order to avoid catastrophic forgetting and overfitting, D-COACH makes use of a replay buffer whose size is kept small to avoid unuseful corrections to be conveyed to the current version of the policy for its update. This limitation makes  D-COACH perform worst when facing tasks that require a lot of data. There are two aspects that determine the amount of data required for training a task. First, the dimensionality of the observation;  the higher the dimensionality of the observation is, the more data is needed. And secondly, the horizon of the task; the longer the horizon, the more data is required. Therefore a task with a combination of a high dimensionality and a long horizon would be very challenging for D-COACH to learn. In D-COACH the updates are independent of the policy as corrections from the buffer do not depend on what the policy is currently doing at those particular states; by doing so, feedback gathered by older versions of the policy may not be useful anymore.
 
 
 In order to be able to work  with higher demanding data tasks, we propose BD-COACH a new method with policy dependent updates. This is achieved by incorporating a human model that learns to predict the feedback that the teacher provides and which depends on the output of the policy at a particular state. The human model learns to filter from the buffer using only what is convenient for the current policy. Table \ref{tab:difference-DCOACH-RCIDL} shows a summary of the dependencies of both methods.
@@ -73,10 +73,10 @@ The replay buffer $\mathcal{B}$ is an artificial memory  used to store the exper
 
 \subsection*{Policy update module}
 This module is in charge of updating the policy both with single and batch updates.
-Single updates happen when at a particular time step during the training, the human teacher considers that the action emitted by the policy, $P(s) = a$, should be modified, and provides a feedback signal $h$ to correct the action in the desired direction. This signal is fed directly to the policy update module (red arrow of Figure \ref{fig:RCIdL-agent}) to perform a single update of the weights $\theta$ of the policy. Specifically, the policy update module, follows a SGD optimization strategy to find the network parameters $\theta$ that minimize the difference between the actual action and the target action. Because knowing the exact value of the desired action can be hard for a human teacher, he/she simply provides $h$ which is the direction of the correction. To compute the magnitude of the error, $h$ is multiplied by the hyperparameter $e$ that is chosen beforehand according to the task, ${error}_t = h_t \cdot  e$. The value of the desired action can then be obtained by adding the error to the actual action from the policy as shown in Equation \eqref{eq:a-target}:
+Single updates happen when at a particular time step during the training, the human teacher considers that the action emitted by the policy, $P(s) = a$, should be modified, and provides a feedback signal $h$ to correct the action in the desired direction. This signal is fed directly to the policy update module (red arrow of Figure \ref{fig:RCIdL-agent}) to perform a single update of the weights $\theta$ of the policy. Specifically, the policy update module, follows a SGD optimization strategy to find the network parameters $\theta$ that minimize the difference between the actual action and the target action. Because knowing the exact value of the desired action can be hard for a human teacher, he/she simply provides $h$ which is the direction of the correction. To compute the magnitude of the error, $h$ is multiplied by the hyperparameter $e$ that is chosen beforehand according to the task, $\text{error}_t = h_t \cdot  e$. The value of the desired action can then be obtained by adding the error to the actual action from the policy as shown in Equation \eqref{eq:a-target}:
 
 \begin{equation}
-a^{target}_t = a_t + {error}_t
+a^\text{target}_t = a_t + \text{error}_t
 \label{eq:a-target}
 \end{equation}
 
@@ -107,6 +107,38 @@ The human model update module is in charge of updating the weights of the networ
 
 \subsection*{Complete algorithm}
 
+% \begin{algorithm}[H]
+% \caption{BD-COACH}\label{algorithm:BD-COACH}
+% \begin{algorithmic}[1]
+% \State \textbf{Require:} error magnitude $e$, buffer update interval $b$
+% \State \textbf{Init:} $\mathcal{D} = [\quad]$  \emph{\# initialize memory buffer}
+% \For{t = 1,2,...}{}
+% \State \textbf{observe} state $o_{t}$
+% \State \textbf{execute} action $a_{t}=\pi_{\theta}(o_{t})$
+% \State \textbf{feedback} human corrective advice $h_{t}$
+% \If{$h_{t}$ is not \textbf{0}}
+% \State \textbf{append} $(o_{t}, a_{t}, h_{t})$ to $\mathcal{D}$
+% \State $\text{error}_{t} = h_{t}\cdot e$
+% \State $a_{\text{target}(t)} = a_{t} + \text{error}_{t}$
+% \State \textbf{update} $\pi_\theta$ using SGD with pair ($o_{t}$, $a^{\text{target}}_{t}$)
+% \State \textbf{update} $H_\omega$ using SGD with a mini-batch sampled from $\mathcal{D}$
+% \State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations sampled from $\mathcal{D}$}
+% \State  $\hat{h}=H_\omega(a, o)$
+% \State \textbf{update} $\pi_\theta$ using SGD with batch $a$ and batch $\hat{h}$
+% \EndIf
+% \If{mod(t, b) is 0 }
+% \State \textbf{update} $H_\omega$ using SGD with a mini-batch sampled from $\mathcal{D}$
+% \State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations sampled from $\mathcal{D}$}
+% \State  $\hat{h}=H_\omega(a, o)$
+% \State \textbf{update} $\pi_{\theta}$ using SGD with batch $a$ and batch $\hat{h}$
+% \EndIf
+% \EndFor
+% \end{algorithmic}
+% \label{al:D-COACH with HM}
+% \end{algorithm}
+
+
+
 \begin{algorithm}[H]
 \caption{BD-COACH}\label{algorithm:BD-COACH}
 \begin{algorithmic}[1]
@@ -116,19 +148,15 @@ The human model update module is in charge of updating the weights of the networ
 \State \textbf{observe} state $o_{t}$
 \State \textbf{execute} action $a_{t}=\pi_{\theta}(o_{t})$
 \State \textbf{feedback} human corrective advice $h_{t}$
-\If{$h_{t}$ is not \textbf{0}}
+\If{$h_{t}$ is not 0}
 \State \textbf{append} $(o_{t}, a_{t}, h_{t})$ to $\mathcal{D}$
-\State $\mathit{error}_{t} = h_{t}\cdot e$
-\State $a_{target(t)} = a_{t} + \mathit{error}_{t}$
+\State $\text{error}_{t} = h_{t}\cdot e$
+\State $a_{\text{target}(t)} = a_{t} + \text{error}_{t}$
 \State \textbf{update} $\pi_\theta$ using SGD with pair ($o_{t}$, $a^{\text{target}}_{t}$)
-\State \textbf{update} $\text{HumanModel}_\omega$ using SGD with a mini-batch sampled from $\mathcal{D}$
-\State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations sampled from $\mathcal{D}$}
-\State  $\hat{h}=\text{HumanModel}_\omega(a, o)$
-\State \textbf{update} $\pi_\theta$ using SGD with batch $a$ and batch $\hat{h}$
 \EndIf
-\If{mod(t, b) is 0 }
-\State \textbf{update} $\text{HumanModel}_\omega$ using SGD with a mini-batch sampled from $\mathcal{D}$
-\State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations sampled from $\mathcal{D}$}
+\If{ $h_t$ {not 0 OR mod(t, b) is 0 }}
+\State \textbf{update} $H_\omega$ using SGD with a mini-batch uniformly sampled from $\mathcal{D}$
+\State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations uniformly sampled from $\mathcal{D}$}
 \State  $\hat{h}=H_\omega(a, o)$
 \State \textbf{update} $\pi_{\theta}$ using SGD with batch $a$ and batch $\hat{h}$
 \EndIf
@@ -136,7 +164,6 @@ The human model update module is in charge of updating the weights of the networ
 \end{algorithmic}
 \label{al:D-COACH with HM}
 \end{algorithm}
-
 
 
 
