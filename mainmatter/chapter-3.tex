@@ -1,9 +1,7 @@
 \chapter{Batch Deep COACH (BD-COACH)}
 \label{chapter:Proposed Method}
 
-
-
-The current version of the corrective interactive learning algorithm D-COACH is limited to problems that do not require large amounts of data as its replay buffer needs to be kept small, see Section \ref{al:D-COACH}. A new method is therefore needed in order to maximise the full potential of the replay buffer which will allow to train for tasks that are more data demanding. In this chapter we present the method Batch Deep COACH (BD-COACH) a robust version of D-COACH that is able to perform policy dependent updates by incorporating a  human model module that learns the feedback from the teacher.
+In this chapter we address the question of how a corrective deep imitation learning algorithm can truly leverage old collected corrections. The current version of the CIL algorithm D-COACH is limited to problems that do not require large amounts of data as its replay buffer needs to be kept small, see Section \ref{al:D-COACH}. A new method is therefore needed in order to maximise the full potential of the replay buffer which will allow to train for tasks that are more data demanding. In this chapter we present the method Batch Deep COACH (BD-COACH) an extension of D-COACH that is able to perform policy dependent updates by incorporating a  human model module that learns the feedback from the teacher.
 
 Section \ref{section:Difference between D-COACH and BD-COACH} focuses on the difference between D-COACH and BD-COACH.
 
@@ -16,10 +14,17 @@ Finally, section \ref{section:Algorithm-Discussion} gathers the conclusions abou
 \section{Difference between D-COACH and BD-COACH}
 \label{section:Difference between D-COACH and BD-COACH}
 
-As presented in Section \ref{subsection:D-COACH}, D-COACH is limited to problems that do not require big datasets for training. In order to avoid catastrophic forgetting and overfitting, D-COACH makes use of a replay buffer whose size is kept small to avoid unuseful corrections to be conveyed to the current version of the policy for its update. This limitation makes  D-COACH perform worst when facing tasks that require a lot of data. There are two aspects that determine the amount of data required for training a task. First, the dimensionality of the observation;  the higher the dimensionality of the observation is, the more data is needed. And secondly, the horizon of the task; the longer the horizon, the more data is required. Therefore a task with a combination of a high dimensionality and a long horizon would be very challenging for D-COACH to learn. In D-COACH the updates are independent of the policy as corrections from the buffer do not depend on what the policy is currently doing at those particular states; by doing so, feedback gathered by older versions of the policy may not be useful anymore.
+In order to avoid catastrophic forgetting and overfitting, D-COACH makes use of a replay buffer whose size is kept small to avoid unuseful corrections to be conveyed to the current version of the policy for its update. This limitation makes D-COACH perform worst when facing tasks that require a lot of data and thus, it is limited to the type of problems it can address. There are several aspects that determine the complexity of a task and therefore, the amount of corrections required for training a task. The dimensionality of the observation is one of these aspects; the higher the dimensionality of the observation, the more data is needed. The horizon of the task is another important factor; the longer the horizon, the more data is required. Therefore a task with a combination of a high dimensionality and a long horizon would be very challenging for D-COACH to learn. In D-COACH, batch updates are independent of the policy as corrections from the buffer do not depend on what the policy is currently doing at those particular states; by doing so, feedback gathered by older versions of the policy may not be useful anymore.
 
 
-In order to be able to work  with higher demanding data tasks, we propose BD-COACH a new method with policy dependent updates. This is achieved by incorporating a human model that learns to predict the feedback that the teacher provides and which depends on the output of the policy at a particular state. The human model learns to filter from the buffer using only what is convenient for the current policy. Table \ref{tab:difference-DCOACH-RCIDL} shows a summary of the dependencies of both methods.
+
+If we want to correctly implement the corrections replay technique, we need to answer the following question: how corrections gathered by older versions of the policy can be useful for batch updating the current version of the policy. Remark that this question addresses the \textit{batch update} and not the single update which will be done in the same way as in D-COACH. We need corrections that \textit{depend} on what the policy is doing at the moment instead of directly using corrections gathered by older policies as happens in D-COACH. This is exactly what the human teacher does and what we want to imitate. The human observes the state and the action of the agent at a particular moment and gives a correction accordingly. We introduce a \say{human teacher} in our framework as an artificial neural network that takes pairs of state/actions and outputs the appropriate feedback correction.
+
+
+
+We coin this new method Batch Deep COACH (BD-COACH) a CIL framework with policy dependent batch updates. BD-COACH is able to work with higher demanding data tasks by incorporating a module called the human model that learns to predict the feedback that the teacher provides. These predicted corrections depend on the output of the policy at a particular state making them convenient for updating the current version of the policy.
+
+
                
 
 \begin{table}[H]
@@ -39,18 +44,17 @@ Method  & {Feedback is:} & {Batch updates are:}\\[-.4em]
 \label{tab:difference-DCOACH-RCIDL}
 \end{table}
 
-Notice that for both methods, corrections are always dependent of the policy as the human teacher provides corrections depending on what the policy is doing. 
 
 
 
-
+Table \ref{tab:difference-DCOACH-RCIDL} shows a summary of the dependencies of both methods. Notice that for both methods, corrections are always dependent of the policy as the human teacher provides corrections depending on what the policy is doing. What changes between D-COACH and BD-COACH is the dependency of the corrections during the batch updates.
 
 
 
 \section{Proposed method: BD-COACH}
 \label{section:Proposed method: BD-COACH}
 
-Figure \ref{fig:RCIdL-agent} depicts the modules that compose the agent of the proposed method BD-COACH. The coloured arrows other than black identify the different updates of the policy and the human model. Specifically, the red arrows show the flow of information for a single update of the policy while the green ones are used for the batch update of the same policy. Finally, the blue arrows indicate a batch update of the human model. 
+Figure \ref{fig:BD-COACH} depicts the modules that compose the agent of the proposed method BD-COACH. The coloured arrows other than black identify the different updates of the policy and the human model. Specifically, the red arrows show the flow of information for a single update of the policy while the green ones are used for representing its batch update. Finally, the blue arrows indicate a batch update of the human model. 
 
 
 
@@ -59,21 +63,21 @@ Figure \ref{fig:RCIdL-agent} depicts the modules that compose the agent of the p
     \adjustbox{trim=0cm 0cm 0cm 0cm}{%
   \includesvg[width=.9\textwidth]{figures/BD-COACH-diagram.svg}}
     \caption{Modules of the BD-COACH agent}
-    \label{fig:RCIdL-agent}
+    \label{fig:BD-COACH}
 \end{figure}
 
 
 \subsection*{Policy}
 
-The policy $P(s)$ is the core of the agent that takes decisions in an environment. This function, represented in BD-COACH by a neural network, observes the state of the environment and emits an action accordingly. The policy is learnt during training with both single updates and batch updates. 
+The policy $\pi(s)$ is the core of the agent that takes decisions in an environment. This function, represented in BD-COACH by an artificial neural network, observes the state of the environment and emits an action accordingly. The policy is learnt during training with both single updates and batch updates. 
 
 
 \subsection*{Replay buffer}
 The replay buffer $\mathcal{B}$ is an artificial memory  used to store the experience gathered by the policy on the time steps when the human teacher provides corrections. This information consists on a 3-tuple formed by the state of the environment at time step $t$,  $s_t$, the correspondent action from the policy, $a_t$ and the feedback signal from the human, $h_t$. 
 
 \subsection*{Policy update module}
-This module is in charge of updating the policy both with single and batch updates.
-Single updates happen when at a particular time step during the training, the human teacher considers that the action emitted by the policy, $P(s) = a$, should be modified, and provides a feedback signal $h$ to correct the action in the desired direction. This signal is fed directly to the policy update module (red arrow of Figure \ref{fig:RCIdL-agent}) to perform a single update of the weights $\theta$ of the policy. Specifically, the policy update module, follows a SGD optimization strategy to find the network parameters $\theta$ that minimize the difference between the actual action and the target action. Because knowing the exact value of the desired action can be hard for a human teacher, he/she simply provides $h$ which is the direction of the correction. To compute the magnitude of the error, $h$ is multiplied by the hyperparameter $e$ that is chosen beforehand according to the task, $\text{error}_t = h_t \cdot  e$. The value of the desired action can then be obtained by adding the error to the actual action from the policy as shown in Equation \eqref{eq:a-target}:
+This module is in charge of updating the policy both with single and batch updates and it is the same module as in D-COACH.
+Single updates happen when at a particular time step during the training, the human teacher considers that the action emitted by the policy, $\pi(s) = a$, should be modified, and provides a feedback signal $h$ to correct the action in the desired direction. This signal is fed directly to the policy update module (red arrow of Figure \ref{fig:BD-COACH}) to perform a single update of the weights $\theta$ of the policy. Specifically, the policy update module, follows a SGD optimization strategy to find the network parameters $\theta$ that minimize the difference between the actual action and the target action. Because knowing the exact value of the desired action can be hard for a human teacher, he/she simply provides $h$ which is the direction of the correction. To compute the magnitude of the error, $h$ is multiplied by the hyperparameter $e$ that is chosen beforehand according to the task, $\text{error}_t = h_t \cdot  e$. The value of the desired action can then be obtained by adding the error to the actual action from the policy as shown in Equation \eqref{eq:a-target}:
 
 \begin{equation}
 a^\text{target}_t = a_t + \text{error}_t
@@ -89,13 +93,20 @@ The mean of the square of the difference between the target action and the actua
 \label{eq:first-update-rule}
 \end{equation}
 
-On the other hand, batch updates (green loop in Figure \ref{fig:RCIdL-agent} happen every $b$ time steps regardless of whether the teacher has give correction at that time step or not. Is in this batch update where the main difference with D-COACH can be observed as the batch of corrections that enter the policy update module depend on the actions taken by the policy for those states.
+Batch updates (green loop in Figure \ref{fig:BD-COACH}) happen every $b$ time steps regardless of whether the teacher has give correction at that time step or not. Is in this batch update where the main difference with D-COACH can be observed as the batch of corrections that enter the policy update module depend on the actions taken by the policy for those states.
 
 
 
 
 \subsection*{Human model}
-The human model, $H(s, a) = \hat{h}$, learns to predict the corrective feedback given by the human teacher for batches of state-action pairs. This model is represented by a neural network and it is learnt in parallel together with the policy during the training. This module the key in the batch update of the policy as it is able to provide feedback to the newest version of the policy, green loop in Figure \ref{fig:RCIdL-agent}.
+
+
+Similar to the framework Gaussian Process Coach (GPC) \cite{Gaussian-COACH-wout:2019}, BD-COACH incorporates a human model $\hat{h} = H(s, a)$, that learns to predict the corrective feedback given by the human teacher for batches of state-action pairs. The difference is that GPC implements Gaussian processes as function approximators for both its policy and its human model to estimate the uncertainty of states and actions. On the other hand, the human model of BD-COACH is an artificial neural network that serves as a filter for the data from the replay buffer to generate labels that are useful for the current version of the policy, green loop in Figure \ref{fig:BD-COACH}. The human model is learnt in parallel together with the policy during the training. 
+
+
+
+
+% This model is represented by a neural network and it is learnt in parallel together with the policy during the training. This module the key in the batch update of the policy as it is able to provide feedback to the newest version of the policy, green loop in Figure \ref{fig:RCIdL-agent}.
 
 During the batch update of the policy, a batch of states sampled from the replay buffer is passed to both the policy and the human model. The policy outputs a batch of actions that are fed to the human model. This batch of actions together with the output $\hat{h}$ from the human model, serve to update the weights of the policy in the policy update module. 
 
@@ -103,39 +114,16 @@ During the batch update of the policy, a batch of states sampled from the replay
 
 \subsection*{Human model update}
 
-The human model update module is in charge of updating the weights of the network that represents the human model, $H_\omega$. The human model is updated with tuples of information $(s_t, a_t, h_t)$ stored in the replay buffer, applying like this the corrections replay technique. Specifically, batches of states and actions are feed to the human model which outputs a bath of $\hat{h}$ predictions. This, together with the correspondent batch of feedback from the buffer, is used to update the weights of the human model.
+The human model update module is in charge of updating the weights of the network that represents the human model, $H(s, a)$. The human model is updated with tuples of information $(s_t, a_t, h_t)$ stored in the replay buffer, applying like this the corrections replay technique. Specifically, batches of states and actions are feed to the human model which outputs a bath of $\hat{h}$ predictions. This, together with the correspondent batch of feedback from the buffer, is used to update the weights of the human model.
+
+Because the mini-batches used in the update of the human model consist on data gathered by another artificial neural network, the information is useful for updating the human model. This is a simile with off-policy methods.
+
+
 
 \subsection*{Complete algorithm}
 
-% \begin{algorithm}[H]
-% \caption{BD-COACH}\label{algorithm:BD-COACH}
-% \begin{algorithmic}[1]
-% \State \textbf{Require:} error magnitude $e$, buffer update interval $b$
-% \State \textbf{Init:} $\mathcal{D} = [\quad]$  \emph{\# initialize memory buffer}
-% \For{t = 1,2,...}{}
-% \State \textbf{observe} state $o_{t}$
-% \State \textbf{execute} action $a_{t}=\pi_{\theta}(o_{t})$
-% \State \textbf{feedback} human corrective advice $h_{t}$
-% \If{$h_{t}$ is not \textbf{0}}
-% \State \textbf{append} $(o_{t}, a_{t}, h_{t})$ to $\mathcal{D}$
-% \State $\text{error}_{t} = h_{t}\cdot e$
-% \State $a_{\text{target}(t)} = a_{t} + \text{error}_{t}$
-% \State \textbf{update} $\pi_\theta$ using SGD with pair ($o_{t}$, $a^{\text{target}}_{t}$)
-% \State \textbf{update} $H_\omega$ using SGD with a mini-batch sampled from $\mathcal{D}$
-% \State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations sampled from $\mathcal{D}$}
-% \State  $\hat{h}=H_\omega(a, o)$
-% \State \textbf{update} $\pi_\theta$ using SGD with batch $a$ and batch $\hat{h}$
-% \EndIf
-% \If{mod(t, b) is 0 }
-% \State \textbf{update} $H_\omega$ using SGD with a mini-batch sampled from $\mathcal{D}$
-% \State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations sampled from $\mathcal{D}$}
-% \State  $\hat{h}=H_\omega(a, o)$
-% \State \textbf{update} $\pi_{\theta}$ using SGD with batch $a$ and batch $\hat{h}$
-% \EndIf
-% \EndFor
-% \end{algorithmic}
-% \label{al:D-COACH with HM}
-% \end{algorithm}
+
+Algorithm \ref{algorithm:BD-COACH} presents the pseudocode of BD-COACH. After setting the required  hyper-parameters  (line 1), the agent starts interacting with the environment. In time steps when the teacher provides a correction (line 7), that correction is appended to the buffer $\mathcal{D}$ together with the corresponding state and action. Then, the label $a^{\text{target}}_{t}$ is computed and used for the \textit{single update the policy} (line 11), see red loop of Figure \ref{fig:BD-COACH}. Next, the human model is updated with a mini-batch uniformly sampled from the replay buffer $\mathcal{D}$ (line 14) which corresponds to the \textit{batch update of the human model}, see blue loop of Figure \ref{fig:BD-COACH}. Then, the human model generates a batch of corrections that are use to perform the \textit{batch update of the policy} (line 17) which corresponds to the green loop of Figure \ref{fig:BD-COACH}. Lines 14-17 happen not only on the time steps when the human provides a correction but also every $b$ time steps to better leverage the data already collected and minimize the overfitting of the neural network.
 
 
 
@@ -146,24 +134,25 @@ The human model update module is in charge of updating the weights of the networ
 \State \textbf{Init:} $\mathcal{D} = [\quad]$  \emph{\# initialize memory buffer}
 \For{t = 1,2,...}{}
 \State \textbf{observe} state $o_{t}$
-\State \textbf{execute} action $a_{t}=\pi_{\theta}(o_{t})$
+\State \textbf{execute} action $a_{t}=\pi(o_{t})$
 \State \textbf{feedback} human corrective advice $h_{t}$
 \If{$h_{t}$ is not 0}
 \State \textbf{append} $(o_{t}, a_{t}, h_{t})$ to $\mathcal{D}$
 \State $\text{error}_{t} = h_{t}\cdot e$
 \State $a_{\text{target}(t)} = a_{t} + \text{error}_{t}$
-\State \textbf{update} $\pi_\theta$ using SGD with pair ($o_{t}$, $a^{\text{target}}_{t}$)
+\State \textbf{update} $\pi(o_{t})$ using SGD with pair ($o_{t}$, $a^{\text{target}}_{t}$)
 \EndIf
 \If{ $h_t$ {not 0 OR mod(t, b) is 0 }}
-\State \textbf{update} $H_\omega$ using SGD with a mini-batch uniformly sampled from $\mathcal{D}$
-\State  $a=\pi_{\theta}(o)$ \emph{\# where $o$ is a batch of observations uniformly sampled from $\mathcal{D}$}
-\State  $\hat{h}=H_\omega(a, o)$
-\State \textbf{update} $\pi_{\theta}$ using SGD with batch $a$ and batch $\hat{h}$
+\State \textbf{update} $H$ using SGD with a mini-batch uniformly sampled from $\mathcal{D}$
+\State  $a=\pi(o)$ \emph{\# where $o$ is a batch of observations uniformly sampled from $\mathcal{D}$}
+\State  $\hat{h}=H(o, a)$
+\State \textbf{update} $\pi$ using SGD with batch $a$ and batch $\hat{h}$
 \EndIf
 \EndFor
 \end{algorithmic}
-\label{al:D-COACH with HM}
 \end{algorithm}
+
+
 
 
 
@@ -176,9 +165,7 @@ The human model update module is in charge of updating the weights of the networ
 
 \section{Discussion}
 \label{section:Algorithm-Discussion}
-This chapter has explained in detail the proposed method BD-COACH. This new framework is similar to the state-of-the-art algorithm D-COACH and it can be used by non-expert human teachers to accelerate the learning of an agent when facing a new task that requires a big dataset. Through corrective feedback signals, the teacher modifies the actions taken by the agent if needed. We saw that the main difference between BD-COACH and D-COACH lies in the policy dependency of the batch updates of the policy. Whereas the batch updates of D-COACH are policy independent, the batch updates in BD-COACH depend on what the policy does. This is achieved by incorporating a human model module that learns to predict feedback by replaying corrections stored in a buffer. Removing the limitation of the buffer size $K$, makes BD-COACH more robust as its performance does not depend anymore on the values of $K$ and the parameter $e$.
+This chapter has explained in detail the proposed method BD-COACH. This new framework is similar to the state-of-the-art algorithm D-COACH and it can be used by non-expert human teachers to accelerate the learning of an agent when facing a new task that requires many corrections. Through corrective feedback signals, the teacher modifies the actions taken by the agent if needed. We saw that the main difference between BD-COACH and D-COACH lies in the policy dependency of the batch updates of the policy. Whereas the batch updates of D-COACH are policy independent, the batch updates in BD-COACH depend on what the newest version of the policy does. This is achieved by incorporating a human model module that learns to predict feedback by replaying corrections stored in a buffer which still being useful for updating the current version of the policy.
 
-However BD-COACH has its limitations. Computationally speaking, it is more expensive than D-COACH as two models are learnt in parallel. Regarding performance, with BD-COACH, it is minimally affected at the beginning of the training when the human model has not learn yet to predict suitable feedback.
-% To ameliorate this issue two measures are taken. First, batch updates of the main policy start to take place when a minimum of $m$ signals of feedback from the teacher have been received. Meaning that the Human Model $H$ has been updated at least $m$ times
 
 

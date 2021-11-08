@@ -50,6 +50,10 @@
 
 
 % My Packages
+\usepackage{epigraph}
+\setlength{\epigraphrule}{0pt}
+\setlength{\epigraphwidth}{0.7\textwidth}
+\usepackage[toc,page]{appendix}
 \usepackage{svg}
 %\usepackage[inkscapearea=page]{svg}
 \usepackage{adjustbox}

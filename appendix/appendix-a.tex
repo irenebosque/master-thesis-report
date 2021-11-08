@@ -1,76 +1,42 @@
-\chapter{Appendix}
-\label{appendix:Appendix}
-\appendix
+\chapter{Feedback plots}
+\label{appendix:feedback-plots}
+%\appendix
 
 
 
 
-\section{Artificial Neural Networks}
-
-An Artificial Neural Network or ANN is a computational model formed by a connection of artificial neurons arranged in structures called layers, \cite{ANN-graupe:2013}. Every ANN possesses three types of layers, the input layer, the hidden layer(s) and the output layer, see figure \ref{fig:ANN}.
-\input{tikz/neural_network_tikz}
-
-An artificial neuron, see figure \ref{fig:neuron}, is the simplest element of an ANN. Similar to a biological neuron, an artificial neuron has input connections through which it receives external stimuli, the input data $x$, \cite{ANN-graupe:2013}; With these inputs, the neuron makes a computation and generates an output value. This computation is a weighted sum of the input data where the weights $w$ are the parameters of the model that have to be adjusted in order for the model to learn. Furthermore, there is an additional input connection to the neuron, the parameter bias $b$ that also gets added to the weighted sum, $wx + b$. The final element of the artificial neuron is the activation function $f$ that takes as input the previous weighted sum and distorts it by adding non-linear deformations, $f(wx + b)$.
-
-\input{tikz/neuron_tikz}
-
-ANNs can be classified according to multiple taxonomies, one of them refers to the direction in which the data is propagated through the layers, giving as a result two main groups: feedforward neural networks (FNN) and recurrent neural networks (RNN), \cite{Classification-Artificial-Neural-Networks:2017}.
-
-\subsection{Feedforward Neural Networks (FNNs)}
-
-A feedworward neural network (FNN) is a type of artificial neural network where information flows in only one direction from the input layer to the output layer without going through any loop.
-  \vspace{1mm} \\
+\section{Feedback task plate-slide-v2}
+\label{section:Feedback plots}
 
 
-\subsection{Recurrent Neural Networks (RNNs)}
 
-Opposite to feedforward neural networks, recurrent neural networks (RNNs) propagate data both forwards and backwards through the layers endowing the model with memory. RNNs are specially useful when dealing with sequential or time dependent where some information underlays hidden, e.g., temporal information.
 
-\vspace{5mm} 
-\textbf{1. Vanilla RNN}
+Figure \ref{fig:results_plate_slide_buffer_e} shows the average success per episode for the task plate-slide-v2 for different values of $e$ and buffer size when the positions are relative. There are three main conclusions that can be extracted. First, BD-COACH is overall much more robust to changes in both $e$ and buffer size $K$ and it is able to reach 100\% success around minute 6. Regarding D-COACH, $e$ is the parameter that has more influence being its worst performance when $e=0.01$. And regarding the buffer size $K$, the biggest buffer is the most detrimental and the smallest results in the best performance at the end of the training.
+This was expected as in D-COACH the buffer contains information gathered by all the previous old versions of the policy that may not be useful for updating the current version of the policy.
 
-Vanilla RNNs are the simplest version of recurrent networks (Figure \ref{fig:rnn} shows an unrolled Vanilla RNN cell). The hidden state $h$ is a parameter whose dimension is defined by the user and it is this parameter $h$ the one that forms the recurrent connection within the cell. The hidden state at time $t$, $h_t$ is computed by adding the input data at that time, $x_t$, plus the hidden state from the previous time step $h_{t-1}$, see equation \ref{eq:vanilla_rnn}. It is precisely the fact of adding information from previous states, which makes the model able to remember.
-
-%\input{rnn_tikz}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.7\textwidth]{figures/rnn.png}
-    \caption{Vanilla Recurrent Neural Network, \cite{Vanilla-RNN-image}}
-    \label{fig:rnn}
+% Same buffer
+ \begin{figure}[H]
+  \centering
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-same-buffer-feedback.svg}}\label{fig:plate_slide_same_buffer}}
+   \hfill
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-same-e-feedback.svg}}\label{fig:plate_slide_same_e}}
+  \caption{plate-slide-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
+  \label{fig:results_plate_slide_buffer_e}
 \end{figure}
 
 
 
-\begin{equation}
-h_t=tanh(W_{xh}x_t+W_{hh}h_{t−1})
-\end{equation}
+% best
+ \begin{figure}[H]
+  \centering
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-best-feedback.svg}}\label{fig:plate-slide-best}}
 
-
-\begin{equation}
-h_t = tanh\left(\begin{pmatrix}
-W_{xh} & W_{hh}
-\end{pmatrix}
-\begin{pmatrix}
-x_t \\
-h_{t−1} \\
-\end{pmatrix}\right)
-\label{eq:vanilla_rnn}
-\end{equation}
-
-
-Vanilla RNNs suffer from a problem called vanishing/exploding gradient that makes them unable to work properly with big temporal horizons. Here is where long short-term memory (LSTM) come to play.
-
-\vspace{5mm} 
-\textbf{2. Long Short-Term Memory (LSTM)}
-
-LSTMs are an improved version of the Vanilla RNN; They are able to learn long term dependencies by maintaining not only the hidden state $h$ but also a cell state $c$ which is the key of these networks. Furthermore, an LSTM cell includes four gates that control the flow of information to the cell state.
-
-\subsection{Convolutional Neural Networks (CNNs)}
-
-
-A convolutional neural network is a special type of ANN mostly used when the input data are images from which we want to extract information. To achieve this, filters (also called kernels) convolve on the input data producing feature maps. An example of how this convolution is done, can be seen in figure \ref{fig:cnn}. The filter (blue) slides over the input image (red) and at every location, a matrix multiplication takes place giving as a result a feature map (green). The objective of these CNNs is to learn the filters in order to detect patterns in the input images.
-\input{tikz/cnn_tikz}
+  \caption{plate-slide-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
+  \label{fig:results-plate-slide-best}
+\end{figure}
 
 
 
@@ -79,8 +45,79 @@ A convolutional neural network is a special type of ANN mostly used when the inp
 
 
 
-\subsection{Autoencoders}
 
-An autoencoder, see figure \ref{fig:autoencoder} is neural network technique whose objective is to learn how to reduce the dimensionality of the input data, normally images, without losing their most important features. To do this, an autoencoder has three main parts: An encoder $e$, a latent space $L$ and a decoder $d$. The encoder $e(x)$, takes the input data and encodes it into a latent space $L$, a space of lower dimensionality. Then, the decoder takes this $L$ as input, and tries to reconstruct it so the output of the decoder is as similar as possible to the input $x$. The more similar is $\hat{x}$ to $x$, the better the relevant features have been captured into the latent space.
 
-\input{tikz/autoencoder_tikz}
+
+      
+From the previous analysis, the best combinations of buffer size $K$ and $e$ for both methods when positions are relative are $K=30000$ and $e=0.1$ for BD-COACH and $K=15000$ and $e=1$ for D-COACH. The experiments are repeated with the same values but this time considering absolute positions instead of relative ones. Figure \ref{fig:results-plate-slide-best} shows this comparison where BD-COACH, it is able to reach similar levels of performance as in the case of relative positions whereas the performance of D-COACH decreases a 20\%.
+
+
+\subsection{Performance of task drawer-open-v2}
+\label{subsection:Performance of task drawer_open_v2}
+
+
+
+
+Similar to previous task plate-slide-v2, Figure \ref{fig:results_drawer-open-same-buffer} shows a comparison of the effect of different $e$ values and Figure \ref{fig:results_drawer-open-same-e} compares different buffer sizes $K$. For the task drawer-open-v2, again, BD-COACH behaves more robust than D-COACH for the different conditions, being able to always reach performances close to 100 \%. On the other hand, D-COACH performs better in general than in the task plate-slide-v2 task but again, it can be observed that when the value of $e$ is small its performance decreases.
+
+
+
+ \begin{figure}[H]
+  \centering
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-same-buffer-feedback.svg}}\label{fig:drawer-open-same-buffer}}
+   \hfill
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-same-e-feedback.svg}}\label{fig:drawer-open-same-buffer-feedback}}
+  \caption{drawer-open-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
+  \label{fig:results_drawer-open-same-buffer}
+\end{figure}
+
+
+
+
+
+ \begin{figure}[H]
+  \centering
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-best-feedback.svg}}\label{fig:drawer-open-best}}
+
+  \caption{drawer-open-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
+  \label{fig:results_drawer-open-best}
+\end{figure}
+
+
+
+
+
+From the previous analysis, the best combinations of buffer size $K$ and $e$ for both methods when positions are relative are $K=30000$ and $e=0.1$ for BD-COACH and $K=3000$ and $e=0.1$ for D-COACH. The experiments are repeated with the same values but this time considering absolute positions instead of relative ones. Figure \ref{fig:results_drawer-open-best}  shows this comparison where BD-COACH is able to reach similar levels of performance as in the case of relative positions. In the case of D-COACH, its performance soon reaches an average success of 70\% which increases just at the end of the training. Still, for D-COACH the difference in success between relative and absolute positions is remarkable.
+
+
+\subsection{Performance of task button-press-topdown-v2}
+\label{subsection:Performance of task button-press-topdown-v2}
+
+
+% BUTTON
+
+
+ \begin{figure}[H]
+  \centering
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-same-buffer-feedback.svg}}\label{fig:button-press-topdown-v2-same-buffer}}
+   \hfill
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-same-e-feedback.svg}}\label{fig:button-press-topdown-v2-same-buffer-feedback}}
+  \caption{button-press-topdown-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher provides feedback.}
+  \label{fig:results-button-press-topdown-v2-same-buffer}
+\end{figure}
+
+
+
+
+ \begin{figure}[H]
+  \centering
+  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-best-feedback.svg}}\label{fig:button-press-topdown-v2-best}}
+   \caption{button-press-topdown-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
+  \label{fig:resultsbutton-press-topdown-v2-best}
+\end{figure}

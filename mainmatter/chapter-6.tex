@@ -14,3 +14,6 @@ BD-COACH successfully allows the usage of corrective feedback with neural networ
 \end{itemize}
 Interactive imitation learning refers to methods where a human teacher interacts with an agent during the learning process providing feedback to improve its behaviour. This type of learning may be preferable with respect to reinforcement learning techniques when dealing with real-world problems. This is especially true in the case of robotic applications where there are long training times and usu
 
+Removing the limitation of the buffer size $K$, makes BD-COACH more robust as its performance does not depend anymore on the values of $K$ and the parameter $e$.
+
+However BD-COACH has its limitations. Computationally speaking, it is more expensive than D-COACH as two models are learnt in parallel. Regarding performance, with BD-COACH, it is minimally affected at the beginning of the training when the human model has not learn yet to predict suitable feedback.

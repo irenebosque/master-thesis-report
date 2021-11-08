@@ -45,7 +45,7 @@
 \input{frontmatter/title}
 \input{frontmatter/abstract}
 \input{frontmatter/epigraph}
-%\input{frontmatter/acknowledgements}
+\input{frontmatter/acknowledgements}
 \tableofcontents
 
 
@@ -57,17 +57,17 @@
 %% Arabic numerals
 \mainmatter
 
-\input{mainmatter/chapter-1}
+%\input{mainmatter/chapter-1}
 
-\input{mainmatter/chapter-2}
+%\input{mainmatter/chapter-2}
 
-\input{mainmatter/chapter-3}
+%\input{mainmatter/chapter-3}
 
-\input{mainmatter/chapter-4}
+%\input{mainmatter/chapter-4}
 
-\input{mainmatter/chapter-5}
+%\input{mainmatter/chapter-5}
 
-\input{mainmatter/chapter-6}
+%\input{mainmatter/chapter-6}
 
 
 %% Prevent urls running into margins in bibliography
@@ -80,12 +80,20 @@
 \addcontentsline{toc}{chapter}{References}
 
 %% Using letters for chapters
-\appendix
+%\appendix
 
-\input{appendix/appendix-a}
+%\input{appendix/appendix-a}
 
-\input{appendix/appendix-b}
 
+
+\appendixpageoff
+\begin{appendices}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+%\input{appendix/appendix-b}
+%\input{appendix/appendix-a}
+%\input{appendix/appendix-c}
+
+\end{appendices}
 
 
 \end{document}

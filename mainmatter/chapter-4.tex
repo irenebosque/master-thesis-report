@@ -7,14 +7,21 @@ This chapter provides information about the experimental setting for the evaluat
 \section{Meta-World benchmark}
 \label{section:Meta-World Benchmark}
 To evaluate BD-COACH and compare its performance to the base method D-COACH, we use three simulated environments from the open-source benchmark Meta-World \cite{metaworld}. Meta-World 
-provides 50 standardized manipulation tasks that use a simulated Sawyer robot arm. Even if this benchmark was specifically designed for multi-task and meta-reinforcement learning, it is possible to simply access single goal environments as we do for this thesis. All Meta-World tasks are implemented in the MuJoCo physics engine \cite{mujoco} and it is interfaced with OpenAI Gym \cite{openai} making it easy to use. 
-For each task, Meta-World includes an oracle policy that commands the best action for the environment at a given time step. This action is equal to 
+provides 50 standardized manipulation tasks that use a simulated Sawyer robot arm. Even if this benchmark was specifically designed for multi-task and meta-reinforcement learning, it is possible to simply access single goal environments as we do for this thesis. All Meta-World tasks are implemented in the MuJoCo physics engine \cite{mujoco} and it is interfaced with OpenAI Gym \cite{openai} making it easy to use. The chosen tasks are plate-slide-v2, drawer-open-v2 and button-press-topdown-v2. There are several reasons for this selection of tasks. First for each task, Meta-World includes an oracle policy that commands the best action for the environment at a given time step. This allows running automated experiments easily. Second, they use a manipulator similar to the one that is used for the  real experiments ... these tasks are quite different between them which allows to generalize the performance of the framework 
+
+Furthermore, the authors of the benchmark \cite{metaworld} provide a list with the success rates of each task. We There are many tasks in the benchmark that involves opening and closing a the gripper to manipulate and object an do something with it, these ones have the least succes and we also are not going to use a gripper in the real experiments
+
+This action is equal to 
 $[\delta x, \delta y, \delta z, \textrm{gripper effort}]$
 where a value of 1 for the gripper effort keeps the fingers of the end effector open whereas a value of -1 closes them.
 
 
+Simulations performed
+with this environment were designed to emulate a real robotic system and allow for the validation of
+the algorithm in a realistic setting, which is as close as possible to a real-world scenario.
 
-In order to properly evaluate the method under controlled conditions, a high performance policy teacher provided by the Meta-World benchmark was used. The simulated teacher generates feedback computing $h = \operatorname{sign}(a_\text{teacher} - a_\text{agent})$, whereas the decision on whether to provide feedback at each time step is given by the probability $P_h = \alpha \cdot \operatorname{exp}(-\tau \cdot \operatorname{time step})$, where $\{\alpha \in \mathbb{R}\, | 0 \leq \alpha \leq 1 \}$; $\{\tau \in \mathbb{R} \, | 0 \leq \tau\}$. Furthermore, this binary feedback $h$ is only provided if the difference between the action of the policy and the action of the teacher is smaller than a threshold $\theta$.
+
+
 
 The Meta-World benchmark defines a success metric as the evaluation criterion for their tasks. This metric, ${\left\lVert \text{object}-\text{goal} \right\rVert}_2 < \epsilon$, is based on the euclidean distance between the object position and the goal position where $\epsilon$ is a small distance threshold that varies from task to task.
 
@@ -113,6 +120,19 @@ Max time steps per episode &   500\\
 \end{table}
 
 
+\subsection{Synthesised Feedback}
+\label{subsection:Synthesised Feedback}
+
+
+
+For the simulated experiments we employed an oracle or synthesized human teacher to provide feedback corrections. Using an oracle removes human factors such as the human teacher providing inconsistent feedback or he/she getting tired which would make comparisons between algorithms not fair. Furthermore, in order to compare performances of different frameworks it is necessary to run many simulations to obtain a good average of the results which would be completely impractical if the teacher was a real human. Oracles can provide erroneous corrections to better simulated the behaviour of a person but in our case, the oracle gives always the best action for a particular state. 
+For each of the three tasks explained before, we use the high performance policies that the Meta-World benchmark provides for each of its tasks.
+
+ The oracle used in this work generates feedback by computing $h = \operatorname{sign}(a_\text{teacher} - a_\text{agent})$, whereas the decision on whether to provide feedback at each time step is given by the probability $P_h = \alpha \cdot \operatorname{exp}(-\tau \cdot \operatorname{time step})$, where $\{\alpha \in \mathbb{R}\, | 0 \leq \alpha \leq 1 \}$; $\{\tau \in \mathbb{R} \, | 0 \leq \tau\}$. Furthermore, this binary feedback $h$ is only provided if the difference between the action of the policy and the action of the teacher is smaller than a threshold $\theta$.
+
+
+
+
 
 \section{Experiments with KUKA robot arm}
 \label{section:Experiments with KUKA robot arm}
@@ -201,4 +221,6 @@ The second task also involves pushing a box but this time the sequence of moveme
   \caption{Sequence of the task park-box}.
   \label{fig:sequence-park-box}
 \end{figure}
+
+
 

@@ -9,10 +9,20 @@ Interactive imitation learning (IIL) is a branch of imitation learning \cite{laz
 
 \setlength{\parskip}{1em}
 
+
+
 The goal of this master thesis is to create an extension of D-COACH (Deep COrrective Advice Communicated by Humans) \cite{ResearchAssignmentpaper}, a CIL algorithm designed for non-expert humans that uses neural networks to approximate the policy. This extension focuses on the improvement of a key component in several deep learning algorithms, experience replay \cite{Atari-RL}, a technique that uses experiences stored in a replay buffer for training. ER endows algorithms with two main advantages, these being a higher data efficiency and the ability to train with uncorrelated data \cite{Experience-Replay-zhang:2018}. These benefits are especially useful when policies are approximated with neural networks because already collected experiences can be reused multiple times and the neural network gets more robust against locally overfitting to the most recent trajectories, a phenomenon known as \textit{catastrophic forgetting}. The incorporation of ER into an algorithm requires that said algorithm is what in RL is known as off-policy \cite{Sutton:1998}. According to Sutton and Barto, off-policy learning occurs when a policy is updated with data gathered \say{off} that policy. The existing version of D-COACH is on-policy, because the policy is updated with data that depends on its most recent version. Despite being on-policy, current D-COACH uses experience replay for data-efficiency purposes. Given that the algorithm is on-policy, the size of the replay buffer has to be small, which works under the assumption that the data stored in the replay buffer is still valid for the current version of the policy, even if it was collected by an older version of itself. As the size of the replay buffer starts to increase, this assumption does not hold anymore and the training of the policy will most likely fail. If we want to have a more general framework, this restriction has to be removed and this is precisely the objective of this master thesis.
 
 
 
+
+\begin{figure}[H]
+    \centering
+    \adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.55\textwidth]{figures/IIL.svg}}
+    \caption{Interactive Imitation Learning}
+    \label{fig:IIL}
+\end{figure}
 
 
 

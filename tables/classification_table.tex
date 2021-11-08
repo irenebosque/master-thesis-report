@@ -2,51 +2,58 @@
 \begin{tabular}{c|c|l|l|l|}
 \cline{2-5}
 \textbf{} &
-  \multicolumn{2}{p{6.5cm}|}{\vspace{0.5mm} \textbf{On-policy IL: Only data gathered by the current policy is useful for updating it}\vspace{0.5mm}} &
-  \multicolumn{2}{p{6.5cm}|}{\vspace{0.5mm}\textbf{Off-policy: Data gathered by any agent is useful for updating the policy}} \\ \hline
-\multicolumn{1}{|p{1.8cm}|}{\textbf{Online sampling}\vspace{0.5mm}} &
+  \multicolumn{2}{p{6.5cm}|}{\vspace{0.5mm} \textbf{On-policy Imitation Learning}\vspace{0.5mm}} &
+  \multicolumn{2}{p{6.5cm}|}{\vspace{0.5mm}\textbf{Off-policy Imitation Learning}} \\ \hline
+\multicolumn{1}{|p{1.8cm}|}{\textbf{Online IL}\vspace{0.5mm}} &
 
   \multicolumn{2}{p{6.5cm}|}{\begin{tabular}[c]{@{}l@{}}
 
   \vspace{1mm} \\
   TAMER \hspace{1mm} \cite{TAMER-Knox-Stone:2009}\\ 
-  DAgger (simple version)\hspace{1mm\cite{DAgger-Ross:2011}}\\ 
-  DAgger by coaching \hspace{1mm} \cite{DAgger-by-coaching-He-DaumeIII-Eisner:2012}\\
+
+
   COACH \hspace{1mm}\cite{COACH-Celemin-Ruiz-del-Solar:2015}\\ 
   SHIV \hspace{1mm} \cite{SHIV-Laskey:2016}\\ 
   I-SABL \hspace{1mm}\cite{I-SABL-Loftin:2016}\\
   Convergent Actor-Critic by Humans \hspace{1mm}\cite{fakeCOACH-MacGlashan-Ho-Loftin:2017}\\
   Deep TAMER \hspace{1mm}\cite{DeepTAMER-Warnell-et-al:2018}\\ 
   D-COACH \hspace{1mm}\cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018}\\ 
-  Hierarchically Guided DAgger \hspace{1mm}\cite{Hierarchical-guidance-Le:2018}\\
   DQN-TAMER \hspace{1mm}\cite{DQN-TAMER-Arakawa:2018}\\
   LOKI \hspace{1mm}\cite{LOKI-Cheng:2018}\\
   AOR \hspace{1mm}\cite{AOR-lee-laskey:2019}\\
   ABLUF \hspace{1mm}\cite{ABLUF-he:2020}\\
   EIL \hspace{1mm}\cite{EIL-Spencer:2020}\\
-  DAgger Replay Buffer \hspace{1mm}\cite{DA-RB-Prakash:2020}\\
+    Learning from human preferences
+  \cite{learning-from-human-preferences:2018}\\
 \vspace{1mm} \\
 
   \end{tabular}} &
   
+  
+  
+  
   \multicolumn{2}{l|}{\begin{tabular}[c]{@{}l@{}}
   \vspace{1mm} \\
-  DAgger (version with $\beta$)\hspace{1mm}\cite{DAgger-Ross:2011} \\
+  DAgger\hspace{1mm}\cite{DAgger-Ross:2011} \\
+  DAgger by coaching \hspace{1mm} \cite{DAgger-by-coaching-He-DaumeIII-Eisner:2012}\\
   Advise \cite{Advise-Griffith-et-al:2013}\\
   AggreVaTe \hspace{1mm} \cite{AggreVaTe-Ross-Bagnell:2014}\\ 
   Safe DAgger \hspace{1mm} \cite{SafeDAgger-Zhang-Cho:2016}\\ 
   DropoutDAgger \hspace{1mm} \cite{DropoutDAgger}\\ 
   AggreVaTeD \hspace{1mm}\cite{AggreVaTeD-Sun:2017}\\
+    Hierarchically Guided DAgger \hspace{1mm}\cite{Hierarchical-guidance-Le:2018}\\
   BAgger \hspace{1mm}\cite{BAgger-Cronrath:2018}\\ 
   Cycle of Learning \hspace{1mm}\cite{Cycle-of-Learning-waytowich:2018}\\
   Retrospective DAgger \hspace{1mm}\cite{Retrospective-DAgger-song:2019}\\ 
   SAIL \hspace{1mm}\cite{SAIL-Xiong:2019}\\
   HG-DAgger \hspace{1mm}\cite{HG-DAgger-Kelly:2019}\\
   EnsembleDAgger \hspace{1mm}\cite{EnsembleDAgger-Menda:2019}\\
+  DAgger Replay Buffer \hspace{1mm}\cite{DA-RB-Prakash:2020}\\
   FRESH \hspace{1mm}\cite{FRESH-xiao:2020}\\
   FIRE \hspace{1mm}\cite{FIRE-ablett:2020}\\
   IWR \hspace{1mm}\cite{IWR-mandlekar:2020}\\
   ThriftyDAgger \hspace{1mm}\cite{ThriftyDAgger}
+
 \vspace{1mm} \\
 
 
@@ -57,7 +64,7 @@
   
   \end{tabular}} \\ \hline
   
-\multicolumn{1}{|p{1.8cm}|}{\textbf{Offline sampling}} &
+\multicolumn{1}{|p{1.8cm}|}{\textbf{Offline IL}} &
   \multicolumn{2}{c|}
   {-} 
   &
@@ -69,8 +76,6 @@
   ValueDICE \hspace{1mm}\cite{ValueDICE-Kostrikov:2019}\\
   SQIL \hspace{1mm}\cite{SQIL-Reddy-Dragan-Levine:2019}\\
   Inverse Reinforcement Learning \hspace{1mm}\cite{inverse-reinforcement-learning}\\
-  Learning from human preferences
-  \cite{learning-from-human-preferences:2018}\\
   \vspace{1mm}
   \end{tabular}} \\ \hline
 \end{tabular}
