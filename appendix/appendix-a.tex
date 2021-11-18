@@ -5,119 +5,86 @@
 
 
 
-\section{Feedback task plate-slide-v2}
-\label{section:Feedback plots}
+% \section{Feedback task plate-slide-v2}
+% \label{section:Feedback plots}
+
+
+The following feedback results show the behaviour of the simulated oracles that were implemented to run the simulated experiments for the three tasks plate-slide-v2, drawer-open-v2 and button-press-topdown-v2 explained in Section \ref{section:Meta-World Benchmark}. 
 
 
 
+% Figure \ref{fig:results_plate_slide_buffer_e} shows the average success per episode for the task plate-slide-v2 for different values of $e$ and buffer size when the positions are relative. There are three main conclusions that can be extracted. First, BD-COACH is overall much more robust to changes in both $e$ and buffer size $K$ and it is able to reach 100\% success around minute 6. Regarding D-COACH, $e$ is the parameter that has more influence being its worst performance when $e=0.01$. And regarding the buffer size $K$, the biggest buffer is the most detrimental and the smallest results in the best performance at the end of the training.
+% This was expected as in D-COACH the buffer contains information gathered by all the previous old versions of the policy that may not be useful for updating the current version of the policy.
 
-Figure \ref{fig:results_plate_slide_buffer_e} shows the average success per episode for the task plate-slide-v2 for different values of $e$ and buffer size when the positions are relative. There are three main conclusions that can be extracted. First, BD-COACH is overall much more robust to changes in both $e$ and buffer size $K$ and it is able to reach 100\% success around minute 6. Regarding D-COACH, $e$ is the parameter that has more influence being its worst performance when $e=0.01$. And regarding the buffer size $K$, the biggest buffer is the most detrimental and the smallest results in the best performance at the end of the training.
-This was expected as in D-COACH the buffer contains information gathered by all the previous old versions of the policy that may not be useful for updating the current version of the policy.
 
-% Same buffer
+% Same buffer - feedback
  \begin{figure}[H]
   \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-same-buffer-feedback.svg}}\label{fig:plate_slide_same_buffer}}
+  \captionsetup[subfigure]{oneside,margin={0.85cm,0cm}}
+  \subfloat[(a) plate-slide-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/hockey-same-buffer-feedback.svg}}\label{fig:hockey-same-buffer-feedback}}
    \hfill
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-same-e-feedback.svg}}\label{fig:plate_slide_same_e}}
-  \caption{plate-slide-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:results_plate_slide_buffer_e}
+  \subfloat[(b) drawer-open-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/drawer-same-buffer-feedback.svg}}\label{fig:drawer-same-buffer-feedback}}
+  \hfill
+  \subfloat[(c) button-press-topdown-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/button-same-buffer-feedback.svg}}\label{fig:button-same-buffer-feedback}}
+  \caption{Results of the percentage of time steps per episode that the simulated teacher, $P_h: \alpha = 0.9; \tau =  0.000015$,  provides feedback for a fixed buffer size $K$ and different values of $e$. These feedback plots correspond to the success results of Figure \ref{fig:same-buffer}.}
+ 
+  \label{fig:same-buffer-feedback}
 \end{figure}
 
 
 
-% best
+% Same e - feedback
  \begin{figure}[H]
   \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-best-feedback.svg}}\label{fig:plate-slide-best}}
-
-  \caption{plate-slide-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:results-plate-slide-best}
-\end{figure}
-
-
-
-
-
-
-
-
-
-
-
-      
-From the previous analysis, the best combinations of buffer size $K$ and $e$ for both methods when positions are relative are $K=30000$ and $e=0.1$ for BD-COACH and $K=15000$ and $e=1$ for D-COACH. The experiments are repeated with the same values but this time considering absolute positions instead of relative ones. Figure \ref{fig:results-plate-slide-best} shows this comparison where BD-COACH, it is able to reach similar levels of performance as in the case of relative positions whereas the performance of D-COACH decreases a 20\%.
-
-
-\subsection{Performance of task drawer-open-v2}
-\label{subsection:Performance of task drawer_open_v2}
-
-
-
-
-Similar to previous task plate-slide-v2, Figure \ref{fig:results_drawer-open-same-buffer} shows a comparison of the effect of different $e$ values and Figure \ref{fig:results_drawer-open-same-e} compares different buffer sizes $K$. For the task drawer-open-v2, again, BD-COACH behaves more robust than D-COACH for the different conditions, being able to always reach performances close to 100 \%. On the other hand, D-COACH performs better in general than in the task plate-slide-v2 task but again, it can be observed that when the value of $e$ is small its performance decreases.
-
-
-
- \begin{figure}[H]
-  \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-same-buffer-feedback.svg}}\label{fig:drawer-open-same-buffer}}
+\captionsetup[subfigure]{oneside,margin={0.85cm,0cm}}
+  \subfloat[(a) plate-slide-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/hockey-same-e-feedback.svg}}\label{fig:hockey-same-e-feedback}}
    \hfill
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-same-e-feedback.svg}}\label{fig:drawer-open-same-buffer-feedback}}
-  \caption{drawer-open-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:results_drawer-open-same-buffer}
+  \subfloat[(b) drawer-open-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/drawer-same-e-feedback.svg}}\label{fig:drawer-same-e-feedback}}
+  \hfill
+  \subfloat[(c) button-press-topdown-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/button-same-e-feedback.svg}}\label{fig:button-same-e-feedback}}
+  \caption{Results of the percentage of time steps per episode that the simulated teacher, $P_h: \alpha = 0.9; \tau =  0.000015$,  provides feedback for a fixed error magnitude $e$ and different values of the buffer size $K$. The observations for all the conditions shown are relative positions. These feedback plots correspond to the success results of Figure \ref{fig:same-e}.}
+  \label{fig:same-e-feedback}
 \end{figure}
 
 
+% % Best - feedback
+%  \begin{figure}[H]
+%   \centering
+%     \captionsetup[subfigure]{oneside,margin={0.85cm,0cm}}
+%   \subfloat[(a) plate-slide-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+%   \includesvg[width=.33\textwidth]{figures/hockey-best-feedback.svg}}\label{fig:hockey-best-feedback}}
+%   \hfill
+%   \subfloat[(b) drawer-open-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+%   \includesvg[width=.33\textwidth]{figures/drawer-best-feedback.svg}}\label{fig:drawer-best-feedback}}
+%   \hfill
+%   \subfloat[(c) button-press-topdown-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+%   \includesvg[width=.33\textwidth]{figures/button-best-feedback.svg}}\label{fig:button-best-feedback}}
+%   \caption{Results of the percentage of time steps per episode that the simulated teacher, $P_h: \alpha = 0.9; \tau =  0.000015$, when comparing the best performance of each method using relative positions, against their performances when using absolute positions for the
+% same conditions of $K$ and $e$. These feedback plots correspond to the success results of Figure \ref{fig:best}.}
+%   \label{fig:best-feedback}
+% \end{figure}
 
 
 
+% Best - feedback
  \begin{figure}[H]
   \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-best-feedback.svg}}\label{fig:drawer-open-best}}
-
-  \caption{drawer-open-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:results_drawer-open-best}
-\end{figure}
-
-
-
-
-
-From the previous analysis, the best combinations of buffer size $K$ and $e$ for both methods when positions are relative are $K=30000$ and $e=0.1$ for BD-COACH and $K=3000$ and $e=0.1$ for D-COACH. The experiments are repeated with the same values but this time considering absolute positions instead of relative ones. Figure \ref{fig:results_drawer-open-best}  shows this comparison where BD-COACH is able to reach similar levels of performance as in the case of relative positions. In the case of D-COACH, its performance soon reaches an average success of 70\% which increases just at the end of the training. Still, for D-COACH the difference in success between relative and absolute positions is remarkable.
-
-
-\subsection{Performance of task button-press-topdown-v2}
-\label{subsection:Performance of task button-press-topdown-v2}
-
-
-% BUTTON
-
-
- \begin{figure}[H]
-  \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-same-buffer-feedback.svg}}\label{fig:button-press-topdown-v2-same-buffer}}
+    \captionsetup[subfigure]{oneside,margin={0.85cm,0cm}}
+  \subfloat[(a) plate-slide-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/hockey-best-feedback-2.svg}}\label{fig:hockey-best-feedback}}
    \hfill
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-same-e-feedback.svg}}\label{fig:button-press-topdown-v2-same-buffer-feedback}}
-  \caption{button-press-topdown-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher provides feedback.}
-  \label{fig:results-button-press-topdown-v2-same-buffer}
-\end{figure}
-
-
-
-
- \begin{figure}[H]
-  \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-best-feedback.svg}}\label{fig:button-press-topdown-v2-best}}
-   \caption{button-press-topdown-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:resultsbutton-press-topdown-v2-best}
+  \subfloat[(b) drawer-open-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/drawer-best-feedback-2.svg}}\label{fig:drawer-best-feedback}}
+  \hfill
+  \subfloat[(c) button-press-topdown-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/button-best-feedback-2.svg}}\label{fig:button-best-feedback}}
+  \caption{Results of the percentage of time steps per episode that the simulated teacher, $P_h: \alpha = 0.9; \tau =  0.000015$, when comparing the best performance of each method using relative positions, against their performances when using absolute positions for the
+same conditions of $K$ and $e$. These feedback plots correspond to the success results of Figure \ref{fig:best}.}
+  \label{fig:best-feedback}
 \end{figure}

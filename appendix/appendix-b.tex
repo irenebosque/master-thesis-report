@@ -4,44 +4,44 @@
 
 
 
-In this section, we gather and briefly describe some Imitation Learning algorithms with the objective of later classify them according to the proposed definitions from the previous subsection.
+This annex consists of a list of several imitation learning algorithms that are classified in Table \ref{tab:classification_table} in Chapter \ref{chapter:Theoretical Framework and Related Work}.
 
 
 
 
 \subsubsection*{Behavioural Cloning}
-Behavioural cloning (BC) \cite{Behavioural-Cloning-Pomerleau:1991}, one of the oldest Imitation Learning frameworks, consists on directly learning a policy, via supervised learning, given a data set of demonstrations provided by a teacher. The main problem with BC is known as \textit{distribution mismatch} and it happens because at the moment that the learner agent deviates from the expert trajectory, it cannot recover from that failure and go back to the expert trajectory. This provokes a cascade of errors that keep growing because the agent does not know how to act in those states that have not been visited by the expert \cite{Global-overview-Attia:2018}.
+Behavioural cloning (BC) \cite{Behavioural-Cloning-Pomerleau:1991}, one of the oldest imitation learning frameworks, consists on directly learning a policy, via supervised learning, given a dataset of demonstrations provided by a teacher. The main problem with BC is known as \textit{covariate shift} and it happens because at the moment that the learner agent deviates from the expert trajectory, it cannot recover from that failure and go back to the expert trajectory. This provokes a cascade of errors that keep growing because the agent does not know how to act in those states that have not been visited by the expert \cite{Global-overview-Attia:2018}.
 
 \subsubsection*{Inverse Reinforcement Learning methods}
 Inverse Reinforcement Learning (IRL) is two-step approach for learning from humans. First, based on demonstrations provided by the human expert, the agent learns the reward function $R$ that best explains the behaviour of the human. Then, with this reward function, the optimal policy is learnt using RL methods \cite{inverse-reinforcement-learning}.
 
 \subsubsection*{Learning from human preferences methods}
-Learning from human preferences, \cite{learning-from-human-preferences:2017}, \cite{learning-from-human-preferences:2018},  are methods where iteratively, a human decides which of several executions of a policy is better according to the goal of the task. Then, a reward function that explains the decisions of the human is found and with it and applying RL, the agent learns how to perform the task. The user continues deciding between executions and so,  the policy gradually improves.
+Learning from human preferences, \cite{learning-from-human-preferences:2017}, \cite{learning-from-human-preferences:2018},  are methods where iteratively, a human decides which of several executions of a policy is better according to the goal of the task. Then, a reward function that explains the decisions of the human is found and with it and applying RL, the agent learns how to perform the task. The user continues deciding between executions, and therefore, the policy gradually improves.
 
 
 \subsubsection*{DART}
-DART (Disturbances for Augmenting Robot Trajectories) \cite{DART-Laskey:2017} is an algorithm close to behavioural cloning \cite{Behavioural-Cloning-Pomerleau:1991}. According to its authors is an off-policy imitation learning algorithm because, after the first expert's demonstration, it does not require to query the expert anymore. This method works by injecting noise into the supervisor's policy while demonstrating the task, in order to force visiting a wider region of the state space and get the recovery demonstrations, therefore reducing the problem of distribution mismatch.
+DART (Disturbances for Augmenting Robot Trajectories) \cite{DART-Laskey:2017} is an algorithm close to behavioural cloning \cite{Behavioural-Cloning-Pomerleau:1991}. According to its authors, DART is an off-policy imitation learning algorithm because, after the first expert's demonstration, it does not require to query the expert anymore. This method works by injecting noise into the supervisor's policy while demonstrating the task. This makes the agent have to visit a wider region of the state-space where it gets recovery demonstrations, reducing the problem of covariate shift.
 
 \subsubsection*{SQIL}
 SQIL (Soft Q Imitation Learning) \cite{SQIL-Reddy-Dragan-Levine:2019} is a variant of behavioural cloning that incentives the agent to match human demonstrations over a long horizon. SQIL uses reinforcement learning but does not learn a reward function, instead, when the agent matches a demonstrated action in a demonstrated state, it receives a reward of "1" and "0" for every other behaviour.
 
 \subsubsection*{ValueDICE}
-ValueDICE (Distribution Correction Estimation) \cite{ValueDICE-Kostrikov:2019}, is an off-policy imitation learning \cite{Laskey:phdthesis} that minimize the KL-divergence between the expert distribution and the distribution induced by the agent when interacting with the environment in a off-policy manner.
+ValueDICE (Distribution Correction Estimation) \cite{ValueDICE-Kostrikov:2019} is an off-policy imitation learning \cite{Laskey:phdthesis} that minimize the KL-divergence between the expert distribution and the distribution induced by the agent when interacting with the environment in an off-policy manner.
 
 %% DAGGERS!%%%%%%%%%%%%%%%%%%%
 
 \subsubsection*{DAgger}
-DAgger (Data Aggregation) \cite{DAgger-Ross:2011} is one of the most well-known imitation learning algorithms and it was explained in-depth in Section \ref{subsubsection:on and off-policy Imitation Learning}. Many variants of DAgger exist and some of them are going to be commented on next.
+DAgger (Data Aggregation) \cite{DAgger-Ross:2011} is one of the most well-known imitation learning algorithms and it was explained in-depth in Section \ref{subsubsection:on and off-policy Imitation Learning}. Many variants of DAgger exist and some of them are presented next.
 
 
 
 \subsubsection*{DAgger by coaching}
-DAgger by coaching \cite{DAgger-by-coaching-He-DaumeIII-Eisner:2012},  is a version of DAgger \cite{DAgger-Ross:2011} where the human teacher executes actions that are within learner’s ability. This means that when the agent is at a state far from the desired state, the teacher will not try to correct directly that difference but instead it will try to redirect the agent gradually \cite{Global-overview-Attia:2018}.
+DAgger by coaching \cite{DAgger-by-coaching-He-DaumeIII-Eisner:2012} is a version of DAgger \cite{DAgger-Ross:2011} where the human teacher executes actions that are within the learner’s ability. This means that when the agent is at a state far from the desired state, the teacher will not try to correct directly that difference but instead, it will try to redirect the agent gradually \cite{Global-overview-Attia:2018}.
 
 
 \subsubsection*{AggreVaTe}
-AggreVaTe (Aggregate Values to Imitate) \cite{AggreVaTe-Ross-Bagnell:2014}, is a version of DAgger \cite{DAgger-Ross:2011}, that learns to choose actions that minimize the cost-to-go of the expert, 
-\cite{Global-overview-Attia:2018}. The cost-to-go $Q$ is the cost of executing an action in a state and continue executing a policy for the next steps. The first iteration is the same as in DAgger, then for the next iterations,  at a time t, the cost-to-go $Q$ of taking an action in a state is observed and added to the the initial dataset $D$ together with the action and the state.
+AggreVaTe (Aggregate Values to Imitate) \cite{AggreVaTe-Ross-Bagnell:2014} is a version of DAgger \cite{DAgger-Ross:2011}, that learns to choose actions that minimize the cost-to-go of the expert, 
+\cite{Global-overview-Attia:2018}. The cost-to-go $Q$ is the cost of executing an action in a state and continuing executing a policy for the next steps. The first iteration is the same as in DAgger, then, for the next iterations,  at a time t, the cost-to-go $Q$ of taking an action in a state, is observed and added to the initial dataset $D$ together with the action and the state.
 
 
 
@@ -49,20 +49,20 @@ AggreVaTe (Aggregate Values to Imitate) \cite{AggreVaTe-Ross-Bagnell:2014}, is a
 AggreVaTeD \cite{AggreVaTeD-Sun:2017} is a differentiable version of the AggreVaTe algorithm introduced by \cite{AggreVaTe-Ross-Bagnell:2014} that does not perform any data aggregation. It includes two gradient update procedures: An online gradient descent and a natural gradient update similar to exponential gradient descent.
 
 \subsubsection*{SafeDAgger}
-SafeDAgger \cite{SafeDAgger-Zhang-Cho:2016}, is a version of DAgger \cite{DAgger-Ross:2011}, that aims to reduce the burden of constantly querying the human teacher by incorporating a safety policy. This safety policy predicts the discrepancy between the teacher and the learner and it is only on those states where the discrepancy is high, that the teacher is queried.
+SafeDAgger \cite{SafeDAgger-Zhang-Cho:2016} is a version of DAgger \cite{DAgger-Ross:2011}, that aims to reduce the burden of constantly querying the human teacher by incorporating a safety policy. This safety policy predicts the discrepancy between the teacher and the learner and it is only on states where the discrepancy is high, that the teacher is queried.
 
 
 \subsubsection*{DropoutDAgger}
-DropoutDAgger \cite{DropoutDAgger} is a method similar to SafeDAgger \cite{SafeDAgger-Zhang-Cho:2016}. It uses the dropout technique to train the neural network policy applying $N$ random dropout masks. For each random configuration of the network, an action is obtained for the same input observation. Only if its distribution over actions has enough probability mass around the action suggested by the expert, the mean action of the novice is taken, otherwise the action of the expert is chosen. When the distribution of actions has high entropy it means that that region of the state-space is unfamiliar and therefore, it is safer to chose the action of the expert.
+DropoutDAgger \cite{DropoutDAgger} is a method similar to SafeDAgger \cite{SafeDAgger-Zhang-Cho:2016}. It uses the dropout technique to train the artificial neural network policy applying $N$ random dropout masks. For each random configuration of the network, an action is obtained for the same input observation. Only if its distribution over actions has enough probability mass around the action suggested by the expert, the mean action of the novice is taken, otherwise the action of the expert is chosen. When the distribution of actions has high entropy, it means that that region of the state-space is unfamiliar and therefore, it is safer to choose the action of the expert.
 
 \subsubsection*{EnsembleDAgger}
-EnsembleDAgger \cite{EnsembleDAgger-Menda:2019}, is an extension of DAgger where the learning agent only acts when two measures are compliant with two preset thresholds: The first measure is the \textit{discrepancy}, which is the same as in SafeDagger \cite{SafeDAgger-Zhang-Cho:2016}; discrepancy represents the deviation between the agent and the expert. The second measure is the \textit{doubt} which is the variance that indicates the familiarity of the agent with its current state; the doubt constrains the learner to only act in familiar states. 
+EnsembleDAgger \cite{EnsembleDAgger-Menda:2019} is an extension of DAgger where the learning agent only acts when two measures are compliant with two preset thresholds: The first measure is the \textit{discrepancy}, which is the same as in SafeDagger \cite{SafeDAgger-Zhang-Cho:2016}. The discrepancy represents the deviation between the agent and the expert. The second measure is the \textit{doubt} which is the variance that indicates the familiarity of the agent with its current state. The doubt constrains the learner to only act in familiar states. 
 
 \subsubsection*{ThriftyDAgger}
-ThriftyDAgger \cite{ThriftyDAgger} is a method similar to SafeDagger \cite{SafeDAgger-Zhang-Cho:2016} and EnsembleDAgger \cite{EnsembleDAgger-Menda:2019} in the sense that it switches the control between the agent and the human supervisor depending on the novelty and the risk of a particular state. ThriftyDAgger proposes a novel metric for measuring the riskiness of a state which captures the likelihood that the agent cannot succeed in converging to the goal state.
+ThriftyDAgger \cite{ThriftyDAgger} is a method similar to SafeDagger \cite{SafeDAgger-Zhang-Cho:2016} and EnsembleDAgger \cite{EnsembleDAgger-Menda:2019} in the sense that it switches the control between the agent and the human supervisor depending on the novelty and the risk of a particular state. ThriftyDAgger proposes a novel metric for measuring the riskiness of a state, which captures the likelihood that the agent cannot succeed in converging to the goal state.
 
 \subsubsection*{SHIV}
-SHIV (Svm-based reduction in Human InterVention) \cite{SHIV-Laskey:2016},  is a method similar to DAgger \cite{DAgger-Ross:2011} that differs from this one in the fact that the human teacher is not queried to provide labels for all the visited states but only when it is risky. The risk is described as distance to a boundary defined by a one class support vector machine.
+SHIV (Svm-based reduction in Human InterVention) \cite{SHIV-Laskey:2016}  is a method similar to DAgger \cite{DAgger-Ross:2011} that differs from this one in the fact that the human teacher is not queried to provide labels for all the visited states but only when it is risky. The risk is described as distance to a boundary defined by a one-class support vector machine.
 
 \subsubsection*{Hierarchical Guidance DAgger}
 Hierarchical guidance \cite{Hierarchical-guidance-Le:2018} is a framework for hierarchical problems where low level sub-tasks can be identified by an expert. The authors present two settings: In the first one, hierarchical imitation learning,  the teacher provides high-level feedback and only provides low-level feedback when needed. The second setting is a hybrid imitation–reinforcement learning where the teacher provides only high-level feedback and the learner uses reinforcement learning at the low level.
@@ -70,7 +70,7 @@ Hierarchical guidance \cite{Hierarchical-guidance-Le:2018} is a framework for hi
 
 
 \subsubsection*{BAgger}
-BAgger (Bayesian  dataset  Aggregation) \cite{BAgger-Cronrath:2018}, is an extension of DAgger \cite{DAgger-Ross:2011} that aims to increase safety and reduce expert burden by querying the expert only when there is risk of not being able to imitate the expert. BAgger trains a Bayesian neural network or a Gaussian process to predict the expected error between teacher and learner.
+BAgger (Bayesian  dataset  Aggregation) \cite{BAgger-Cronrath:2018} is an extension of DAgger \cite{DAgger-Ross:2011} that aims to increase safety and reduce expert burden by querying the expert only when there is risk of not being able to imitate the expert. BAgger trains a Bayesian neural network or a Gaussian process to predict the expected error between teacher and learner.
 
 
 
@@ -90,75 +90,74 @@ BAgger (Bayesian  dataset  Aggregation) \cite{BAgger-Cronrath:2018}, is an exten
 
 
 \subsubsection*{SAIL}
-SAIL (Safety-Aware Imitation Learning) \cite{SAIL-Xiong:2019}, is an extension of DAgger that aims to reduce the number of queries to the expert. Only when the confidence level of the learning agent is lower than a threshold, is the expert queried. The expert continues providing labels until the confidence in all states is again higher than a threshold. Then, an uncertainty based approach decides whether or not continue querying the expert.
+SAIL (Safety-Aware Imitation Learning) \cite{SAIL-Xiong:2019} is an extension of DAgger that aims to reduce the number of queries to the expert. Only when the confidence level of the learning agent is lower than a threshold is the expert queried. The expert continues providing labels until the confidence in all states is again higher than a threshold. Then, an uncertainty based approach decides whether or not continue querying the expert.
 
 \subsubsection*{Retrospective DAgger}
-Retrospective DAgger \cite{Retrospective-DAgger-song:2019}, is a version of the DAgger \cite{DAgger-Ross:2011} algorithm, designed for combinatorial search spaces. The policy learns from its mistakes by learning from retrospective inspections of its own roll-outs.  
+Retrospective DAgger \cite{Retrospective-DAgger-song:2019} is a version of the DAgger \cite{DAgger-Ross:2011} algorithm, designed for combinatorial search spaces. The policy learns from its mistakes by learning from retrospective inspections of its own roll-outs.  
 
 \subsubsection*{HG-DAgger}
-HG-DAgger (Human-Gated Data Aggregation) \cite{HG-DAgger-Kelly:2019}, is a version of DAgger \cite{DAgger-Ross:2011} that includes a gating function controlled by the expert; when the expert teacher detects that the agent is at a unsafe region of the state space, the expert takes control and leads the learning agent to a safe region of the state space.
+HG-DAgger (Human-Gated Data Aggregation) \cite{HG-DAgger-Kelly:2019} is a version of DAgger \cite{DAgger-Ross:2011} that includes a gating function controlled by the expert. When the expert teacher detects that the agent is at a unsafe region of the state space, the expert takes control and leads the learning agent to a safe region of the state space.
 
 \subsubsection*{EIL}
-EIL (Expert Intervention Learning) \cite{EIL-Spencer:2020}, is an algorithm similar to HG-Dagger, that allows the teacher to take the control of the agent when needed. In HG-Dagger,  the labels that the human provides when taking control (explicit feedback) are used to update the data set. On the other hand, EIL not only uses this explicit feedback but also the implicit feedback which are those actions that the human does not correct because the agent is already behaving correctly. Finally, EIL also takes into account the timing, meaning when the feedback was provided.
+EIL (Expert Intervention Learning) \cite{EIL-Spencer:2020} is an algorithm similar to HG-Dagger, that allows the teacher to take the control of the agent when needed. In HG-Dagger, the labels that the human provides when taking control (explicit feedback) are used to update the dataset. On the other hand, EIL not only uses this explicit feedback but also the implicit feedback which are those actions that the human does not correct because the agent is already behaving correctly. Finally, EIL also takes into account the timing, meaning when the feedback was provided.
 
 \subsubsection*{FIRE}
-FIRE (Failure Identification to Reduce Expert burden) \cite{FIRE-ablett:2020}, is an algorithm similar to HG-Dagger that incorporates the ability of notifying the expert when the agent is at a unsafe state. FIRE has a  failure predictor that classifies expert and non-expert data and predicts when a failure may occur. When this happens, the policy stops and if the human agrees with the prediction, he/she teleoperates the agent back to a safe state.
+FIRE (Failure Identification to Reduce Expert burden) \cite{FIRE-ablett:2020} is an algorithm similar to HG-Dagger that incorporates the ability of notifying the expert when the agent is at an unsafe state. FIRE has a failure predictor that classifies expert and non-expert data and predicts when a failure may occur. When this happens, the policy stops and if the human agrees with the prediction, he/she teleoperates the agent back to a safe state.
 
 \subsubsection*{IWR}
-IWR (Intervention Weighted Regression) \cite{IWR-mandlekar:2020} is an algorithm similar to FIRE, that focuses on \textit{bottlenecks} regions, that is, those states where it is necessary a sequence of precise actions. IWR keeps two different data sets, one with data provided by the human when intervening in a trajectory (mostly during bottleneck regions), and another one for the rest of the trajectory when the human does not intervene. During training, the two data sets are equally sampled which re-weights  the data distribution to reinforce those labels provided by the human  during bottleneck regions, while the data sampled from the non-intervention data set
-keeps the policy close to previous policy iterations \cite{IWR-mandlekar:2020} .
+IWR (Intervention Weighted Regression) \cite{IWR-mandlekar:2020} is an algorithm similar to FIRE, that focuses on \textit{bottlenecks} regions, that is, those states where sequences of precise actions are needed. IWR keeps two different datasets, one with data provided by the human when intervening in a trajectory (mostly during bottleneck regions), and another one for the rest of the trajectory when the human does not intervene. During training, the two data sets are equally sampled which re-weights  the data distribution. The goal is to reinforce the labels provided by the human during bottleneck regions, whereas the data sampled from the non-intervention dataset keeps the policy close to previous policy iterations \cite{IWR-mandlekar:2020} .
 
 
 
 \subsubsection*{DA-RB}
-DA-RB (DAgger Replay Buffer) \cite{DA-RB-Prakash:2020}, is an extension of the DAgger algorithm \cite{DAgger-Ross:2011} that incorporate an additional replay buffer with the aim of controlling, in the data set, the proportion of data provided by the human and data gathered by the agent. This buffer is said to help the policy to focus on its weaker behaviours.
+DA-RB (DAgger Replay Buffer) \cite{DA-RB-Prakash:2020} is an extension of the DAgger algorithm \cite{DAgger-Ross:2011} that incorporate an additional replay buffer with the aim of controlling the proportion of data provided by the human and data gathered by the agent. This buffer is said to help the policy to focus on its weaker behaviours.
 
 
 
 
  
  \subsubsection*{COACH}
-COACH (COrrective Advice Communicated by Humans) \cite{COACH-Celemin-Ruiz-del-Solar:2015}, is an algorithm designed for non-expert humans where feedback is provided as a binary signal interpreted as an increase or decrease of the value of an action.  The feedback is immediately used for updating the policy which makes it easy for the teacher to observe the change in the behaviour of the agent and continue providing further corrections. When a sequence of corrections has the same sign, it indicates that the correction to be made has a large magnitude. Opposite, if the signal alternates signs, the teacher is trying to make smaller corrections around a certain state. Furthermore, COACH includes a Human Feedback Model that helps to interpret and adapt the corrections.
+COACH (COrrective Advice Communicated by Humans) \cite{COACH-Celemin-Ruiz-del-Solar:2015} is an algorithm designed for non-expert humans where feedback is provided as a binary signal interpreted as an increase or decrease of the value of an action.  The feedback is immediately used for updating the policy which makes it easy for the teacher to observe the change in the behaviour of the agent and continue providing further corrections. When a sequence of corrections has the same sign, it indicates that the correction to be made has a large magnitude. Opposite, if the signal alternates signs, the teacher is trying to make smaller corrections around a certain state. Furthermore, COACH includes a Human Feedback Model that helps to interpret and adapt the corrections.
 This algorithm, and more specifically its deep version \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018} are the main focus of this master thesis.
 
 \subsubsection*{D-COACH}
-D-COACH (Deep COrrective Advice Communicated by Humans) \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018} is the deep learning version of the COACH algorithm \cite{COACH-Celemin-Ruiz-del-Solar:2015}. It uses artificial neural networks to represent the policy and includes a buffer to replay recent experiences. As already mentioned, this algorithm is the starting point of the present master thesis.
+D-COACH (Deep COrrective Advice Communicated by Humans) \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018} is the deep learning version of the COACH algorithm \cite{COACH-Celemin-Ruiz-del-Solar:2015}. It uses artificial neural networks to represent the policy and includes a buffer to replay recent experiences. This algorithm is the starting point of the present master thesis.
 
 
 
 \subsubsection*{Advise}
-Advise \cite{Advise-Griffith-et-al:2013}, is a policy shaping approach where the human teacher feedback is interpreted as direct policy labels; example of feedback could be \say{this is right} or \say{this is wrong} given an action taken by the agent. Advise also takes into account that the human feedback can be inconsistent and that correct feedback is provided with a probability $C$. Advise uses this probability and the Bayes rule to represent the human feedback policy \cite{leveraging-human-guidance:2019}.
+Advise \cite{Advise-Griffith-et-al:2013}, is a policy shaping approach where the human teacher feedback is interpreted as direct policy labels. An example of feedback could be \say{this is right} or \say{this is wrong} given an action taken by the agent. Advise also takes into account that the human feedback can be inconsistent and that correct feedback is provided with a probability $C$. Advise uses this probability and the Bayes rule to represent the human feedback policy \cite{leveraging-human-guidance:2019}.
 
 \subsubsection*{I-SABL}
 I-SABL (Inferring Strategy-Aware Bayesian Learning) \cite{I-SABL-Loftin:2016}, which is most similar to Advise \cite{Advise-Griffith-et-al:2013} uses expectation-maximization to calculate the best action. With this method, if the learning agent takes an optimal action, the human teacher provides positive feedback, otherwise, the human provides negative feedback \cite{leveraging-human-guidance:2019}.
 
 
 \subsubsection*{ABLUF}
-ABLUF (Adaptive Bayesian Learning with Uncertain Feedback) \cite{ABLUF-he:2020}, is based on expectation maximization algorithms, and it is similar to I-SABL \cite{I-SABL-Loftin:2016}. However, whereas I-SABL assumes that the expert only provides positive feedback when the agent takes an optimal action, ABLUF models the human feedback as a probability distribution, where the probability of providing positive or negative feedback, increases or decreases with respect to the distance between the action taken and the optimal action.
+ABLUF (Adaptive Bayesian Learning with Uncertain Feedback) \cite{ABLUF-he:2020} is based on expectation maximization algorithms, and it is similar to I-SABL \cite{I-SABL-Loftin:2016}. However, whereas I-SABL assumes that the expert only provides positive feedback when the agent takes an optimal action, ABLUF models the human feedback as a probability distribution, where the probability of providing positive or negative feedback, increases or decreases with respect to the distance between the action taken and the optimal action.
 
 
 
 \subsubsection*{TAMER}
-In the TAMER (Training an Agent Manually via Evaluative Reinforcement) framework \cite{TAMER-Knox-Stone:2009}, the teacher is seen as a reward function that maps the actions of the agent to negative, neutral or positive feedback. This kind of feedback is called evaluative feedback because the teacher evaluates how good or bad is the action taken by the agent. This reward function replaces the rewards provided by the environment in a classical reinforcement learning problem \cite{leveraging-human-guidance:2019}.
+In the TAMER (Training an Agent Manually via Evaluative Reinforcement) framework \cite{TAMER-Knox-Stone:2009} the teacher is seen as a reward function that maps the actions of the agent to negative, neutral or positive feedback. This kind of feedback is called evaluative feedback because the teacher evaluates how good or bad is the action taken by the agent. This reward function replaces the rewards provided by the environment in a classical reinforcement learning problem \cite{leveraging-human-guidance:2019}.
  
 
 \subsubsection*{Deep TAMER}
 Deep TAMER \cite{DeepTAMER-Warnell-et-al:2018} is a version of the TAMER framework \cite{TAMER-Knox-Stone:2009} where the policy is represented with a deep neural network.
 
 \subsubsection*{DQN-TAMER}
-DQN-TAMER \cite{DQN-TAMER-Arakawa:2018}, is a combination of the TAMER framework \cite{TAMER-Knox-Stone:2009} with Deep Q-Network (DQN). The original TAMER framework does not take into account the environment reward, but DQN-TAMER trains a DQN agent and a TAMER agent, and the final decision policy is a weighted average of the policies from both agents \cite{leveraging-human-guidance:2019}.
+DQN-TAMER \cite{DQN-TAMER-Arakawa:2018} is a combination of the TAMER framework \cite{TAMER-Knox-Stone:2009} with Deep Q-Network (DQN). The original TAMER framework does not take into account the environment reward; DQN-TAMER trains a DQN agent and a TAMER agent, and the final decision policy is a weighted average of the policies from both agents \cite{leveraging-human-guidance:2019}.
 
 \subsubsection*{Convergent Actor-Critic by Humans}
-Convergent Actor-Critic by Humans \cite{fakeCOACH-MacGlashan-Ho-Loftin:2017}, is an algorithm inspired in TAMER \cite{TAMER-Knox-Stone:2009} that differs from this one in that fact that TAMER interprets human feedback as a reward function independent of the agent’s current policy \cite{leveraging-human-guidance:2019}. 
+Convergent Actor-Critic by Humans \cite{fakeCOACH-MacGlashan-Ho-Loftin:2017} is an algorithm inspired in TAMER \cite{TAMER-Knox-Stone:2009} that differs from this one in that fact that TAMER interprets human feedback as a reward function independent of the agent’s current policy \cite{leveraging-human-guidance:2019}. 
 Contrary, Convergent Actor-Critic by Humans assumes that human feedback depends on the agent's current policy and that it should be interpreted as the advantage function that tells how much better or worse when deviating from the agent’s current policy.
 
 \subsubsection*{FRESH}
-FRESH (Feedback-based REward SHaping) \cite{FRESH-xiao:2020}, is similar to Deep-TAMER \cite{DeepTAMER-Warnell-et-al:2018} but unlike Deep-TAMER, FRESH takes into account the reward from the environment.
+FRESH (Feedback-based REward SHaping) \cite{FRESH-xiao:2020} is similar to Deep-TAMER \cite{DeepTAMER-Warnell-et-al:2018} but unlike Deep-TAMER, FRESH takes into account the reward from the environment.
 
 
 
 \subsubsection*{LOKI}
-LOKI (Locally Optimal search after K-step Imitation) \cite{LOKI-Cheng:2018}, is an algorithm that has two phases: A first imitation learning phase and a second reinforcement learning phase. First, it randomly picks a number within a range and performs that number of online imitation learning steps. Then, in the reinforcement learning phase, it improves the policy with a policy gradient RL method.
+LOKI (Locally Optimal search after K-step Imitation) \cite{LOKI-Cheng:2018} is an algorithm that has two phases: A first imitation learning phase and a second reinforcement learning phase. First, it randomly picks a number within a range and performs that number of online imitation learning steps. Then, in the reinforcement learning phase, it improves the policy with a policy gradient RL method.
 
 
 
@@ -170,7 +169,7 @@ LOKI (Locally Optimal search after K-step Imitation) \cite{LOKI-Cheng:2018}, is 
 
 
 \subsubsection*{AOR}
-AOR (Adaptive On-Policy Regularization) \cite{AOR-lee-laskey:2019}, is an algorithm that uses dynamic regret which measures performance of a policy at each iteration. Dynamic regret compares the current  policy  against  the  best  it  could  be  on  its  distribution with  respect  to  the  expert \cite{Dynamic-regret-Laskey:2018}.  
+AOR (Adaptive On-Policy Regularization) \cite{Dynamic-regret-Laskey:2018} is an algorithm that uses dynamic regret which measures the performance of a policy at each iteration. Dynamic regret compares the current policy against the best it could be on its distribution with respect to the expert. 
 
 
 
@@ -189,5 +188,5 @@ AOR (Adaptive On-Policy Regularization) \cite{AOR-lee-laskey:2019}, is an algori
 
 
 \subsubsection*{Cycle-of-Learning}
-Cycle-of-Learning \cite{Cycle-of-Learning-waytowich:2018},  is a framework that allows to switch between multiple types of human interventions when teaching an agent. Human interactions are divided in three categories arranged from more human control to less human control: Learning from human demonstration, learning from human intervention and learning from human evaluation. As the learning task progresses in time and the agent improves, less human intervention is required and therefore the algorithm switches to the following type of intervention technique.
+Cycle-of-Learning \cite{Cycle-of-Learning-waytowich:2018} is a framework that allows to switch between multiple types of human interventions when teaching an agent. Human interactions are divided in three categories arranged from more human control to less human control: Learning from human demonstration, learning from human intervention and learning from human evaluation. As the learning task progresses in time and the agent improves, less human intervention is required and therefore the algorithm switches to the following type of intervention technique.
 

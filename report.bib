@@ -28,14 +28,32 @@
 
 % openAI hand
 
-@misc{openAI-hand,
-      title={Learning Dexterous In-Hand Manipulation}, 
-      author={OpenAI and Marcin Andrychowicz and Bowen Baker and Maciek Chociej and Rafal Jozefowicz and Bob McGrew and Jakub Pachocki and Arthur Petron and Matthias Plappert and Glenn Powell and Alex Ray and Jonas Schneider and Szymon Sidor and Josh Tobin and Peter Welinder and Lilian Weng and Wojciech Zaremba},
-      year={2019},
-      eprint={1808.00177},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+
+
+@article{openAI-hand,
+author = {OpenAI: Marcin Andrychowicz and Bowen Baker and Maciek Chociej and Rafal Józefowicz and Bob McGrew and Jakub Pachocki and Arthur Petron and Matthias Plappert and Glenn Powell and Alex Ray and Jonas Schneider and Szymon Sidor and Josh Tobin and Peter Welinder and Lilian Weng and Wojciech Zaremba},
+title ={Learning dexterous in-hand manipulation},
+journal = {The International Journal of Robotics Research},
+volume = {39},
+number = {1},
+pages = {3-20},
+year = {2020},
+doi = {10.1177/0278364919887447},
+
+URL = { 
+        https://doi.org/10.1177/0278364919887447
+    
+},
+eprint = { 
+        https://doi.org/10.1177/0278364919887447
+    
 }
+,
+    abstract = { We use reinforcement learning (RL) to learn dexterous in-hand manipulation policies that can perform vision-based object reorientation on a physical Shadow Dexterous Hand. The training is performed in a simulated environment in which we randomize many of the physical properties of the system such as friction coefficients and an object’s appearance. Our policies transfer to the physical robot despite being trained entirely in simulation. Our method does not rely on any human demonstrations, but many behaviors found in human manipulation emerge naturally, including finger gaiting, multi-finger coordination, and the controlled use of gravity. Our results were obtained using the same distributed RL system that was used to train OpenAI Five. We also include a video of our results: https://youtu.be/jwSbzNHGflM. }
+}
+
+
 
 % alphaGO
 
@@ -60,15 +78,39 @@
   year = 2016
 }
 
-% ATARI RL
-@misc{Atari-RL,
-      title={Playing Atari with Deep Reinforcement Learning}, 
-      author={Volodymyr Mnih and Koray Kavukcuoglu and David Silver and Alex Graves and Ioannis Antonoglou and Daan Wierstra and Martin Riedmiller},
-      year={2013},
-      eprint={1312.5602},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+% % ATARI RL
+% @misc{Atari-RL,
+%       title={Playing Atari with Deep Reinforcement Learning}, 
+%       author={Volodymyr Mnih and Koray Kavukcuoglu and David Silver and Alex Graves and Ioannis Antonoglou and Daan Wierstra and Martin Riedmiller},
+%       year={2013},
+%       eprint={1312.5602},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.LG}
+% }
+
+
+@article{Atari-RL,
+  abstract = {We present the first deep learning model to successfully learn control
+policies directly from high-dimensional sensory input using reinforcement
+learning. The model is a convolutional neural network, trained with a variant
+of Q-learning, whose input is raw pixels and whose output is a value function
+estimating future rewards. We apply our method to seven Atari 2600 games from
+the Arcade Learning Environment, with no adjustment of the architecture or
+learning algorithm. We find that it outperforms all previous approaches on six
+of the games and surpasses a human expert on three of them.},
+  added-at = {2019-07-12T20:11:01.000+0200},
+  author = {Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and Graves, Alex and Antonoglou, Ioannis and Wierstra, Daan and Riedmiller, Martin},
+  biburl = {https://www.bibsonomy.org/bibtex/2a00ec4c09f5dc9b3f8a1836f4e02bb5d/lanteunis},
+  interhash = {78966703f649bae69a08a6a23a4e8879},
+  intrahash = {a00ec4c09f5dc9b3f8a1836f4e02bb5d},
+  keywords = {},
+  note = {NIPS Deep Learning Workshop 2013},
+  timestamp = {2019-07-12T20:11:01.000+0200},
+  title = {Playing Atari with Deep Reinforcement Learning},
+  url = {http://arxiv.org/abs/1312.5602},
+  year = 2013
 }
+
 
 
 
@@ -82,28 +124,49 @@ volume = {32},
 number = {11},
 pages = {1238-1274},
 year = {2013},
-doi = {10.1177/0278364913495721},
+doi = {10.1177/0278364913495721}
 
-URL = { 
-        https://doi.org/10.1177/0278364913495721
-    
-},
-eprint = { 
-        https://doi.org/10.1177/0278364913495721
-    
-}
+
 
 }
 
 % Survey on types of feedback
-@misc{types-feedback-najar:2020,
-      title={Reinforcement learning with human advice: a survey}, 
-      author={Anis Najar and Mohamed Chetouani},
-      year={2020},
-      eprint={2005.11016},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI}
+% @misc{types-feedback-najar:2020,
+%       title={Reinforcement learning with human advice: a survey}, 
+%       author={Anis Najar and Mohamed Chetouani},
+%       year={2020},
+%       eprint={2005.11016},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.AI}
+% }
+
+
+
+
+@ARTICLE{types-feedback-najar:2020,
+  
+AUTHOR={Najar, Anis and Chetouani, Mohamed},   
+	 
+TITLE={Reinforcement Learning With Human Advice: A Survey},      
+	
+JOURNAL={Frontiers in Robotics and AI},      
+	
+VOLUME={8},      
+
+PAGES={74},     
+	
+YEAR={2021},      
+	  
+URL={https://www.frontiersin.org/article/10.3389/frobt.2021.584075},       
+	
+  
+	
+ISSN={2296-9144},   
+   
+ABSTRACT={In this paper, we provide an overview of the existing methods for integrating human advice into a reinforcement learning process. We first propose a taxonomy of the different forms of advice that can be provided to a learning agent. We then describe the methods that can be used for interpreting advice when its meaning is not determined beforehand. Finally, we review different approaches for integrating advice into the learning process.}
 }
+
+
 
 % Relative corrections Celemin
 @article{Relative-corrections-Celemin:2019,
@@ -117,7 +180,6 @@ volume = {95},
 number = {1},
 issn = {0921-0296},
 url = {https://doi-org.tudelft.idm.oclc.org/10.1007/s10846-018-0839-z},
-doi = {10.1007/s10846-018-0839-z},
 journal = {J. Intell. Robotics Syst.},
 month = jul,
 pages = {77–97},
@@ -139,15 +201,13 @@ keywords = {Interactive machine learning, Learning from demonstration, Human fee
     url = {https://www.youtube.com/watch?v=qgZPZREor5I},
     }
 % Offline RL - Paper de Sergey Levine
-@misc{Offline-RL-Levine:2020,
-      title={Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems}, 
-      author={Sergey Levine and Aviral Kumar and George Tucker and Justin Fu},
-      year={2020},
-      eprint={2005.01643},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
-}
 
+@article{Offline-RL-Levine:2020,
+  title={Offline reinforcement learning: Tutorial, review, and perspectives on open problems},
+  author={Levine, Sergey and Kumar, Aviral and Tucker, George and Fu, Justin},
+  journal={arXiv preprint arXiv:2005.01643},
+  year={2020}
+}
 
 
 % Offline RL - Google
@@ -160,14 +220,16 @@ keywords = {Interactive machine learning, Learning from demonstration, Human fee
     }
 
 % A Deeper Look at Experience Replay
-@misc{Experience-Replay-zhang:2018,
+@article{Experience-Replay-zhang:2018,
       title={A Deeper Look at Experience Replay}, 
       author={Shangtong Zhang and Richard S. Sutton},
       year={2018},
-      eprint={1712.01275},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+    
+      journal={arXiv preprint:1712.01275}
 }
+
+
+[arXiv preprint \href{http://arxiv.org/abs/1409.0876}{arXiv:1409.0876}, September 2014]
 
 % Neural Networks classification
 @book{Classification-Artificial-Neural-Networks:2017,
@@ -179,47 +241,62 @@ keywords = {Interactive machine learning, Learning from demonstration, Human fee
   publisher={Packt Publishing}
 }
 % Global overview of Imitation Learning
-@misc{Global-overview-Attia:2018,
-      title={Global overview of Imitation Learning}, 
-      author={Alexandre Attia and Sharone Dayan},
-      year={2018},
-      eprint={1801.06503},
-      archivePrefix={arXiv},
-      primaryClass={stat.ML}
+
+
+@article{Global-overview-Attia:2018,
+  title={Global overview of imitation learning},
+  author={Attia, Alexandre and Dayan, Sharone},
+  journal={arXiv preprint:1801.06503},
+  year={2018}
 }
+
 
 % Leveraging Human Guidance for Deep Reinforcement Learning Tasks
 
 
 
-@article{leveraging-human-guidance:2019,
-  author    = {Ruohan Zhang and
-               Faraz Torabi and
-               Lin Guan and
-               Dana H. Ballard and
-               Peter Stone},
+% @article{leveraging-human-guidance:2019,
+%   author    = {Ruohan Zhang and
+%               Faraz Torabi and
+%               Lin Guan and
+%               Dana H. Ballard and
+%               Peter Stone},
+%   title     = {Leveraging Human Guidance for Deep Reinforcement Learning Tasks},
+%   journal   = {CoRR},
+%   volume    = {abs/1909.09906},
+%   year      = {2019},
+%   url       = {http://arxiv.org/abs/1909.09906},
+%   archivePrefix = {arXiv},
+%   eprint    = {1909.09906},
+%   timestamp = {Fri, 27 Sep 2019 13:04:21 +0200},
+%   biburl    = {https://dblp.org/rec/journals/corr/abs-1909-09906.bib},
+%   bibsource = {dblp computer science bibliography, https://dblp.org}
+% }
+
+
+@inproceedings{leveraging-human-guidance:2019,
   title     = {Leveraging Human Guidance for Deep Reinforcement Learning Tasks},
-  journal   = {CoRR},
-  volume    = {abs/1909.09906},
+  author    = {Zhang, Ruohan and Torabi, Faraz and Guan, Lin and Ballard, Dana H. and Stone, Peter},
+  booktitle = {Proceedings of the Twenty-Eighth International Joint Conference on
+               Artificial Intelligence, {IJCAI-19}},
+  publisher = {International Joint Conferences on Artificial Intelligence Organization},             
+  pages     = {6339--6346},
   year      = {2019},
-  url       = {http://arxiv.org/abs/1909.09906},
-  archivePrefix = {arXiv},
-  eprint    = {1909.09906},
-  timestamp = {Fri, 27 Sep 2019 13:04:21 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-1909-09906.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+  month     = {7},
+
+  url       = {https://doi.org/10.24963/ijcai.2019/884},
 }
 
 
-
 % Why sometimes is easier learning a policy than learning a reward
-@misc{kostrikov2019imitation,
+@article{kostrikov2019imitation,
       title={Imitation Learning via Off-Policy Distribution Matching}, 
       author={Ilya Kostrikov and Ofir Nachum and Jonathan Tompson},
       year={2019},
-      eprint={1912.05032},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+    
+       journal={arXiv preprint:1912.05032},
+      
 }
 
 
@@ -250,28 +327,45 @@ keywords = {Interactive machine learning, Learning from demonstration, Human fee
 
 % Book An Algorithmic Perspective on Imitation Learning where they say when was the first mention to off-policy IL
 
-@BOOK{Osa:2018,  author={T. {Osa} and J. {Pajarinen} and G. {Neumann} and J. A. {Bagnell} and P. {Abbeel} and J. {Peters}},  booktitle={An Algorithmic Perspective on Imitation Learning},  year={2018},  volume={},  number={},  pages={},  doi={10.1561/2300000053}}
+@BOOK{Osa:2018,  author={T. {Osa} and J. {Pajarinen} and G. {Neumann} and J. A. {Bagnell} and P. {Abbeel} and J. {Peters}},  title={An Algorithmic Perspective on Imitation Learning},  year={2018},  volume={},  number={},  pages={},  doi={10.1561/2300000053}}
 
 
 % FIrst mention of On-policy Off-policy in IMitation Learning
+% @article{DBLP:journals/corr/LaskeyLHLMFG17,
+%   author    = {Michael Laskey and
+%               Jonathan Lee and
+%               Wesley Yu{-}Shu Hsieh and
+%               Richard Liaw and
+%               Jeffrey Mahler and
+%               Roy Fox and
+%               Ken Goldberg},
+%   title     = {Iterative Noise Injection for Scalable Imitation Learning},
+%   journal   = {CoRR},
+%   volume    = {abs/1703.09327},
+%   year      = {2017},
+%   url       = {http://arxiv.org/abs/1703.09327v1},
+%   archivePrefix = {arXiv},
+%   eprint    = {1703.09327},
+%   timestamp = {Mon, 23 Nov 2020 08:36:40 +0100},
+%   biburl    = {https://dblp.org/rec/journals/corr/LaskeyLHLMFG17.bib},
+%   bibsource = {dblp computer science bibliography, https://dblp.org}
+% }
+
+
 @article{DBLP:journals/corr/LaskeyLHLMFG17,
-  author    = {Michael Laskey and
+      title={Iterative Noise Injection for Scalable Imitation Learning}, 
+      author={Michael Laskey and
                Jonathan Lee and
                Wesley Yu{-}Shu Hsieh and
                Richard Liaw and
                Jeffrey Mahler and
                Roy Fox and
                Ken Goldberg},
-  title     = {Iterative Noise Injection for Scalable Imitation Learning},
-  journal   = {CoRR},
-  volume    = {abs/1703.09327},
-  year      = {2017},
-  url       = {http://arxiv.org/abs/1703.09327v1},
-  archivePrefix = {arXiv},
-  eprint    = {1703.09327},
-  timestamp = {Mon, 23 Nov 2020 08:36:40 +0100},
-  biburl    = {https://dblp.org/rec/journals/corr/LaskeyLHLMFG17.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+      year={2017},
+
+    
+       journal={arXiv preprint:1703.09327v1},
+      
 }
 
 % Biblia del RL
@@ -335,13 +429,27 @@ robot observes a supervisor and then infers a control policy. A known problem wi
   
   
   % Imition Learning definition
-  @misc{Imitation-Learning-definition-torabi:2019,
-      title={Recent Advances in Imitation Learning from Observation}, 
-      author={Faraz Torabi and Garrett Warnell and Peter Stone},
-      year={2019},
-      eprint={1905.13566},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
+%   @misc{Imitation-Learning-definition-torabi:2019,
+%       title={Recent Advances in Imitation Learning from Observation}, 
+%       author={Faraz Torabi and Garrett Warnell and Peter Stone},
+%       year={2019},
+%       eprint={1905.13566},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.RO}
+% }
+
+
+
+@inproceedings{Imitation-Learning-definition-torabi:2019,
+  title     = {Recent Advances in Imitation Learning from Observation},
+  author    = {Torabi, Faraz and Warnell, Garrett and Stone, Peter},
+  booktitle = {Proceedings of the Twenty-Eighth International Joint Conference on
+               Artificial Intelligence, {IJCAI-19}},
+  publisher = {International Joint Conferences on Artificial Intelligence Organization},             
+  pages     = {6325--6331},
+  year      = {2019},
+  month     = {7},
+  url       = {https://doi.org/10.24963/ijcai.2019/882},
 }
   
   
@@ -375,26 +483,46 @@ robot observes a supervisor and then infers a control policy. A known problem wi
 }
   
   % TAMER
-  @InProceedings{TAMER-Knox-Stone:2009,
-title={Interactively Shaping Agents via Human Reinforcement: The TAMER Framework},
-author={W. Bradley Knox and Peter Stone},
-booktitle={The Fifth International Conference on Knowledge Capture},
-month={09},
-url="http://www.cs.utexas.edu/users/ai-lab?KCAP09-knox",
-year={2009}
+%   @InProceedings{TAMER-Knox-Stone:2009,
+% title={Interactively Shaping Agents via Human Reinforcement: The TAMER Framework},
+% author={W. Bradley Knox and Peter Stone},
+% booktitle={The Fifth International Conference on Knowledge Capture},
+% month={09},
+% url="http://www.cs.utexas.edu/users/ai-lab?KCAP09-knox",
+% year={2009}
+% }
+
+
+@inproceedings{TAMER-Knox-Stone:2009,
+author = {Knox, W. Bradley and Stone, Peter},
+title = {Interactively Shaping Agents via Human Reinforcement: The TAMER Framework},
+year = {2009},
+isbn = {9781605586588},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+
+doi = {10.1145/1597735.1597738},
+abstract = {As computational learning agents move into domains that incur real costs (e.g., autonomous driving or financial investment), it will be necessary to learn good policies without numerous high-cost learning trials. One promising approach to reducing sample complexity of learning a task is knowledge transfer from humans to agents. Ideally, methods of transfer should be accessible to anyone with task knowledge, regardless of that person's expertise in programming and AI. This paper focuses on allowing a human trainer to interactively shape an agent's policy via reinforcement signals. Specifically, the paper introduces "Training an Agent Manually via Evaluative Reinforcement," or TAMER, a framework that enables such shaping. Differing from previous approaches to interactive shaping, a TAMER agent models the human's reinforcement and exploits its model by choosing actions expected to be most highly reinforced. Results from two domains demonstrate that lay users can train TAMER agents without defining an environmental reward function (as in an MDP) and indicate that human training within the TAMER framework can reduce sample complexity over autonomous learning algorithms.},
+booktitle = {Proceedings of the Fifth International Conference on Knowledge Capture},
+pages = {9–16},
+numpages = {8},
+keywords = {sequential decision-making, shaping, human teachers, human-agent interaction, learning agents},
+location = {Redondo Beach, California, USA},
+series = {K-CAP '09}
 }
 
 % SMILe
  @InProceedings{SMILe-Ross-Bagnell:2010, title = {Efficient Reductions for Imitation Learning}, author = {Stephane Ross and Drew Bagnell}, booktitle = {Proceedings of the Thirteenth International Conference on Artificial Intelligence and Statistics}, pages = {661--668}, year = {2010}, editor = {Yee Whye Teh and Mike Titterington}, volume = {9}, series = {Proceedings of Machine Learning Research}, address = {Chia Laguna Resort, Sardinia, Italy}, month = {13--15 May}, publisher = {JMLR Workshop and Conference Proceedings}, pdf = {http://proceedings.mlr.press/v9/ross10a/ross10a.pdf}, url = {http://proceedings.mlr.press/v9/ross10a.html}} 
  
  % DAgger
- @misc{DAgger-Ross:2011,
-      title={A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning}, 
-      author={S. Ross and G. Gordon and J. Bagnell},
-      year={2011},
-      eprint={1011.0686},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@inproceedings{DAgger-Ross:2011,
+  title={A reduction of imitation learning and structured prediction to no-regret online learning},
+  author={Ross, St{\'e}phane and Gordon, Geoffrey and Bagnell, Drew},
+  booktitle={Proceedings of the fourteenth international conference on artificial intelligence and statistics},
+  pages={627--635},
+  year={2011},
+  organization={JMLR Workshop and Conference Proceedings}
 }
 
 % DAgger by coaching
@@ -420,20 +548,14 @@ journal = {Advances in Neural Information Processing Systems}
 
 %AggreVaTe
 
+
 @article{AggreVaTe-Ross-Bagnell:2014,
-  author    = {S.Ross and
-               J. Andrew Bagnell},
-  title     = {Reinforcement and Imitation Learning via Interactive No-Regret Learning},
-  journal   = {CoRR},
-  volume    = {abs/1406.5979},
-  year      = {2014},
-  url       = {http://arxiv.org/abs/1406.5979},
-  archivePrefix = {arXiv},
-  eprint    = {1406.5979},
-  timestamp = {Mon, 13 Aug 2018 16:47:16 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/RossB14.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+  title={Reinforcement and imitation learning via interactive no-regret learning},
+  author={Ross, Stephane and Bagnell, J Andrew},
+  journal={arXiv preprint:1406.5979},
+  year={2014}
 }
+
 
 
 % COACH
@@ -458,14 +580,14 @@ journal = {Advances in Neural Information Processing Systems}
   
 % Gaussian COACH
 
-@misc{Gaussian-COACH-wout:2019,
-      title={Learning Gaussian Policies from Corrective Human Feedback}, 
-      author={Daan Wout and Jan Scholten and Carlos Celemin and Jens Kober},
-      year={2019},
-      eprint={1903.05216},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@article{Gaussian-COACH-wout:2019,
+  title={Learning Gaussian policies from corrective human feedback},
+  author={Wout, Daan and Scholten, Jan and Celemin, Carlos and Kober, Jens},
+  journal={arXiv preprint:1903.05216},
+  year={2019}
 }
+
 
 %I-SABL
 @article{I-SABL-Loftin:2016,
@@ -478,7 +600,6 @@ address = {USA},
 volume = {30},
 number = {1},
 issn = {1387-2532},
-url = {https://doi-org.tudelft.idm.oclc.org/10.1007/s10458-015-9283-7},
 doi = {10.1007/s10458-015-9283-7},
 journal = {Autonomous Agents and Multi-Agent Systems},
 month = jan,
@@ -508,49 +629,67 @@ keywords = {Machine learning, Bayesian inference, Reinforcement learning, Learni
 
 
 %Safe DAGGER
-@article{SafeDAgger-Zhang-Cho:2016,
-  author    = {Jiakai Zhang and
-               Kyunghyun Cho},
-  title     = {Query-Efficient Imitation Learning for End-to-End Autonomous Driving},
-  journal   = {CoRR},
-  volume    = {abs/1605.06450},
-  year      = {2016},
-  url       = {http://arxiv.org/abs/1605.06450},
-  archivePrefix = {arXiv},
-  eprint    = {1605.06450},
-  timestamp = {Mon, 13 Aug 2018 16:47:18 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/ZhangC16b.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+
+@inproceedings{SafeDAgger-Zhang-Cho:2016,
+  title={Query-efficient imitation learning for end-to-end simulated driving},
+  author={Zhang, Jiakai and Cho, Kyunghyun},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={31},
+  number={1},
+  year={2017}
 }
 
 %Fake COACH
-  @misc{fakeCOACH-MacGlashan-Ho-Loftin:2017,
-      title={Interactive Learning from Policy-Dependent Human Feedback}, 
-      author={James MacGlashan and Mark K Ho and Robert Loftin and Bei Peng and David Roberts and Matthew E. Taylor and Michael L. Littman},
-      year={2017},
-      eprint={1701.06049},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI}
+
+@inproceedings{fakeCOACH-MacGlashan-Ho-Loftin:2017,
+  title={Interactive learning from policy-dependent human feedback},
+  author={MacGlashan, James and Ho, Mark K and Loftin, Robert and Peng, Bei and Wang, Guan and Roberts, David L and Taylor, Matthew E and Littman, Michael L},
+  booktitle={International Conference on Machine Learning},
+  pages={2285--2294},
+  year={2017},
+  organization={PMLR}
 }
 
 
 % AggreVaTeD
-@misc{AggreVaTeD-Sun:2017,
-      title={Deeply AggreVaTeD: Differentiable Imitation Learning for Sequential Prediction}, 
-      author={Wen Sun and Arun Venkatraman and Geoffrey J. Gordon and Byron Boots and J. Andrew Bagnell},
-      year={2017},
-      eprint={1703.01030},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@inproceedings{AggreVaTeD-Sun:2017,
+  title={Deeply aggrevated: Differentiable imitation learning for sequential prediction},
+  author={Sun, Wen and Venkatraman, Arun and Gordon, Geoffrey J and Boots, Byron and Bagnell, J Andrew},
+  booktitle={International Conference on Machine Learning},
+  pages={3309--3318},
+  year={2017},
+  organization={PMLR}
 }
+
 % DART
-@misc{DART-Laskey:2017,
-      title={DART: Noise Injection for Robust Imitation Learning}, 
-      author={M Laskey and Jonathan Lee and Roy Fox and Anca Dragan and Ken Goldberg},
-      year={2017},
-      eprint={1703.09327},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+% @misc{DART-Laskey:2017,
+%       title={DART: Noise Injection for Robust Imitation Learning}, 
+%       author={M Laskey and Jonathan Lee and Roy Fox and Anca Dragan and Ken Goldberg},
+%       year={2017},
+%       eprint={1703.09327},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.LG}
+% }
+
+
+
+@inproceedings{DART-Laskey:2017,
+  author    = {Michael Laskey and
+               Jonathan Lee and
+               Roy Fox and
+               Anca D. Dragan and
+               Ken Goldberg},
+  title     = {{DART:} Noise Injection for Robust Imitation Learning},
+  booktitle = {1st Annual Conference on Robot Learning, CoRL 2017},
+  volume    = {78},
+  pages     = {143--156},
+
+  year      = {2017},
+  url       = {http://proceedings.mlr.press/v78/laskey17a.html},
+  timestamp = {Mon, 23 Nov 2020 08:36:59 +0100},
+  biburl    = {https://dblp.org/rec/conf/corl/LaskeyLFDG17.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 % One-Shot
 @misc{One-Shot-Duan:2017,
@@ -566,24 +705,35 @@ keywords = {Machine learning, Bayesian inference, Reinforcement learning, Learni
   @article{DeepTAMER-Warnell-et-al:2018, title={Deep TAMER: Interactive Agent Shaping in High-Dimensional State Spaces}, volume={32}, url={https://ojs.aaai.org/index.php/AAAI/article/view/11485}, number={1}, journal={Proceedings of the AAAI Conference on Artificial Intelligence}, author={Warnell, Garrett and Waytowich, Nicholas and Lawhern, Vernon and Stone, Peter}, year={2018}, month={04} }
 
 % LOKI
-@misc{LOKI-Cheng:2018,
-      title={Fast Policy Learning through Imitation and Reinforcement}, 
-      author={Ching-An Cheng and Xinyan Yan and Nolan Wagener and Byron Boots},
-      year={2018},
-      eprint={1805.10413},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@inproceedings{LOKI-Cheng:2018,
+  author    = {Ching{-}An Cheng and
+               Xinyan Yan and
+               Nolan Wagener and
+               Byron Boots},
+  title     = {Fast Policy Learning through Imitation and Reinforcement},
+  booktitle = {Proceedings of the Thirty-Fourth Conference on Uncertainty in Artificial
+               Intelligence},
+  pages     = {845--855},
+  publisher = {{AUAI} Press},
+  year      = {2018},
+  url       = {http://auai.org/uai2018/proceedings/papers/302.pdf},
+  timestamp = {Tue, 15 Dec 2020 17:40:18 +0100},
+  biburl    = {https://dblp.org/rec/conf/uai/ChengYWB18.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
 % Hierarchical guidance
-@misc{Hierarchical-guidance-Le:2018,
-      title={Hierarchical Imitation and Reinforcement Learning}, 
-      author={Hoang M. Le and Nan Jiang and Alekh Agarwal and Miroslav Dudík and Yisong Yue and Hal Daumé III au2},
-      year={2018},
-      eprint={1803.00590},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@inproceedings{Hierarchical-guidance-Le:2018,
+  title={Hierarchical imitation and reinforcement learning},
+  author={Le, Hoang and Jiang, Nan and Agarwal, Alekh and Dud{\'\i}k, Miroslav and Yue, Yisong and Daum{\'e}, Hal},
+  booktitle={International conference on machine learning},
+  pages={2917--2926},
+  year={2018},
+  organization={PMLR}
 }
+
 
 % MoBIL
 @misc{MoBIL-Cheng:2018,
@@ -597,30 +747,35 @@ keywords = {Machine learning, Bayesian inference, Reinforcement learning, Learni
 
 
 % D-COACH
-@misc{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018,
-      title={Interactive Learning with Corrective Feedback for Policies based on Deep Neural Networks}, 
-      author={Rodrigo Pérez-Dattari and Carlos Celemin and Javier Ruiz-del-Solar and Jens Kober},
-      year={2018},
-      eprint={1810.00466},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@inproceedings{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018,
+  title={Interactive learning with corrective feedback for policies based on deep neural networks},
+  author={P{\'e}rez-Dattari, Rodrigo and Celemin, Carlos and Ruiz-del-Solar, Javier and Kober, Jens},
+  booktitle={International Symposium on Experimental Robotics},
+  pages={353--363},
+  year={2018},
+  organization={Springer}
 }
 
+
 % BAgger
+
 @inproceedings{BAgger-Cronrath:2018,
   title={BAgger: A Bayesian algorithm for safe and query-efficient imitation learning},
-  author={Cronrath, Constantin and Jorge, Emilio and Moberg, John and Jirstrand, Mats and Lennartson, Bengt},year={2018}
+  author={Cronrath, Constantin and Jorge, Emilio and Moberg, John and Jirstrand, Mats and Lennartson, Bengt},
+  booktitle={Machine Learning in Robot Motion Planning--IROS 2018 Workshop},
+  year={2018}
 }
+
 
 
 % DQN-TAMER
-  @misc{DQN-TAMER-Arakawa:2018,
+  @article{DQN-TAMER-Arakawa:2018,
       title={DQN-TAMER: Human-in-the-Loop Reinforcement Learning with Intractable Feedback}, 
       author={Riku Arakawa and Sosuke Kobayashi and Yuya Unno and Yuta Tsuboi and Shin-ichi Maeda},
       year={2018},
-      eprint={1810.11748},
-      archivePrefix={arXiv},
-      primaryClass={cs.HC}
+     
+      journal={arXiv preprint:1810.11748}
 }
 
 % SAIL
@@ -633,35 +788,51 @@ keywords = {Machine learning, Bayesian inference, Reinforcement learning, Learni
 
 
 % HG-DAgger
-  @misc{HG-DAgger-Kelly:2019,
-      title={HG-DAgger: Interactive Imitation Learning with Human Experts}, 
-      author={Michael Kelly and Chelsea Sidrane and Katherine Driggs-Campbell and Mykel J. Kochenderfer},
-      year={2019},
-      eprint={1810.02890},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
+
+@inproceedings{HG-DAgger-Kelly:2019,
+  title={Hg-dagger: Interactive imitation learning with human experts},
+  author={Kelly, Michael and Sidrane, Chelsea and Driggs-Campbell, Katherine and Kochenderfer, Mykel J},
+  booktitle={2019 International Conference on Robotics and Automation (ICRA)},
+  pages={8077--8083},
+  year={2019},
+  organization={IEEE}
 }
+
 
 
 
 % SQIL
-@misc{SQIL-Reddy-Dragan-Levine:2019,
-      title={SQIL: Imitation Learning via Reinforcement Learning with Sparse Rewards}, 
-      author={Siddharth Reddy and Anca D. Dragan and Sergey Levine},
-      year={2019},
-      eprint={1905.11108},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+% @misc{SQIL-Reddy-Dragan-Levine:2019,
+%       title={SQIL: Imitation Learning via Reinforcement Learning with Sparse Rewards}, 
+%       author={Siddharth Reddy and Anca D. Dragan and Sergey Levine},
+%       year={2019},
+%       eprint={1905.11108},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.LG}
+% }
+
+
+@inproceedings{SQIL-Reddy-Dragan-Levine:2019,
+  author    = {Siddharth Reddy and
+               Anca D. Dragan and
+               Sergey Levine},
+  title     = {{SQIL:} Imitation Learning via Reinforcement Learning with Sparse
+               Rewards},
+  booktitle = {8th International Conference on Learning Representations, {ICLR} 2020},
+  year      = {2020},
+  url       = {https://openreview.net/forum?id=S1xKd24twB},
+  timestamp = {Thu, 07 May 2020 17:11:47 +0200},
+  biburl    = {https://dblp.org/rec/conf/iclr/ReddyDL20.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
   
 % Retrospective DAgger
-@misc{Retrospective-DAgger-song:2019,
-      title={Learning to Search via Retrospective Imitation}, 
-      author={Jialin Song and Ravi Lanka and Albert Zhao and Aadyot Bhatnagar and Yisong Yue and Masahiro Ono},
-      year={2019},
-      eprint={1804.00846},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@article{Retrospective-DAgger-song:2019,
+  title={Learning to search via retrospective imitation},
+  author={Song, Jialin and Lanka, Ravi and Zhao, Albert and Bhatnagar, Aadyot and Yue, Yisong and Ono, Masahiro},
+  journal={arXiv preprint:1804.00846},
+  year={2018}
 }
 
 % AOR (Adaptive On-Policy Regularization)
@@ -674,70 +845,106 @@ keywords = {Machine learning, Bayesian inference, Reinforcement learning, Learni
       primaryClass={cs.RO}
 }
 
-% Dynamic regret - AOR
+
+
+
+
 @inproceedings{Dynamic-regret-Laskey:2018,
-  title={Stability Analysis of On-Policy Imitation Learning Algorithms Using Dynamic Regret},
-  author={Michael Laskey and A. Tanwani and Ken Goldberg},
+  title={Stability analysis of on-policy imitation learning algorithms using dynamic regret},
+  author={Lee, Jonathan and Laskey, Michael and Tanwani, Ajay Kumar and Goldberg, Ken},
+  booktitle={RSS Workshop on Imitation and Causality},
   year={2018}
 }
 % Cycle-of-Learning
-@misc{Cycle-of-Learning-waytowich:2018,
-      title={Cycle-of-Learning for Autonomous Systems from Human Interaction}, 
-      author={Nicholas R. Waytowich and Vinicius G. Goecks and Vernon J. Lawhern},
-      year={2018},
-      eprint={1808.09572},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI}
+
+@article{Cycle-of-Learning-waytowich:2018,
+  title={Cycle-of-learning for autonomous systems from human interaction},
+  author={Waytowich, Nicholas R and Goecks, Vinicius G and Lawhern, Vernon J},
+  journal={arXiv preprint:1808.09572},
+  year={2018}
 }
+
 % EnsembleDAgger
-@misc{EnsembleDAgger-Menda:2019,
-      title={EnsembleDAgger: A Bayesian Approach to Safe Imitation Learning}, 
-      author={Kunal Menda and Katherine Driggs-Campbell and Mykel J. Kochenderfer},
-      year={2019},
-      eprint={1807.08364},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@inproceedings{EnsembleDAgger-Menda:2019,
+  title={Ensembledagger: A bayesian approach to safe imitation learning},
+  author={Menda, Kunal and Driggs-Campbell, Katherine and Kochenderfer, Mykel J},
+  booktitle={2019 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  pages={5041--5048},
+  year={2019},
+  organization={IEEE}
 }
+
 
 % ValueDICE
-@misc{ValueDICE-Kostrikov:2019,
-      title={Imitation Learning via Off-Policy Distribution Matching}, 
-      author={Ilya Kostrikov and Ofir Nachum and Jonathan Tompson},
-      year={2019},
-      eprint={1912.05032},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@article{ValueDICE-Kostrikov:2019,
+  title={Imitation learning via off-policy distribution matching},
+  author={Kostrikov, Ilya and Nachum, Ofir and Tompson, Jonathan},
+  journal={arXiv preprint:1912.05032},
+  year={2019}
 }
+
 
  %FRESH
- @misc{FRESH-xiao:2020,
-      title={FRESH: Interactive Reward Shaping in High-Dimensional State Spaces using Human Feedback}, 
-      author={Baicen Xiao and Qifan Lu and Bhaskar Ramasubramanian and Andrew Clark and Linda Bushnell and Radha Poovendran},
-      year={2020},
-      eprint={2001.06781},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI}
+
+@inproceedings{FRESH-xiao:2020,
+author = {Xiao, Baicen and Lu, Qifan and Ramasubramanian, Bhaskar and Clark, Andrew and Bushnell, Linda and Poovendran, Radha},
+title = {FRESH: Interactive Reward Shaping in High-Dimensional State Spaces Using Human Feedback},
+year = {2020},
+isbn = {9781450375184},
+
+booktitle = {Proceedings of the 19th International Conference on Autonomous Agents and MultiAgent Systems},
+pages = {1512–1520},
+numpages = {9},
+keywords = {human feedback, feedback-based reward shaping, deep reinforcement learning, ensemble of neural networks},
+
+series = {AAMAS '20}
 }
  
-% CSF (Converging Supervisor Framework)
-@misc{CSF-balakrishna:2020,
-      title={On-Policy Robot Imitation Learning from a Converging Supervisor}, 
-      author={Ashwin Balakrishna and Brijen Thananjeyan and Jonathan Lee and Felix Li and Arsh Zahed and Joseph E. Gonzalez and Ken Goldberg},
-      year={2020},
-      eprint={1907.03423},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+% % CSF (Converging Supervisor Framework)
+% @misc{CSF-balakrishna:2020,
+%       title={On-Policy Robot Imitation Learning from a Converging Supervisor}, 
+%       author={Ashwin Balakrishna and Brijen Thananjeyan and Jonathan Lee and Felix Li and Arsh Zahed and Joseph E. Gonzalez and Ken Goldberg},
+%       year={2020},
+%       eprint={1907.03423},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.LG}
+% }
+
+
+
+
+
+
+@InProceedings{CSF-balakrishna:2020,
+  title = 	 {On-Policy Robot Imitation Learning from a Converging Supervisor},
+  author =       {Balakrishna, Ashwin and Thananjeyan, Brijen and Lee, Jonathan and Li, Felix and Zahed, Arsh and Gonzalez, Joseph E. and Goldberg, Ken},
+  booktitle = 	 {Proceedings of the Conference on Robot Learning},
+  pages = 	 {24--41},
+  year = 	 {2020},
+
+  volume = 	 {100},
+
+  month = 	 {30 Oct--01 Nov},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v100/balakrishna20a/balakrishna20a.pdf},
+  url = 	 {https://proceedings.mlr.press/v100/balakrishna20a.html},
+  abstract = 	 {Existing on-policy imitation learning algorithms, such as DAgger, assume access to a fixed supervisor. However, there are many settings where the supervisor may evolve during policy learning, such as a human performing a novel task or an improving algorithmic controller. We formalize imitation learning from a “converging supervisor” and provide sublinear static and dynamic regret guarantees against the best policy in hindsight with labels from the converged supervisor, even when labels during learning are only from intermediate supervisors. We then show that this framework is closely connected to a class of reinforcement learning (RL) algorithms known as dual policy iteration (DPI), which alternate between training a reactive learner with imitation learning and a model-based supervisor with data from the learner. Experiments suggest that when this framework is applied with the state-of-the-art deep model-based RL algorithm PETS as an improving supervisor, it outperforms deep RL baselines on continuous control tasks and provides up to an 80-fold speedup in policy evaluation.}
 }
 
+
 % ABLUF
-@misc{ABLUF-he:2020,
-      title={Learning Behaviors with Uncertain Human Feedback}, 
-      author={Xu He and Haipeng Chen and Bo An},
-      year={2020},
-      eprint={2006.04201},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI}
+
+@inproceedings{ABLUF-he:2020,
+  title={Learning behaviors with uncertain human feedback},
+  author={He, Xu and Chen, Haipeng and An, Bo},
+  booktitle={Conference on Uncertainty in Artificial Intelligence},
+  pages={131--140},
+  year={2020},
+  organization={PMLR}
 }
+
 % DA-RB (DAgger Replay Buffer)
 @INPROCEEDINGS{DA-RB-Prakash:2020,
 
@@ -781,35 +988,47 @@ keywords = {Machine learning, Bayesian inference, Reinforcement learning, Learni
 }
 
 % EIL
-@inproceedings{EIL-Spencer:2020,
-author = {Spencer, Jonathan and Choudhury, Sanjiban and Barnes, Matt and Schmittle, Matthew and Chiang, Mung and Ramadge, Peter and Srinivasa, Siddhartha},
-year = {2020},
-month = {07},
-pages = {},
-title = {Learning from Interventions: Human-robot interaction as both explicit and implicit feedback},
-doi = {10.15607/RSS.2020.XVI.055}
+
+@INPROCEEDINGS{EIL-Spencer:2020, 
+    AUTHOR    = {Jonathan Spencer AND Sanjiban Choudhury AND Matt Barnes AND Matthew Schmittle AND Mung Chiang AND Peter Ramadge AND Siddhartha Srinivasa}, 
+    TITLE     = {{Learning from Interventions: Human-robot interaction as both explicit and implicit feedback}}, 
+    BOOKTITLE = {Proceedings of Robotics: Science and Systems}, 
+    YEAR      = {2020}, 
+    ADDRESS   = {Corvalis, Oregon, USA}, 
+    MONTH     = {July}, 
+    DOI       = {10.15607/RSS.2020.XVI.055} 
+} 
+
+% % FIRE
+% @misc{FIRE-ablett:2020,
+%       title={Fighting Failures with FIRE: Failure Identification to Reduce Expert Burden in Intervention-Based Learning}, 
+%       author={Trevor Ablett and Filip Marić and Jonathan Kelly},
+%       year={2020},
+%       eprint={2007.00245},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.RO}
+% }
+
+
+
+@article{FIRE-ablett:2020,
+  title={Fighting Failures with FIRE: Failure Identification to Reduce Expert Burden in Intervention-Based Learning},
+  author={Ablett, Trevor and Mari{\'c}, Filip and Kelly, Jonathan},
+  journal={arXiv preprint:2007.00245},
+  year={2020}
 }
 
-% FIRE
-@misc{FIRE-ablett:2020,
-      title={Fighting Failures with FIRE: Failure Identification to Reduce Expert Burden in Intervention-Based Learning}, 
-      author={Trevor Ablett and Filip Marić and Jonathan Kelly},
-      year={2020},
-      eprint={2007.00245},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
-}
 
 % IWR
   
-@misc{IWR-mandlekar:2020,
-      title={Human-in-the-Loop Imitation Learning using Remote Teleoperation}, 
-      author={Ajay Mandlekar and Danfei Xu and Roberto Martín-Martín and Yuke Zhu and Li Fei-Fei and Silvio Savarese},
-      year={2020},
-      eprint={2012.06733},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
+
+@article{IWR-mandlekar:2020,
+  title={Human-in-the-Loop Imitation Learning using Remote Teleoperation},
+  author={Mandlekar, Ajay and Xu, Danfei and Mart{\'\i}n-Mart{\'\i}n, Roberto and Zhu, Yuke and Fei-Fei, Li and Savarese, Silvio},
+  journal={arXiv preprint:2012.06733},
+  year={2020}
 }
+
 
 % Neural Networks
 @book{ANN-graupe:2013,
@@ -860,36 +1079,41 @@ doi = {10.15607/RSS.2020.XVI.055}
 }
 
 % LazyDagger for tree of IL > IIL
-@misc{lazydagger:2021,
-      title={LazyDAgger: Reducing Context Switching in Interactive Imitation Learning}, 
-      author={Ryan Hoque and Ashwin Balakrishna and Carl Putterman and Michael Luo and Daniel S. Brown and Daniel Seita and Brijen Thananjeyan and Ellen Novoseller and Ken Goldberg},
-      year={2021},
-      eprint={2104.00053},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
-}
+% @misc{lazydagger:2021,
+%       title={LazyDAgger: Reducing Context Switching in Interactive Imitation Learning}, 
+%       author={Ryan Hoque and Ashwin Balakrishna and Carl Putterman and Michael Luo and Daniel S. Brown and Daniel Seita and Brijen Thananjeyan and Ellen Novoseller and Ken Goldberg},
+%       year={2021},
+%       eprint={2104.00053},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.RO}
+% }
+
+@INPROCEEDINGS{lazydagger:2021,  author={Hoque, Ryan and Balakrishna, Ashwin and Putterman, Carl and Luo, Michael and Brown, Daniel S. and Seita, Daniel and Thananjeyan, Brijen and Novoseller, Ellen and Goldberg, Ken},  booktitle={2021 IEEE 17th International Conference on Automation Science and Engineering (CASE)},   title={LazyDAgger: Reducing Context Switching in Interactive Imitation Learning},   year={2021},  volume={},  number={},  pages={502-509},  doi={10.1109/CASE49439.2021.9551469}}
 
 
 % Another Laskey definition of on-policy off-policy IL
-  
-  @misc{OtherLaskeydefinitions:2019,
-      title={Dynamic Regret Convergence Analysis and an Adaptive Regularization Algorithm for On-Policy Robot Imitation Learning}, 
-      author={Jonathan N. Lee and Michael Laskey and Ajay Kumar Tanwani and Anil Aswani and Ken Goldberg},
-      year={2019},
-      eprint={1811.02184},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
+
+@article{OtherLaskeydefinitions:2019,
+  title={Dynamic regret convergence analysis and an adaptive regularization algorithm for on-policy robot imitation learning},
+  author={Lee, Jonathan N and Laskey, Michael and Tanwani, Ajay Kumar and Aswani, Anil and Goldberg, Ken},
+  journal={The International Journal of Robotics Research},
+  volume={40},
+  number={10-11},
+  pages={1284--1305},
+  year={2021},
+  publisher={SAGE Publications Sage UK: London, England}
 }
+
   
-  % Another definition of on-policy off-policy IL from Berkeley
-  @misc{Anotherdefinitionfromberkeley:2020,
-      title={On-Policy Robot Imitation Learning from a Converging Supervisor}, 
-      author={Ashwin Balakrishna and Brijen Thananjeyan and Jonathan Lee and Felix Li and Arsh Zahed and Joseph E. Gonzalez and Ken Goldberg},
-      year={2020},
-      eprint={1907.03423},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
-}
+%   % Another definition of on-policy off-policy IL from Berkeley
+%   @misc{Anotherdefinitionfromberkeley:2020,
+%       title={On-Policy Robot Imitation Learning from a Converging Supervisor}, 
+%       author={Ashwin Balakrishna and Brijen Thananjeyan and Jonathan Lee and Felix Li and Arsh Zahed and Joseph E. Gonzalez and Ken Goldberg},
+%       year={2020},
+%       eprint={1907.03423},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.LG}
+% }
 
 % Temporal Difference equation
 
@@ -934,14 +1158,19 @@ doi = {10.15607/RSS.2020.XVI.055}
 }
 
 % Experience Replay provides stability
-@misc{Experience_replay_stability:2019,
-      title={Experience Replay for Continual Learning}, 
-      author={David Rolnick and Arun Ahuja and Jonathan Schwarz and Timothy P. Lillicrap and Greg Wayne},
-      year={2019},
-      eprint={1811.11682},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@inproceedings{Experience_replay_stability:2019,
+ author = {Rolnick, David and Ahuja, Arun and Schwarz, Jonathan and Lillicrap, Timothy and Wayne, Gregory},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {Experience Replay for Continual Learning},
+ url = {https://proceedings.neurips.cc/paper/2019/file/fa7cdfad1a5aaf8370ebeda47a1ff1c3-Paper.pdf},
+ volume = {32},
+ year = {2019}
 }
+
 
 % Machine Learning for finance
 
@@ -955,14 +1184,15 @@ doi = {10.15607/RSS.2020.XVI.055}
 }
 
 % Meta-World
-@misc{metaworld,
-      title={Meta-World: A Benchmark and Evaluation for Multi-Task and Meta Reinforcement Learning}, 
-      author={Tianhe Yu and Deirdre Quillen and Zhanpeng He and Ryan Julian and Avnish Narayan and Hayden Shively and Adithya Bellathur and Karol Hausman and Chelsea Finn and Sergey Levine},
-      year={2021},
-      eprint={1910.10897},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@inproceedings{metaworld,
+  title={Meta-world: A benchmark and evaluation for multi-task and meta reinforcement learning},
+  author={Yu, Tianhe and Quillen, Deirdre and He, Zhanpeng and Julian, Ryan and Hausman, Karol and Finn, Chelsea and Levine, Sergey},
+  booktitle={Conference on Robot Learning},
+  pages={1094--1100},
+  year={2020},
+  organization={PMLR}
 }
+
 
 %Mujoco
 @INPROCEEDINGS{mujoco,
@@ -976,14 +1206,13 @@ doi = {10.15607/RSS.2020.XVI.055}
   doi={10.1109/IROS.2012.6386109}}
 
 % Openai
-@misc{openai,
-      title={OpenAI Gym}, 
-      author={Greg Brockman and Vicki Cheung and Ludwig Pettersson and Jonas Schneider and John Schulman and Jie Tang and Wojciech Zaremba},
-      year={2016},
-      eprint={1606.01540},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@article{openai,
+  title={Openai gym},
+  author={Brockman, Greg and Cheung, Vicki and Pettersson, Ludwig and Schneider, Jonas and Schulman, John and Tang, Jie and Zaremba, Wojciech},
+  journal={arXiv preprint:1606.01540},
+  year={2016}
 }
+
 
 % iiwa
 @article{iiwa,
@@ -998,101 +1227,167 @@ doi = {10.15607/RSS.2020.XVI.055}
 }
 
 % Constant velocity problem
-@PhdThesis{constant_velocity,
-  author =       "Hogan Francois",
-  title =        "Reactive manipulation with contact models and tactile feedback",
-  school =       "Massachusetts Institute of Technology",
-  year =         "2020",
-  url = "https://dspace.mit.edu/handle/1721.1/125476",
+% @PhdThesis{constant_velocity,
+%   author =       "Hogan Francois",
+%   title =        "Reactive manipulation with contact models and tactile feedback",
+%   school =       "Massachusetts Institute of Technology",
+%   year =         "2020",
+%   url = "https://dspace.mit.edu/handle/1721.1/125476",
+% }
+
+
+@inbook{constant_velocity,
+author = {Hogan, Francois and Rodriguez, Alberto},
+year = {2020},
+month = {05},
+pages = {800-815},
+title = {Feedback Control of the Pusher-Slider System: A Story of Hybrid and Underactuated Contact Dynamics},
+booktitle ={Algorithmic Foundations of Robotics XII},
+isbn = {978-3-030-43088-7},
+doi = {10.1007/978-3-030-43089-4_51}
 }
 
 % ThriftyDAgger
-@misc{ThriftyDAgger,
-      title={ThriftyDAgger: Budget-Aware Novelty and Risk Gating for Interactive Imitation Learning}, 
-      author={Ryan Hoque and Ashwin Balakrishna and Ellen Novoseller and Albert Wilcox and Daniel S. Brown and Ken Goldberg},
-      year={2021},
-      eprint={2109.08273},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
+
+@article{ThriftyDAgger,
+  title={ThriftyDAgger: Budget-Aware Novelty and Risk Gating for Interactive Imitation Learning},
+  author={Hoque, Ryan and Balakrishna, Ashwin and Novoseller, Ellen and Wilcox, Albert and Brown, Daniel S and Goldberg, Ken},
+  journal={arXiv preprint:2109.08273},
+  year={2021}
 }
+
 
 % DropoutDAgger
-@misc{DropoutDAgger,
-      title={DropoutDAgger: A Bayesian Approach to Safe Imitation Learning}, 
-      author={Kunal Menda and Katherine Driggs-Campbell and Mykel J. Kochenderfer},
-      year={2017},
-      eprint={1709.06166},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI}
+
+@article{DropoutDAgger,
+  title={Dropoutdagger: A bayesian approach to safe imitation learning},
+  author={Menda, Kunal and Driggs-Campbell, Katherine and Kochenderfer, Mykel J},
+  journal={arXiv preprint:1709.06166},
+  year={2017}
 }
+
 
 % Learning from human preferences (Deep)
-@misc{learning-from-human-preferences:2017,
-      title={Deep reinforcement learning from human preferences}, 
-      author={Paul Christiano and Jan Leike and Tom B. Brown and Miljan Martic and Shane Legg and Dario Amodei},
-      year={2017},
-      eprint={1706.03741},
-      archivePrefix={arXiv},
-      primaryClass={stat.ML}
+% @misc{learning-from-human-preferences:2017,
+%       title={Deep reinforcement learning from human preferences}, 
+%       author={Paul Christiano and Jan Leike and Tom B. Brown and Miljan Martic and Shane Legg and Dario Amodei},
+%       year={2017},
+%       eprint={1706.03741},
+%       archivePrefix={arXiv},
+%       primaryClass={stat.ML}
+% }
+
+
+@inproceedings{learning-from-human-preferences:2017,
+ author = {Christiano, Paul F and Leike, Jan and Brown, Tom and Martic, Miljan and Legg, Shane and Amodei, Dario},
+ booktitle = {Advances in Neural Information Processing Systems},
+
+ pages = {},
+
+ title = {Deep Reinforcement Learning from Human Preferences},
+ url = {https://proceedings.neurips.cc/paper/2017/file/d5e2c0adad503c91f91df240d0cd4e49-Paper.pdf},
+ volume = {30},
+ year = {2017}
 }
 
+
+% Query demonstrations
+
+@article{demonstration-robot-query,
+  title={Interactive policy learning through confidence-based autonomy},
+  author={Chernova, Sonia and Veloso, Manuela},
+  journal={Journal of Artificial Intelligence Research},
+  volume={34},
+  pages={1--25},
+  year={2009}
+}
+
+
 % Learning from human preferences (Atari)
-@misc{learning-from-human-preferences:2018,
-      title={Reward learning from human preferences and demonstrations in Atari}, 
-      author={Borja Ibarz and Jan Leike and Tobias Pohlen and Geoffrey Irving and Shane Legg and Dario Amodei},
-      year={2018},
-      eprint={1811.06521},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+
+@inproceedings{learning-from-human-preferences:2018,
+  title={Reward learning from human preferences and demonstrations in Atari},
+  author={Borja Ibarz and Jan Leike and Tobias Pohlen and Geoffrey Irving and Shane Legg and Dario Amodei},
+  booktitle={NeurIPS},
+  year={2018}
 }
 
 % Inverse Reinforcement Learning
 
-@misc{inverse-reinforcement-learning,
-      title={A Survey of Inverse Reinforcement Learning: Challenges, Methods and Progress}, 
-      author={Saurabh Arora and Prashant Doshi},
-      year={2020},
-      eprint={1806.06877},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+% @misc{inverse-reinforcement-learning,
+%       title={A Survey of Inverse Reinforcement Learning: Challenges, Methods and Progress}, 
+%       author={Saurabh Arora and Prashant Doshi},
+%       year={2020},
+%       eprint={1806.06877},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.LG}
+% }
+
+
+@article{inverse-reinforcement-learning,
+title = {A survey of inverse reinforcement learning: Challenges, methods and progress},
+journal = {Artificial Intelligence},
+volume = {297},
+pages = {103500},
+year = {2021},
+issn = {0004-3702},
+doi = {10.1016/j.artint.2021.103500},
+author = {Saurabh Arora and Prashant Doshi},
+keywords = {Reinforcement learning, Reward function, Learning from demonstration, Generalization, Learning accuracy, Survey},
+abstract = {Inverse reinforcement learning (IRL) is the problem of inferring the reward function of an agent, given its policy or observed behavior. Analogous to RL, IRL is perceived both as a problem and as a class of methods. By categorically surveying the extant literature in IRL, this article serves as a comprehensive reference for researchers and practitioners of machine learning as well as those new to it to understand the challenges of IRL and select the approaches best suited for the problem on hand. The survey formally introduces the IRL problem along with its central challenges such as the difficulty in performing accurate inference and its generalizability, its sensitivity to prior knowledge, and the disproportionate growth in solution complexity with problem size. The article surveys a vast collection of foundational methods grouped together by the commonality of their objectives, and elaborates how these methods mitigate the challenges. We further discuss extensions to the traditional IRL methods for handling imperfect perception, an incomplete model, learning multiple reward functions and nonlinear reward functions. The article concludes the survey with a discussion of some broad advances in the research area and currently open research questions.}
 }
 
 % Artificial neural networks
 
+
 @article{ANNs,
-  added-at = {2020-10-01T00:00:00.000+0200},
-  author = {Deng, Li and Yu, Dong},
-  biburl = {https://www.bibsonomy.org/bibtex/2a43da927ec3eb6f9fecc69f1fdcd82f4/dblp},
-  ee = {https://www.wikidata.org/entity/Q55885650},
-  interhash = {8c4ded35a5ad2bc7f0f90df6262fc1d1},
-  intrahash = {a43da927ec3eb6f9fecc69f1fdcd82f4},
-  journal = {Found. Trends Signal Process.},
-  keywords = {dblp},
-  number = {3-4},
-  pages = {197-387},
-  timestamp = {2020-10-02T11:35:57.000+0200},
-  title = {Deep Learning: Methods and Applications.},
-  url = {http://dblp.uni-trier.de/db/journals/ftsig/ftsig7.html#DengY14},
-  volume = 7,
-  year = 2014
+  title={Deep learning: methods and applications},
+  author={Deng, Li and Yu, Dong},
+  journal={Foundations and trends in signal processing},
+  volume={7},
+  number={3--4},
+  pages={197--387},
+  year={2014},
+  publisher={Now Publishers Inc. Hanover, MA, USA}
 }
 
-% Corrections replay
-@misc{corrections-replay,
-      title={Continuous Control for High-Dimensional State Spaces: An Interactive Learning Approach}, 
-      author={Rodrigo Pérez-Dattari and Carlos Celemin and Javier Ruiz-del-Solar and Jens Kober},
-      year={2019},
-      eprint={1908.05256},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
-}
+
+% % Corrections replay
+% @misc{corrections-replay,
+%       title={Continuous Control for High-Dimensional State Spaces: An Interactive Learning Approach}, 
+%       author={Rodrigo Pérez-Dattari and Carlos Celemin and Javier Ruiz-del-Solar and Jens Kober},
+%       year={2019},
+%       eprint={1908.05256},
+%       archivePrefix={arXiv},
+%       primaryClass={cs.RO}
+% }
+
+
+@INPROCEEDINGS{corrections-replay,
+
+  author={Pérez-Dattari, Rodrigo and Celemin, Carlos and Ruiz-del-Solar, Javier and Kober, Jens},
+
+  booktitle={2019 International Conference on Robotics and Automation (ICRA)}, 
+
+  title={Continuous Control for High-Dimensional State Spaces: An Interactive Learning Approach}, 
+
+  year={2019},
+
+  volume={},
+
+  number={},
+
+  pages={7611-7617},
+
+  doi={10.1109/ICRA.2019.8793675}}
+
 
 % Offline IL
-@misc{offlineIL,
-      title={Mitigating Covariate Shift in Imitation Learning via Offline Data Without Great Coverage}, 
-      author={Jonathan D. Chang and Masatoshi Uehara and Dhruv Sreenivas and Rahul Kidambi and Wen Sun},
-      year={2021},
-      eprint={2106.03207},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+
+@article{offlineIL,
+  title={Mitigating Covariate Shift in Imitation Learning via Offline Data Without Great Coverage},
+  author={Chang, Jonathan D and Uehara, Masatoshi and Sreenivas, Dhruv and Kidambi, Rahul and Sun, Wen},
+  journal={arXiv preprint:2106.03207},
+  year={2021}
 }

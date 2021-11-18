@@ -4,13 +4,35 @@
 
 % \usepackage[
 % backend=biber,
-% style=apa,
+% style=ieee,
 % citestyle=authoryear
 % ]{biblatex}
 % \addbibresource{report.bib}
 
-\usepackage{biblatex}
-\addbibresource{report.bib}
+%giveninits=true,
+
+
+% \usepackage[ style=ieee]{biblatex}
+% \renewbibmacro{in:}{}
+% \addbibresource{report.bib}
+
+
+
+
+  \usepackage[
+    backend=biber,
+    style=ieee,
+  ]{biblatex}
+  
+  
+    % \usepackage[ natbib=true, style=numeric,sorting=none]{biblatex}
+
+
+ \addbibresource{report.bib}
+
+
+
+
 
 
 
@@ -57,17 +79,19 @@
 %% Arabic numerals
 \mainmatter
 
-%\input{mainmatter/chapter-1}
 
-%\input{mainmatter/chapter-2}
 
-%\input{mainmatter/chapter-3}
+\input{mainmatter/chapter-1}
 
-%\input{mainmatter/chapter-4}
+\input{mainmatter/chapter-2}
 
-%\input{mainmatter/chapter-5}
+\input{mainmatter/chapter-3}
 
-%\input{mainmatter/chapter-6}
+\input{mainmatter/chapter-4}
+
+\input{mainmatter/chapter-5}
+
+\input{mainmatter/chapter-6}
 
 
 %% Prevent urls running into margins in bibliography
@@ -76,22 +100,28 @@
 \setcounter{biburlucpenalty}{7000}
 
 %% Bibliography is numeric style
+%\printbibliography
 \printbibliography[title=References]
 \addcontentsline{toc}{chapter}{References}
 
-%% Using letters for chapters
-%\appendix
 
-%\input{appendix/appendix-a}
+% \bibliographystyle{IEEEtran}
+% \bibliography{IEEEabrv,report}
+
+
+
+
+% \bibliographystyle{IEEEtran} 
+% \bibliography{report} 
 
 
 
 \appendixpageoff
 \begin{appendices}
 \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
-%\input{appendix/appendix-b}
-%\input{appendix/appendix-a}
-%\input{appendix/appendix-c}
+\input{appendix/appendix-b}
+\input{appendix/appendix-a}
+\input{appendix/appendix-c}
 
 \end{appendices}
 

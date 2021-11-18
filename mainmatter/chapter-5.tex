@@ -4,162 +4,142 @@
 \chapter{Results}
 \label{chapter:Results}
 
-This chapter provides the results of the performed experiments. The first section focuses on the results obtained on a simulated environment using two tasks from the Meta-World benchmark \cite{metaworld}. Here, the contribution of BD-COACH is measured by comparing its performance to that of D-COACH for different conditions of replay buffer size $K$, parameter $e$ and type of state (absolute or relative positions).
-Finally, the results of two planar manipulation tasks are shown to validate BD-COACH on a real setup.
+This chapter provides the results of the performed experiments. The first section focuses on the results obtained in a simulated environment where three tasks from the Meta-World benchmark \cite{metaworld} are taught. Here, the contribution of BD-COACH is measured by comparing its performance to that of D-COACH for different conditions of replay buffer size $K$, error magnitude $e$ and type of state (absolute or relative positions). Finally, the results of two planar manipulation tasks are displayed to validate BD-COACH on a real setup.
 
 
 
-\section{Results of simulated tasks}
+\section{Results of Simulated Tasks}
 \label{section:results_metaworld}
 
-To evaluate the contribution of BD-COACH with respect to the baseline method D-COACH, we did experiments with a simulated teacher on the Meta-World tasks plate-slide-v2 and drawer-open-v2  presented in Sections \ref{subsection:metaworld-hockey-task} and
-\ref{subsection:metaworld-open-drawer-task} respectively. 
-
-Running some initial experiments it was observed that the type of state has an important influence on the performance of the agents. For both tasks the state consists on the coordinates in the Cartesian axes of the end effector, the coordinates of the object and the coordinates of the goal position. In the case of the plate-slide-v2 task, the object refers to the puck whereas for the drawer-open-v2 task, the object is the handle of the drawer.
-If the positions of the state are absolute, the state is then equal to $[[xyz_\text{end effector}], [xyz_\text{object}], [xyz_\text{goal}]]$ 
-On the other hand, if the positions are relative, then the state is equal to $[[xyz_\text{object} - xyz_\text{end effector}], [xyz_\text{goal} - xyz_\text{object}]]$. In this last case when the positions are relative to each other, not only the number of dimensions decreases but it is easier for the neural network to generalize the task.
-
-The results for both tasks are divide in two parts. The first one shows how robust is the proposed method BD-COACH to variations of the parameters $e$ and replay buffer size $K$ in comparison to D-COACH when the state is formed by relative positions. Once the best combination of $e$ and $K$ is obtained for both methods, the experiments are repeated with those same conditions but this time the agent learns with states formed by absolute positions. The parameters used for the policy and the human model are shown in Table \ref{tab:hyperparameters}. Trainings are 75000 time steps long which is approximately equivalent to 15 minutes of simulated time as the MuJoco time step duration is 0.0125 seconds.
-
-In order to evaluate the robustness of BD-COACH, three values of $e$ and three values of $K$ are chosen. For $e$, we chose 0.01, 0.1 and 1 as these values are within the range tried during the real experiments. The three sizes for the replay buffer are 3000, 15000 and 30000; The reason behind these values is that the simulated teacher sends about 30000 corrections signals, therefore these sizes correspond to 10\%, 50\%  and 100\% of the maximum average accumulated corrections at the end of the trainings. The plots in the next subsections show the average success per episode of 20 trainings where each policy is evaluated 5 times.
-
-\subsection{Performance of task plate-slide-v2}
-\label{subsection:Performance of task plate_slide_v2}
 
 
 
+To evaluate the contribution of BD-COACH with respect to the baseline method D-COACH, we did experiments with a simulated teacher on the Meta-World tasks plate-slide-v2, drawer-open-v2 and button-press-topdown-v2 presented in Chapter \ref{chapter:Experimental Setting}. All the plots shown below are the result of taking the average of running 20 trainings where each policy is evaluated five times. Figures \ref{fig:same-buffer} and \ref{fig:same-e} correspond to the first phase of the simulated experiments where using observations formed of relative positions, we analyze the influence of the parameters buffer size $K$ and error magnitude $e$. Then, in the second phase of the experiments, we compare the best performances of BD-COACH and D-COACH with respect to the same conditions of $e$ and $K$ that resulted in those performances, but this time with observations formed of absolute positions. These results are shown in Figure \ref{fig:best}.
 
-Figure \ref{fig:results_plate_slide_buffer_e} shows the average success per episode for the task plate-slide-v2 for different values of $e$ and buffer size when the positions are relative. There are three main conclusions that can be extracted. First, BD-COACH is overall much more robust to changes in both $e$ and buffer size $K$ and it is able to reach 100\% success around minute 6. Regarding D-COACH, $e$ is the parameter that has more influence being its worst performance when $e=0.01$. And regarding the buffer size $K$, the biggest buffer is the most detrimental and the smallest results in the best performance at the end of the training.
-This was expected as in D-COACH the buffer contains information gathered by all the previous old versions of the policy that may not be useful for updating the current version of the policy.
+
+
+In the first phase of the experiments, the hyper-parameter $e$ has a higher impact on the performance of D-COACH than $K$, which is especially true for the task plate-slide-v2. The dotted plots of Figure \ref{fig:hockey-same-buffer} clearly show that a smaller error magnitude $e$ leads to the worst success rate, which is a known problem in D-COACH. As corrections get smaller with a decreasing error magnitude, the teacher needs to provide more corrections to achieve the desired behaviour, which causes the buffer to fill faster. For the tasks drawer-open-v2 and button-press-topdown-v2, this relationship between success rate and the value of $e$ is not as clear, but still, we can see that D-COACH  performs worse with $e=0.01$.
+
+On the other hand, BD-COACH achieves similar success rates with similar growth slopes for the three tasks independently of $e$. This behaviour is expected, as with BD-COACH, the corrections kept inside the buffer are unambiguous and therefore, a small error magnitude $e$ is not a problem for this new method. In the case of plate-slide-v2, a small $e$ causes a slightly slow growth at the beginning but afterwards, it achieves the same convergence of almost 100\% as the other values of $e$. This could be caused by the corrections being too small and therefore needing more feedback to learn the task. The same happens in drawer-open-v2 where for BD-COACH, the highest $e$ is beneficial at the beginning but afterwards the three values achieve similar success rates. Furthermore, something interesting to remark about this task is the behaviour of the oracle whose plot can be seen in Figure \ref{fig:drawer-same-buffer-feedback} of Annex \ref{appendix:feedback-plots}. This task is the only one that shows that BD-COACH is more efficient with the feedback as its slope decreases faster. This fact indicates that on certain time steps, the difference between the agent's actions and the oracle's actions is smaller than the oracle's threshold $\epsilon$ and therefore it does not require feedback for those time steps.
+For the button-press-topdown-v2 task is harder to extract conclusions because the three values of $e$ result in very similar success percentages for BD-COACH. Finally, these experiments provide a good starting point for selecting the value of $e$ for the real setup experiments which will be within the range  $[0.1, 1]$. 
+
+
+
 
 % Same buffer
  \begin{figure}[H]
   \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-same-buffer.svg}}\label{fig:plate_slide_same_buffer}}
+  \captionsetup[subfigure]{oneside,margin={0.8cm,0cm}}
+  \subfloat[(a) plate-slide-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/hockey-same-buffer.svg}}\label{fig:hockey-same-buffer}}
    \hfill
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-same-e.svg}}\label{fig:plate_slide_same_e}}
-  \caption{plate-slide-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:results_plate_slide_buffer_e}
+  \subfloat[(b) drawer-open-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/drawer-same-buffer.svg}}\label{fig:drawer-same-buffer}}
+  \hfill
+  \subfloat[(c) button-press-topdown-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/button-same-buffer.svg}}\label{fig:button-same-buffer}}
+  \caption{Results of success rates obtained for a fixed buffer size $K$ and different values of the error magnitude $e$ using relative positions. Simulated teacher: $P_h: \alpha = 0.9; \tau =  0.000015$}
+ 
+  \label{fig:same-buffer}
 \end{figure}
 
 
+Variation in buffer size $K$, see Figure \ref{fig:same-e}, has less pronounced effects than the previous variation of the error magnitude $e$. For D-COACH, the three $K$ values in plate-slide-v2 present similar slopes and success heights, but it is true that at the end of the training, the smaller buffer gets the highest success rate, followed by the medium buffer and finally the biggest one. This behaviour is also displayed in drawer-open-v2, although less clearly, around time step 50000. This fact fits with the need of D-COACH to require a small buffer to minimize the contradictions between the saved data. Finally, for button-press-topdown-v2, we cannot appreciate the effects of $K$ and D-COACH achieves similar but slightly lower results than BD-COACH.
 
-% best
+On the other hand, when analyzing BD-COACH, we cannot find a clear relationship between $K$ and success rate that is true for every task. For example, in plate-slide-v2, the largest buffer has a negative effect between time steps 40000 and 60000 but then it recovers and goes almost to 100\% of success rate. However, for drawer-open-v2, the medium buffer is the one that presents the slowest growth slope, which keeps growing until the end of the training. In the case of button-press-topdown-v2, the three buffer sizes behave very similarly.
+
+% Same e
  \begin{figure}[H]
   \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/plate-slide-v2-best.svg}}\label{fig:plate-slide-best}}
-%   \hfill
-%   \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-%   \includesvg[width=.55\textwidth]{figures/plate-slide-v2-best-feedback.svg}}\label{fig:plate-slide-same-best-feedback}}
-  \caption{plate-slide-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:results-plate-slide-best}
-\end{figure}
-
-
-
-
-
-
-
-
-
-
-
-      
-From the previous analysis, the best combinations of buffer size $K$ and $e$ for both methods when positions are relative are $K=30000$ and $e=0.1$ for BD-COACH and $K=15000$ and $e=1$ for D-COACH. The experiments are repeated with the same values but this time considering absolute positions instead of relative ones. Figure \ref{fig:results-plate-slide-best} shows this comparison where BD-COACH, it is able to reach similar levels of performance as in the case of relative positions whereas the performance of D-COACH decreases a 20\%.
-
-
-\subsection{Performance of task drawer-open-v2}
-\label{subsection:Performance of task drawer_open_v2}
-
-
-
-
-Similar to previous task plate-slide-v2, Figure \ref{fig:results_drawer-open-same-buffer} shows a comparison of the effect of different $e$ values and Figure \ref{fig:results_drawer-open-same-e} compares different buffer sizes $K$. For the task drawer-open-v2, again, BD-COACH behaves more robust than D-COACH for the different conditions, being able to always reach performances close to 100 \%. On the other hand, D-COACH performs better in general than in the task plate-slide-v2 task but again, it can be observed that when the value of $e$ is small its performance decreases.
-
-
-
- \begin{figure}[H]
-  \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-same-buffer.svg}}\label{fig:drawer-open-same-buffer}}
+\captionsetup[subfigure]{oneside,margin={0.8cm,0cm}}
+  \subfloat[(a) plate-slide-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/hockey-same-e.svg}}\label{fig:hockey-same-e}}
    \hfill
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-same-e.svg}}\label{fig:drawer-open-same-buffer-feedback}}
-  \caption{drawer-open-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:results_drawer-open-same-buffer}
+  \subfloat[(b) drawer-open-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/drawer-same-e.svg}}\label{fig:drawer-same-e}}
+  \hfill
+  \subfloat[(c) button-press-topdown-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/button-same-e.svg}}\label{fig:button-same-e}}
+  \caption{Results of success rates obtained for a fixed value of the magnitude error $e$ and different values of buffer sizes $K$ using relative positions. Simulated teacher: $P_h: \alpha = 0.9; \tau =  0.000015$}
+  \label{fig:same-e}
 \end{figure}
 
 
+We can best appreciate the contribution of BD-COACH in the second phase of the experiments, where BD-COACH far outperforms D-COACH. Figure \ref{fig:best} compares the effect of using relative positions in the observation versus absolute positions, which increases the dimensionality of the observation.
+For the tasks plate-slide-v2 and drawer-open-v2, Figures \ref{fig:hockey-best} and \ref{fig:drawer-best} respectively, BD-COACH is not able to reach the rates of success obtained with relative positions getting around a 5\% less of success. Still, BD-COACH performs better than D-COACH for which the three tasks result in a decrease of success around 20\%. This behaviour was expected due to the increase in the dimensionality of the state-space. A higher dimensionality causes the agents to need more feedback to correct their actions in all the possible states, which causes the buffer to fill faster and, in the case of D-COACH, with contradictory data.
 
 
 
- \begin{figure}[H]
-  \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/drawer-open-v2-best.svg}}\label{fig:drawer-open-best}}
+% % Best
+%  \begin{figure}[H]
+%   \centering
+%     \captionsetup[subfigure]{oneside,margin={0.8cm,0cm}}
+%   \subfloat[(a) plate-slide-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+%   \includesvg[width=.33\textwidth]{figures/hockey-best.svg}}\label{fig:hockey-best}}
 %   \hfill
-%   \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-%   \includesvg[width=.55\textwidth]{figures/drawer-open-v2-best-feedback.svg}}\label{fig:drawer-open-best-feedback}}
-  \caption{drawer-open-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:results_drawer-open-best}
-\end{figure}
+%   \subfloat[(b) drawer-open-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+%   \includesvg[width=.33\textwidth]{figures/drawer-best.svg}}\label{fig:drawer-best}}
+%   \hfill
+%   \subfloat[(c) button-press-topdown-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+%   \includesvg[width=.33\textwidth]{figures/button-best.svg}}\label{fig:button-best}}
+%   \caption{Results of success rates obtained when comparing the best performance of each method using relative positions, against their performances when using absolute positions for the
+% same conditions of $K$ and $e$. Simulated teacher: $P_h: \alpha = 0.9; \tau =  0.000015$}
+%   \label{fig:best}
+% \end{figure}
 
 
-
-
-
-From the previous analysis, the best combinations of buffer size $K$ and $e$ for both methods when positions are relative are $K=30000$ and $e=0.1$ for BD-COACH and $K=3000$ and $e=0.1$ for D-COACH. The experiments are repeated with the same values but this time considering absolute positions instead of relative ones. Figure \ref{fig:results_drawer-open-best}  shows this comparison where BD-COACH is able to reach similar levels of performance as in the case of relative positions. In the case of D-COACH, its performance soon reaches an average success of 70\% which increases just at the end of the training. Still, for D-COACH the difference in success between relative and absolute positions is remarkable.
-
-
-\subsection{Performance of task button-press-topdown-v2}
-\label{subsection:Performance of task button-press-topdown-v2}
-
-
-% BUTTON
-
-
+% Best
  \begin{figure}[H]
   \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-same-buffer.svg}}\label{fig:button-press-topdown-v2-same-buffer}}
+    \captionsetup[subfigure]{oneside,margin={0.8cm,0cm}}
+  \subfloat[(a) plate-slide-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/hockey-best-2.svg}}\label{fig:hockey-best}}
    \hfill
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-same-e.svg}}\label{fig:button-press-topdown-v2-same-buffer-feedback}}
-  \caption{button-press-topdown-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the influence of the $e$ parameter on the baseline method D-COACH and on BD-COACH. On the right, the percentage of time steps per episode that the teacher provides feedback.}
-  \label{fig:results-button-press-topdown-v2-same-buffer}
+  \subfloat[(b) drawer-open-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/drawer-best-2.svg}}\label{fig:drawer-best}}
+  \hfill
+  \subfloat[(c) button-press-topdown-v2]{\adjustbox{trim=0cm 0cm 0cm 0cm}{%
+  \includesvg[width=.33\textwidth]{figures/button-best-2.svg}}\label{fig:button-best}}
+  \caption{Results of success rates obtained when comparing the best performance of each method using relative positions, against their performances when using absolute positions for the
+same conditions of $K$ and $e$. Simulated teacher: $P_h: \alpha = 0.9; \tau =  0.000015$}
+  \label{fig:best}
 \end{figure}
 
 
 
 
 
- \begin{figure}[H]
-  \centering
-  \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-  \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-best.svg}}\label{fig:button-press-topdown-v2-best}}
-%   \hfill
-%   \subfloat{\adjustbox{trim=0cm 0cm 1cm 0cm}{%
-%   \includesvg[width=.55\textwidth]{figures/button-press-topdown-v2-best-feedback.svg}}\label{fig:button-press-topdown-v2-best-feedback}}
-   \caption{button-press-topdown-v2 results using a simulated teacher $P_h: \alpha = 0.9; \tau =  0.000015$. On the left, a comparison of the best performance of each method when using relative positions, against their performances when using absolute positions with the same conditions of $K$ and $e$. On the right, the percentage of time steps per episode that the teacher  provides feedback.}
-  \label{fig:resultsbutton-press-topdown-v2-best}
-\end{figure}
 
 
 
-\section{Results of validation in real system}
+
+
+
+
+
+
+
+% Tambien cabe destacar que en la tarea plate-slide al inicio lo hace peor Puede que sea por que el human model apenas le ha dado tiempo a entrenarse. Para todos los valores de e, BD-COACH tiene un comportamiento muy parecido. Creciedno con una pendiente similar, llegando a la zona platau a la vex y estabilizandose en el mismo valor de casi 100%
+% - Aunque si que para B-DCOACH el valor mas peque de e lo hace ligeramente peor al principio
+
+% Con D-COACH incluso la que mejor lo hace no llega al nivel de B-DCOACH
+
+
+
+
+
+\section{Results of Validation in Real System}
 \label{section:results_kuka}
+To validate the proposed BD-COACH algorithm in a real system, we taught the two planar manipulation tasks described in Sections \ref{subsection:Park a box} and \ref{subsection:Push box in a straight line} with a human teacher who provides the necessary corrections with a joystick. In this subsection, we show the results obtained for both tasks and because the objective is simply to validate BD-COACH, we do not compare with other methods. A video of the learnt behavior is available at: \url{https://youtu.be/aWCvxShtHk4}.
 
-To validate the proposed BD-COACH algorithm in a real system, we taught the 2 planar manipulation tasks described in Sections \ref{subsection:Park a box} and \ref{subsection:Push box in a straight line}. The human teacher provided the necessary corrections to the position of the end effector with a joystick. In this subsection we show the results obtained for both tasks and because the objective is simply to validate BD-COACH, we did not performed comparisons with other methods. 
 
 
-\subsection{Results for task ``push a box"}
+\subsection{Results for Task kuka-push-box}
 \label{subsection:results_kuka_push}
-The result for the task "push a box" in Figure \ref{fig:kukapush} shows the average success per episode of BD-COACH after a training of 60 minutes with a human teacher where 165 episodes were performed. Prior to the final training, some trials were done to adjust the value of $e$ which was found to work best with a value of 0.5. The replay buffer size $k$ for this task was set to 10000 which never got completely full because the human sends around 7300 correction signals.
-The learning was evaluated every 5 episodes and every episode was on average 20 seconds long. At minute 23 approximately, the slope of the curve starts increasing until minute 35 when the success percentage reaches an average of 80\%.
+
+
+Figure \ref{fig:kukapush} shows the average success per episode of task kuka-push-box achieved with a BD-COACH agent after learning for 60 minutes where 165 episodes were performed. Prior to the final training, some trials are done to adjust the error magnitude $e$, which is found to work best with a value of 0.5. The size of the replay buffer, $K$, is set to 10000, which never gets completely full because the human sends around 7300 correction signals.
+The learning is evaluated every five episodes, and every episode was, on average, 20 seconds long. At minute 23 approximately, the slope of the curve starts increasing until minute 35 when the success percentage reaches an average of 80\%.
 
 
 
@@ -182,25 +162,24 @@ The learning was evaluated every 5 episodes and every episode was on average 20 
  \begin{figure}[H]
   \centering
   \subfloat{\adjustbox{trim=0cm 0.5cm 0cm 0cm}{%
-  \includesvg[width=.7\textwidth]{figures/kuka-push-box.svg}}}
+  \includesvg[width=.6\textwidth]{figures/kuka-push-box.svg}}}
 
    \caption{Results of the task kuka-push-box with a human teacher.}
   \label{fig:kukapush}
 \end{figure}
 
 
-\subsection{Results for task ``park a box"}
+\subsection{Results for Task kuka-park-box}
 \label{subsection:results_kuka_park}
 
-The results for the task ``park a box" in Figure \ref{fig:kukapark} show the average success per episode of BD-COACH after a training of 40 minutes with a human teacher where 65 episodes were performed. Prior to the final training, some trials were done to adjust the value of $e$ which was found to work best with a value of 0.3. The buffer size for this task was set to 10000 which never got completely full because the human sends around 3400 feedback signals.
-The learning was evaluated every 5 episodes and every episode was on average 36 seconds long. Around minute 25 the performance increases drastically. This point in time corresponds with the moment that the BD-COACH agent learns to go around the corner (see third frame of Figure \ref{fig:sequence-park-box}). Prior to that moment, all episodes logically fail. At episode 37, the performance reaches its maximum as all the following episodes are successful.
+The results for kuka-park-box in Figure \ref{fig:kukapark} show the average success per episode of BD-COACH after a training of 40 minutes with a human teacher where 65 episodes were performed. Again, prior to the final training, the value of the error magnitude is adjusted, in this case, to $e=0.3$. The teacher sends an average of 3400 corrections which never fill the buffer whose $K$ is set to 10000. The learning is evaluated every five episodes, and every episode is on average 36 seconds long. Around minute 25 the performance increases drastically. This point in time corresponds with the moment that the BD-COACH agent learns to go around the corner (see the third frame of Figure \ref{fig:sequence-park-box}). Prior to that moment, all episodes logically fail. In episode 37, the performance reaches its maximum as all the following episodes are successful.
 
 
 
  \begin{figure}[H]
   \centering
   \subfloat{\adjustbox{trim=0cm 0.5cm 0cm 0cm}{%
-  \includesvg[width=.7\textwidth]{figures/kuka-park-box_name2.svg}}}
+  \includesvg[width=.6\textwidth]{figures/kuka-park-box_name2.svg}}}
 
    \caption{Results of the task kuka-park-box with a human teacher.}
   \label{fig:kukapark}

@@ -1,19 +1,36 @@
 \chapter{Conclusion}
 \label{chapter:conclusion}
 
-\textbf{TODO}
+
+Corrective imitation learning (CIL) encompasses interactive imitation learning frameworks that use corrective feedback to improve the behaviour of an agent during its training. CIL methods have the advantage that can be employed by non-expert teachers as is the case of the framework Deep COrrective Advice Communicated by Humans, D-COACH \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018}. D-COACH uses an artificial neural network as a function approximator for the policy of its agent and applies the corrections replay technique to minimize the negative effect of catastrophic forgetting and overfitting. However, due to how this technique is implemented, the past corrections that are replayed during the batch updates are ambiguous because they do not depend on what the policy is doing and can be detrimental to the performance of the policy. This fact forces D-COACH to reduce the size of its buffer which results in a limitation of the type of problems that it can solve. If tasks are too complex, e.g., long-horizon tasks or tasks with high dimensionality, D-COACH is not able to learn them.
+
+
+To address this issue, we present Batch Deep COACH (BD-COACH). This new method preserves the structure of D-COACH but implements a new module, the human model, that learns to predict the feedback given by the human. By using this human model, the past corrections that are replayed during the batch updates of the policy now depend on the actions of the current policy. This fact makes BD-COACH able to really take advantage of the corrections replay technique.
+
+
+D-COACH has the inconvenience that, prior to an experiment, it is necessary to adjust the error magnitude $e$ depending on the task. As shown in the results of Chapter \ref{chapter:Results}, variations of $e$ do not affect BD-COACH which facilitates experiments. Regarding the size of the buffer $K$, which is another important parameter to adjust in D-COACH, it also does not seem to affect the performance of BD-COACH, proving that there are no ambiguities in the data inside. The last and most interesting conclusion is that, when the task requires more data to train, Figure \ref{fig:best}, BD-COACH shows much better performance than D-COACH.
 
 
 
-BD-COACH successfully allows the usage of corrective feedback with neural networks in data intensive environments but it does not address the problem of data efficiency in the sense that it is not more data efficient than D-COACH. If the problem is too complex it can take a long time to train.
+
+However, BD-COACH has its limitations. Computationally speaking, it is more expensive than D-COACH as two artificial neural networks are learnt in parallel. With BD-COACH, performance is minimally affected at the beginning of the training when the human model has not learnt yet to predict suitable feedback. This can be appreciated in the results for the task plate-slide-v2. Finally, regarding data efficiency, BD-COACH is faster than RL techniques as we are leveraging human knowledge, but when compared to D-COACH, it does not show an improvement in this aspect. It is true that for the task drawer-open-v2, the feedback plots for BD-COACH in Annex \ref{appendix:feedback-plots} show an oracle that is less requested but, for the rest of the tasks, BD-COACH is as data efficient as D-COACH. This fact implies that, if the problem is too complex, it could take a long time to train.
+
+
+We can conclude by saying that BD-COACH solves the challenge of D-COACH of making corrections gathered by older versions of the policy still useful for batch updating the current version of the policy.
+
+ \vspace{2cm}
+
+\section*{Future Recommendations}
+
+This work could be extended in future research in the following directions:
 
 \begin{itemize}
-  \item BD-COACH is computationally more expensive
-  \item Advantage: With BD-COACH, some tasks require less feedback
-  \item Advantage: With D-COACH it is necessary to adjust $e$ beforehand.
+  \item \textbf{More exhaustive experiments}. BD-COACH has successfully demonstrated in simulation to be able to benefit from the corrections replay technique. However, it would be necessary to run exhaustive experiments with more human participants to take into account human factors that we have not considered and really prove the benefits of BD-COACH.
+  
+  
+  \vspace{0.5cm}
+  \item \textbf{Use images as observations}. BD-COACH has been validated only with observations formed by Cartesian positions. It would be very interesting to see if it is able to keep its performance when the policy is fed with observations form by images.
+  \vspace{0.5cm}
+  \item \textbf{Validation with longer-horizon tasks}. Finally, more complex tasks could be taught to BD-COACH to see to what extent it can leverage the most from the replay buffer.
 \end{itemize}
-Interactive imitation learning refers to methods where a human teacher interacts with an agent during the learning process providing feedback to improve its behaviour. This type of learning may be preferable with respect to reinforcement learning techniques when dealing with real-world problems. This is especially true in the case of robotic applications where there are long training times and usu
 
-Removing the limitation of the buffer size $K$, makes BD-COACH more robust as its performance does not depend anymore on the values of $K$ and the parameter $e$.
-
-However BD-COACH has its limitations. Computationally speaking, it is more expensive than D-COACH as two models are learnt in parallel. Regarding performance, with BD-COACH, it is minimally affected at the beginning of the training when the human model has not learn yet to predict suitable feedback.

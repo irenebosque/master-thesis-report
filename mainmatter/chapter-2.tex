@@ -3,7 +3,7 @@
 
 
 
-This chapter provides an overview of the theoretical framework and the relevant literature required for this master thesis. In Section \ref{section:Reinforcement Learning}, the basics of reinforcement learning are presented, a theoretical background that is necessary for later better understand imitation learning and the terms on-policy and off-policy. In Section \ref{section:Imitation Learning}, after explaining what is imitation learning, several IL algorithms are gathered and classified according to our proposed definitions of on-policy and off-policy imitation learning. Lastly, Section \ref{section:Corrective Imitation Learning} focuses on D-COACH and the proposal of how to transform it into an off-policy version to better leverage the benefits of experience replay.
+This chapter provides an overview of the theoretical framework and the relevant literature required for this master thesis. In Section \ref{section:Reinforcement Learning}, the basics of reinforcement learning are presented, a theoretical background that is necessary for later better understanding imitation learning and the terms on-policy and off-policy. In Section \ref{section:Imitation Learning}, after explaining what is imitation learning, several IL algorithms are classified according to our proposed definitions of on-policy and off-policy imitation learning. Lastly, Section \ref{section:Corrective Imitation Learning} focuses on D-COACH, the corrective imitation learning algorithm that will be the base of our proposed new framework.
 
 
 
@@ -34,9 +34,7 @@ Reinforcement learning is a branch of machine learning where an agent interacts 
 
 
 
-MDPs satisfy the \textit{Markov property} that says that for a sequence of states $s_0, s_1, ..., s_t$, at any time $t$, the next state $s_{t+1}$ only depends on the current state $s_t$ \cite{Osa:2018}. A state, $s$, is a sufficient summary of what is going on in the environment and when it is possible to access to all this sufficient information, the environment is said to be \textit{fully observable}. At every time step, the agent perceives an \textit{observation} that is a consequence of the state of the environment at that moment. Sometimes, just from the available observation, it is not possible to extract the state underneath and then, the environment is said to be \textit{partially observable}. 
-
-The goal of the agent is to select the actions that will maximize the expected discounted return $G_t$ after $k$ time steps, see Equation \eqref{eq:expected-discounted-return}.
+MDPs satisfy the \textit{Markov property} that says that for a sequence of states $s_0, s_1, ..., s_t$, at any time $t$, the next state $s_{t+1}$ only depends on the current state $s_t$ \cite{Osa:2018}. A state, $s$, is a sufficient summary of what is going on in the environment and when it is possible to access all this sufficient information, the environment is said to be \textit{fully observable}. At every time step, the agent perceives an \textit{observation} that is a consequence of the state of the environment at that moment. Sometimes, just from the available observation, it is not possible to extract the state underneath and then, the environment is said to be \textit{partially observable}. The goal of the agent is to select the actions that will maximize the expected discounted return $G_t$ after $k$ time steps, see Equation \eqref{eq:expected-discounted-return}.
 \begin{equation}
 G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} +... = \sum_{k=0}^{\infty} \gamma ^k R_{t+k+1}
 \label{eq:expected-discounted-return}
@@ -74,14 +72,14 @@ When a reinforcement learning agent starts learning in an unknown environment it
 
 
 
-\subsection{On-policy and off-policy Reinforcement Learning}
+\subsection{On-policy and Off-policy Reinforcement Learning}
 \label{subsection:on and off-policy Reinforcement Learning}
 
-As presented in Chapter \ref{chapter:introduction}, the objective of this thesis is to develop an extension of the D-COACH method that is able to correctly learn by replaying old corrections. There is a simile between this challenge and the concepts on-policy and off-policy in Reinforcement Learning given that, \say{when learning by experience replay, it is necessary to learn off-policy} \cite{Atari-RL} .
+As presented in Chapter \ref{chapter:introduction}, the objective of this thesis is to develop an extension of the D-COACH method that is able to learn by replaying old corrections. We consider that there is a simile between this challenge and the concepts on-policy and off-policy in reinforcement learning given that, \say{when learning by experience replay, it is necessary to learn off-policy} \cite{Atari-RL}.
 
 % One of the objectives of this literature review is to establish a clear definition of the concepts on-policy and off-policy in the field of imitation learning. Before that, in this section we will explain their meaning of these terms in reinforcement learning, a field where they are widely used and well known. To the best of our knowledge, the first mention of the terms on-policy and off-policy in reinforcement learning is found in the book \textit{Introduction to Reinforcement Learning} by \cite{Sutton:1998}.
 
-According to Sutton and Barto, off-policy methods use two policies: They evaluate or improve a policy, the target policy, while using a different policy to generate the data, the behavior policy. In this case we say that learning is from data \quotes{off} the target policy, and the overall process is termed off-policy learning. \cite{Sutton:1998}. On the other hand, on-policy methods use a a single policy, the same policy that is evaluated or improved, is the one used to generate behavior. 
+According to Sutton and Barto, off-policy methods use two policies: They evaluate or improve a policy, the target policy, while using a different policy to generate the data, the behavior policy. In this case, we say that learning is from data \quotes{off} the target policy, and the overall process is termed off-policy learning \cite{Sutton:1998}. On the other hand, on-policy methods use a single policy, the same policy that is evaluated or improved, is the one used to generate behavior. 
 To better understand the terms, we are going to briefly explore two popular RL algorithms, Q-Learning \cite{Watkins:1989} and SARSA \cite{Rummery+Niranjan:1994} to understand what makes the former off-policy and the later on-policy.
 
 
@@ -96,7 +94,7 @@ To better understand the terms, we are going to briefly explore two popular RL a
 
 % The SARSA, unlike Q-learning, the policy that SARSA evaluates, is the same with which it generates samples. Equation \eqref{eq:SARSA} shows its update rule.
 
-In SARSA the agent starts at state $s_t$ and chooses an action $a_t$ according to its policy $\pi(s_t, a_t)$. Then, it observes the reward $r_t$ and the next state $s_{t+1}$ where it chooses the next action $a_{t+1}$ according to its policy $\pi(s_{t+1}, a_{t+1})$. At this point it has all the required information to apply the update rule showed in Equation \eqref{eq:SARSA}.
+In SARSA the agent starts at state $s_t$ and chooses an action $a_t$ according to its policy $\pi(s_t, a_t)$. Then, it observes the reward $r_t$ and the next state $s_{t+1}$ where it chooses the next action $a_{t+1}$ again according to its policy $\pi(s_{t+1}, a_{t+1})$. At this point it has all the required information to apply the update rule showed in Equation \eqref{eq:SARSA}.
 
 \begin{equation}
 Q^{\text{new}}(s_t, a_t)  \leftarrow Q(s_t, a_t) + \alpha \left[R+ \gamma  Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t)\right]
@@ -105,7 +103,7 @@ Q^{\text{new}}(s_t, a_t)  \leftarrow Q(s_t, a_t) + \alpha \left[R+ \gamma  Q(s_{
 
 % Q-learning is similar to SARSA with the difference that for the \textit{update step}, see equation Equation \eqref{eq:Q-learning}, it takes the maximum of all possible actions.  This is the reason why it is called off-policy, because for the update, it ignores the policy $\pi$ that was used to take action $a_t$ at state $s_t$. 
 
-Q-learning is similar to SARSA with the difference that for the \textit{update step}, it uses a \textit{greedy} policy that chooses the actions that yields the highest estimated Q-value, see Equation \eqref{eq:Q-learning}).  This is the reason why it is called off-policy, because for the update, it ignores the policy $\pi$ that was used to take action $a_t$ at state $s_t$. 
+Q-learning is similar to SARSA with the difference that for the \textit{update step}, it uses a \textit{greedy} policy that chooses the actions that yields the highest estimated Q-value, see Equation \eqref{eq:Q-learning}).  This is the reason why it is called off-policy, because, for the update, it ignores the policy $\pi$ that was used to take action $a_t$ at state $s_t$. 
 
 %(see the \textit{max} in Equation \eqref{eq:Q-learning})
 % But you then perform the actual next action based on your current policy
@@ -125,7 +123,7 @@ Q^{\text{new}}(s_t, a_t)  \leftarrow Q(s_t, a_t) + \alpha \left[ R  + \gamma {\m
 
 
 
-The fact that Q-learning uses a policy for generating behaviour different from the greedy policy with which it updates the Q-values is the key to understand why Q-learning can use experience replay, see next section.
+The fact that Q-learning uses a policy for generating behaviour different from the greedy policy with which it updates the Q-values is the key to understand why Q-learning can use experience replay, see Section \ref{subsection:Experience Replay}.
 
 
 % The fact that Q-learning uses a policy for generating behaviour different from the greedy policy with which it updates the Q-values is what makes it suitable for also being able to 
@@ -134,47 +132,63 @@ The fact that Q-learning uses a policy for generating behaviour different from t
 
 % On the other hand, SARSA
 
+
+
+
+
+\subsection{Online and Offline Reinforcement Learning} 
+\label{subsection:Online and Offline}
+
+Reinforcement learning algorithms can also be classified according to how data is collected. Traditional RL algorithms are online frameworks where the agent iteratively interacts in its environment, collecting experience to update its policy. Online methods can be on-policy or off-policy depending on whether the data is exclusively gathered by the current policy or not, see the previous section.
+The online approach works well in simulated environments however, for real-world settings, online learning is impractical because the agent still needs to collect a diverse and large dataset. 
+
+Offline reinforcement learning, addresses the aforementioned problem. The key idea is that using only previously collected data, the agent has to learn the best possible policy without additional online data collection \cite{Offline-RL-Levine:2020}. With this offline framework, it is possible to apply RL to real-world domains like robotics where the agent, the robot, could easily get damaged while collecting data iteratively in an online manner. The downside of offline learning resides in collecting a suitable dataset for training, which for many real-world applications, can be very expensive to acquire \cite{collecting_data_for_offline_learning}.
+
+
 \subsection{Experience Replay}
 \label{subsection:Experience Replay}
 
-Experience Replay is a replay memory technique in which the transitions, $<s_t, a_t, r_{t+1}, s_{t+1}>$, gathered by an agent at every time step $t$ are stored into a memory or \textit{replay buffer}. The idea of experience replay is to randomly sample mini-batches of experience from the buffer to update the policy. 
+Experience Replay is a replay memory technique in which transitions $<s_t, a_t, r_{t+1}, s_{t+1}>$ gathered by an agent at every time step $t$ are stored into a memory or \textit{replay buffer}. The idea of experience replay is to randomly sample mini-batches of experience from the buffer to update the policy. 
 
 
 
 % Three benefits are obtained with this technique: ER is an efficient manner of taking advantage of the experience that has been already collected and use it to learn multiple times \cite{Experience-Replay-zhang:2018}. On the other hand is a way to train the policy with  uncorrelated data  which makes the Neural Network  more robust against locally overfitting to the most recent trajectories, also known as a forgetting phenomenon. 
 
-Experience replay provides several benefits. First, it is an efficient manner of taking advantage of the experience that has been already collected and use it to learn multiple times \cite{Experience-Replay-zhang:2018}. This is particularly important in the case of neural networks because it increases their stability helping to preserve old knowledge and thus reducing catastrophic forgetting \cite{Experience_replay_stability:2019}.
-Furthermore, experience replay provides uncorrelated data to train the neural network which helps it to generalize and to minimize overfitting to the most recent trajectories \cite{Machine_learning_finance:2019}.
+Experience replay provides several benefits. First, it is an efficient way of taking advantage of previously collected experience by replaying it multiple times \cite{Experience-Replay-zhang:2018}. This is particularly important in the case of artificial neural networks because it increases their stability by preserving old knowledge and thus reducing catastrophic forgetting \cite{Experience_replay_stability:2019}. Furthermore, experience replay provides uncorrelated data to train the neural network, which helps it to generalize and to minimize overfitting to the most recent trajectories.
 
  
 
-To be able to use this experience replay technique, it is necessary to have an off-policy algorithm. Off-policy RL methods continue estimating the optimal Q-value, $Q^*$, even if the policy that they follow changes from $\pi_1$ to $\pi_2$. However, an on-policy method following a policy $\pi_1$ will yield a Q-value $Q_{\pi_1}$ and if the policy changes to $\pi_2$, it will yield $Q_{\pi_2}$; the optimal Q-value in this last situation wont be guaranteed. It is important to remark that even if the experiences were collected with a single policy $\pi$, because the policy evolves over time, the same policy at time step t, $\pi_t$, is not equal to that same policy in a later time step, $\pi_N$; they are considered experiences gathered by \textit{different policies} and therefore only off-policy methods are applicable.
+To be able to use this experience replay technique, it is necessary to have an off-policy algorithm. Off-policy RL methods continue estimating the optimal Q-value, $Q^*$, even if the policy that they follow changes from $\pi_1$ to $\pi_2$. However, an on-policy method following a policy $\pi_1$ will yield a Q-value $Q_{\pi_1}$ and if the policy changes to $\pi_2$, it will yield $Q_{\pi_2}$. The optimal Q-value in this last situation will not be guaranteed. It is important to remark that even if the experiences were collected with a single policy $\pi$, because the policy evolves over time, the same policy at time step t, $\pi_t$, is not equal to that same policy in a later time step, $\pi_N$. They are considered experiences gathered by \textit{different policies} and therefore only off-policy methods are applicable.
+
+
+
+
 
 
 % \subsection{Online and Offline Reinforcement Learning} 
 % \label{subsection:Online and Offline}
 
-% Reinforcement learning algorithms can also be classified according to how data is collected. Traditional RL algorithms are active or online frameworks \cite{youtube_offline_RL}, where an agent iteratively interacts in its environment collecting experience and using it to update its policy. Online RL algorithms can be on-policy if  they use data exclusively collected by the current agent, or off-policy, see Table \ref{tab:RL-classification}; some off-policy RL algorithms are able to use previous data but the agent continues interacting with the environment collecting more data that is added to a buffer and then uses the data from the buffer to improve its policy. A remark from the authors of the previous classification is that the algorithm Q-learning is an extreme case where the buffer size is  equal to 1 \cite{Offline-RL-Levine:2020}.
+% Reinforcement learning algorithms can also be classified according to how data is collected. Traditional RL algorithms are online frameworks \cite{Offline-RL-Levine:2020}, where an agent iteratively interacts in its environment collecting experience and using it to update its policy. Online RL algorithms can be on-policy if they use data exclusively collected by the current agent, or off-policy, see Table \ref{tab:RL-classification}; some off-policy RL algorithms are able to use previous data but the agent continues interacting with the environment collecting more data that is added to a buffer and then uses the data from the buffer to improve its policy. A remark from the authors of the previous classification is that the algorithm Q-learning is an extreme case where the buffer size is  equal to 1 \cite{Offline-RL-Levine:2020}.
 
-% The online approach works well in very specific and  simulated environments however, for real-world settings, online learning is impractical because the agent still needs to collect a diverse and huge data set at each iteration. 
+% The online approach works well in very specific and simulated environments however, for real-world settings, online learning is impractical because the agent still needs to collect a diverse and huge data set at each iteration. 
 
 % Offline reinforcement learning, see Table \ref{tab:RL-classification}, also called batch RL, data-driven RL or fully off-policy RL,  addresses the aforementioned problem. The key idea is that a large and diverse dataset is previously collected by some behaviour policy and added into a buffer. Then using only that data, the agent has to learn the best possible policy without further interacting with the environment. With this offline framework, it is possible to apply RL to real-world domains like robotics where the agent, the robot, could easily get damaged while collecting data iteratively in an online manner. The downside of offline learning resides in collecting a suitable dataset for training which for many real-world applications, data can be very expensive to acquire \cite{collecting_data_for_offline_learning}.
 
-% \input{tables/workshop_rl}
+% % \input{tables/workshop_rl}
 
 \section{Function Approximation with Artificial Neural Networks}
 \label{section:Function Approximation with Artificial Neural Networks}
 
-The novel method that is presented in this thesis uses an artificial neural network (ANN) as a non-linear function approximator of the policy $\pi$ that the agent follows. ANNs are computational models formed by a connection of artificial neurons arranged in structures called layers; every ANN possesses three types of layers, the input layer, the hidden layer(s) and the output layer, see right of Figure \ref{fig:nn}. This hierarchy of layers makes it possible to model complex relationships among data as multiple levels of representation are learnt \cite{ANNs}.
+The novel method presented in this thesis uses an artificial neural network (ANN) as a non-linear function approximator of the policy $\pi$ that the agent follows. ANNs are computational models inspired by biological neural systems and formed by interconnected processing elements. In particular, for this thesis, we will focus on fully-connected feedforward neural networks (FNN) where information flows in only one direction without going through any loop. In FNNs, the processing elements are called artificial neurons and they are arranged in consecutive structures called layers. There are three types of layers, the input layer, the hidden layer(s) and the output layer, see right of Figure \ref{fig:nn}. This hierarchy of layers makes it possible to model complex relationships among data as multiple levels of representation are learnt \cite{ANNs}.
 
 
 
 
-An artificial neuron, see left of Figure \ref{fig:nn}, is the simplest element of an ANN. Similar to a biological neuron, an artificial neuron has input connections through which it receives external stimuli, the input data $x$ \cite{ANN-graupe:2013}. The neuron computes a weighted sum of the input data where the weights $w$ are the parameters of the model that have to be adjusted in order for the model to learn. Furthermore, there is an additional input connection to the neuron, the parameter bias $b$ that also is added to the weighted sum, $wx + b$. The final element of the artificial neuron is the activation function $f$ that takes the previous weighted sum as input and distorts it by adding non-linear deformations, $f(wx + b)$.
+An artificial neuron, see left of Figure \ref{fig:nn}, is the simplest element of an FNN. Similar to a biological neuron, an artificial neuron has input connections through which it receives external stimuli, the input data $x$ \cite{ANN-graupe:2013}. The neuron computes a weighted sum of the input data where the weights $w$ are the parameters of the model that have to be adjusted in order for the model to learn. Furthermore, there is an additional input connection to the neuron, the parameter bias $b$ that also is added to the weighted sum, $wx + b$. The final element of the artificial neuron is the activation function $f$ that takes the previous weighted sum as input and distorts it by adding non-linear deformations, $f(wx + b)$.
 
 
 
-ANNs can be classified according to multiple taxonomies, one of them refers to the direction in which the data is propagated through the layers. In particular, for this thesis, we will use feedworward neural networks (FNN) where information flows in only one direction from the input layer to the output layer without going through any loop.
+% ANNs can be classified according to multiple taxonomies, one of them refers to the direction in which the data is propagated through the layers. In particular, for this thesis, we will use feedworward neural networks (FNN) where information flows in only one direction from the input layer to the output layer without going through any loop.
 
   
   
@@ -187,7 +201,7 @@ ANNs can be classified according to multiple taxonomies, one of them refers to t
   \subfloat{{%
   \includesvg[width=.55\textwidth]{figures/neuron.svg}}}
 
-  \caption{On the left, a simplification of the layers of an artificial neural network and on the right, the main components of a single artificial neuron.}
+  \caption{On the left, a simplification of the layers of fully-connected feedforward artificial neural network where all the neurons from one layer are connected to every neuron in the next layer. On the right, the main components of a single artificial neuron.}
   \label{fig:nn}
 \end{figure}
 
@@ -209,67 +223,63 @@ ANNs can be classified according to multiple taxonomies, one of them refers to t
 \section{Imitation Learning}
 \label{section:Imitation Learning}
 
-Imitation learning is a problem in machine learning where an agent learns a task leveraging the knowledge of a teacher which can be a human or a more experienced agent \cite{Imitation-Learning-definition-torabi:2019}. Imitation learning is more useful with respect to reinforcement learning when it is easier for a teacher to demonstrate or provide feedback in order for the agent to learn rather than to specify a reward function which would lead to the desired behaviour. The simplest imitation learning algorithm is called behavioural cloning where a teacher provides some initial demonstrations and the agent tries to learn a policy via supervised learning.
+Imitation learning is a problem in machine learning where an agent learns a task leveraging the knowledge of a teacher which can be a human or a more experienced agent \cite{Imitation-Learning-definition-torabi:2019}. Imitation learning is more useful with respect to reinforcement learning when it is easier for a teacher to demonstrate or provide feedback in order for the agent to learn rather than to specify a reward function that would lead to the desired behaviour. The simplest imitation learning algorithm is called \textit{behavioural cloning} where a teacher provides some initial demonstrations and the agent tries to learn a policy via supervised learning.
 
 
 
 
-\subsubsection{Interactive Imitation Learning}
+\subsection{Interactive Imitation Learning}
 \label{subsubsection:Interactive-Imitation-Learning}
 
-Interactive imitation learning is a branch of imitation learning \cite{lazydagger:2021}, where the teacher interacts with the agent \textit{during} its training providing feedback to improve its behaviour, see Figure \ref{fig:IIL}. 
+% Interactive imitation learning is a branch of imitation learning \cite{lazydagger:2021}, where the teacher interacts with the agent \textit{during} its training providing feedback to improve its behaviour, see Figure \ref{fig:IIL}. The nature of the feedback varies between frameworks: Feedback in the form of evaluations (e.g., the TAMER framework \cite{TAMER-Knox-Stone:2009}) inform the agent how good or bad was the action taken. This kind of evaluative feedback is easier to implement than to define a reward function and allows a faster convergence than pure autonomous learning. However, the informativeness of this kind of evaluative feedback is still limited \cite{types-feedback-najar:2020}, and one way to improve it is to use corrections. 
+
+% Feedback as relative corrections \cite{Relative-corrections-Celemin:2019} gives name to \textit{corrective imitation learning}, a branch of IIL which will be explained in detail in Section \ref{section:Correct Learning}. 
 
 
+Interactive imitation learning (IIL) is a branch of imitation learning \cite{lazydagger:2021} where human teachers can help intelligent agents to learn \textit{during} their training, see Figure \ref{fig:IIL}. There are different forms in which the human can communicate his/her knowledge to facilitate the learning process. One way is for the human to demonstrate the task when the robot request it \cite{demonstration-robot-query} for example by teleoperating the robot or by using kinesthetic teaching. Another type of feedback are evaluations. Evaluative feedback in the form of scalar values (e.g., the framework Training an Agent Manually via Evaluative Reinforcement, TAMER \cite{TAMER-Knox-Stone:2009}) inform the agent how good or bad was the action taken. Evaluative feedback can also be provided as preferences between demonstrated trajectories \cite{learning-from-human-preferences:2018}. Here the human is presented with several executions of a policy, and he/she has to decide which one is better according to the goal of the task. Then, a reward function that explains the decisions of the human is found, and by applying RL, the agent learns how to perform the task. This kind of evaluative feedback is easier to implement than to define a reward function and allows a faster convergence than pure autonomous learning. However, the informativeness of this kind of evaluative feedback is still limited \cite{types-feedback-najar:2020}, and one way to improve it is to use corrections. 
+
+Feedback as relative corrections (e.g., \cite{Relative-corrections-Celemin:2019}) gives name to \textit{corrective imitation learning (CIL)}, a branch of IIL. Corrective imitation learning improves the informativeness of evaluative feedback, by allowing the teacher to inform the agent whether the value of a taken action should be increased or decreased \cite{Relative-corrections-Celemin:2019} and it requires less exploration compared to evaluative feedback \cite{types-feedback-najar:2020}.
 
 
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=.4\textwidth]{figures/interactive_imitation_learning.png}
-%     \caption{Interactive Imitation Learning \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018}}
-%     \label{fig:interactive_imitation_learning}
-% \end{figure}
-
- The nature of the feedback varies between frameworks: Feedback in the form of evaluations (e.g., the TAMER framework \cite{TAMER-Knox-Stone:2009}) inform the agent how good or bad was the action taken. This kind of evaluative feedback is easier to implement than to define a reward function and allows a faster convergence than pure autonomous learning. 
-However, the informativeness of this kind of evaluative feedback is still limited \cite{types-feedback-najar:2020}, and one way to improve it is to use corrections. Feedback as relative corrections \cite{Relative-corrections-Celemin:2019} gives name to corrective imitation learning, a branch of IIL which will be explained in detail in Section \ref{section:Corrective Imitation Learning}. 
-
-
-
-
-\subsubsection{On-policy and off-policy Imitation Learning}
+\subsection{On-Policy and Off-Policy Imitation Learning}
 \label{subsubsection:on and off-policy Imitation Learning}
 
-Subsection \ref{subsection:on and off-policy Reinforcement Learning} explained the meaning of the terms on-policy and off-policy in the field of reinforcement learning. When researching the literature it is clear that, for RL,  the definition provided by Sutton and Barto in 1998 is the most used. However things are not that obvious when talking about imitation learning. According to the paper \textit{An Algorithmic Perspective on Imitation Learning} \cite{Osa:2018} the first mention to the terms on-policy and off-policy regarding imitation learning is due to \cite{DBLP:journals/corr/LaskeyLHLMFG17}. These definitions are:
+Subsection \ref{subsection:on and off-policy Reinforcement Learning} explained the meaning of the terms on-policy and off-policy in the field of reinforcement learning. When researching the literature it is clear that, for RL, the definition provided by Sutton and Barto in 1998 is the most used. However, things are not that obvious when talking about imitation learning. According to the paper \textit{An Algorithmic Perspective on Imitation Learning} \cite{Osa:2018} the first mention to the terms on-policy and off-policy regarding imitation learning is due to \cite{DBLP:journals/corr/LaskeyLHLMFG17}. These definitions are:
 \setlength{\parskip}{1em} 
 
 \say{In Off-Policy imitation learning, an agent observes demonstrations from a supervisor and tries to recover the behavior via supervised learning, an example of off-policy IL is behavioral cloning. On-policy imitation learning methods sample trajectories from the agent’s current distribution and update the model based on the data received. A common on-policy algorithm is DAgger.} 
 
 \setlength{\parskip}{1em} 
 
-Similar definitions are found in \cite{OtherLaskeydefinitions:2019} and \cite{Anotherdefinitionfromberkeley:2020}:
+Similar definitions are found in \cite{CSF-balakrishna:2020}:
 
 \say{On-policy imitation learning involves executing the current agent's policy $\pi_{\theta_i}$ in the environment allowing it to make errors and observe new states and then soliciting feedback from a supervisor on the visited states to update $\pi_{\theta_i}$. This is in contrast to off-policy imitation learning algorithms where policy learning is performed entirely on states from the supervisor's trajectory distribution.}
  
 \setlength{\parskip}{1em} 
 
-While we agree with the previous definition of on-policy IL, regarding off-policy IL, we consider that it is easier to interpret and relate its meaning to RL, simply as the opposite of on-policy IL. Therefore our reinterpretation of the definitions is:  
+% While we agree with the previous definition of on-policy IL, regarding off-policy IL, we consider that it is easier to interpret and relate its meaning to reinforcement learning, simply as the opposite of on-policy IL. Therefore our reinterpretation of the definitions is: 
+
+% We consider that it is easier to interpret the terms and relate their meaning to reinforcement learning, simply as the opposite of on-policy IL. Therefore our reinterpretation of the definitions is:
+
+
+We consider that it is necessary to redefine the terms on-policy IL and off-policy IL in order for their meaning to be closer to the well-accepted definitions in reinforcement learning. Therefore our reinterpretation of the definitions is:
+
+
 
 \begin{itemize}
-  \item \textbf{On-Policy imitation learning}: \quotes{On-Policy IL methods sample trajectories using the current agent’s policy and use that data to update that same policy.}
+  \item \textbf{On-policy imitation learning}: \quotes{On-policy IL methods sample trajectories using the current agent’s policy and use that data to update that same policy.}
   
-  \item \textbf{Off-Policy imitation learning}: \quotes{Off-Policy IL methods sample trajectories using a policy different from the current agent’s one.}
+  \item \textbf{Off-policy imitation learning}: \quotes{Off-policy IL methods sample trajectories using any policy and use that data to update the current agent’s policy.}
   
 
 
 \end{itemize}
 
-For the case of off-policy imitation learning, the \textit{different policy} could be a combination of different policies including the one of the agent, as it happens in off-policy RL.
+For the case of off-policy imitation learning, \textit{any policy} could be a combination of different policies including the one of the agent, as it happens in off-policy RL.
 
 
-In \cite{DBLP:journals/corr/LaskeyLHLMFG17}, \cite{OtherLaskeydefinitions:2019} and \cite{Osa:2018} the first example given for an on-policy imitation learning algorithm is DAgger (Dataset  Aggregation) \cite{DAgger-Ross:2011}. However, we consider important to make a clarification regarding this classification done with the definition of on-policy IL found in the literature. 
-
-The general principle of DAgger is to use a policy to collect a dataset at each iteration and then it trains the next policy under the aggregate of all collected datasets \cite{DAgger-Ross:2011}. The policy used to collect the dataset depends on whether it is the simple version or the general version of DAgger, both are represented in Algorithm \ref{al:DAgger}. During the first iteration, both versions initialize the policy as the expert’s policy $\pi^*$ (line 2). The difference is that, for the next iterations, the general version implements a modified policy $\pi_i=\beta_i\pi^*+ (1−\beta_i)\hat{\pi}_i$ (line 8) to better leverage the knowledge of the expert. Depending on $\beta = [0,1]$, the expert policy $\pi^*$, is able to collect part of the next dataset by itself. If $\beta = 1$, the expert has full control when collecting the data, opposite to $\beta=0$  which means that all the data is gathered by the current agent's policy.
-Therefore, we assume that the authors refer to the simple version of DAgger when classifying it as on-policy IL using their own definition. But, even if referring to the simple version of DAgger, there is another reason to consider it off-policy. By its very nature, DAgger learns from a buffer, that is, it learns from information gathered by older versions of the policy that are therefore different from the current version.
+In \cite{DBLP:journals/corr/LaskeyLHLMFG17}, \cite{OtherLaskeydefinitions:2019} and \cite{Osa:2018} the first example given for an on-policy imitation learning algorithm is DAgger (Dataset  Aggregation) \cite{DAgger-Ross:2011}. However, we consider important to make a clarification regarding this classification. The general principle of DAgger is to use a policy to collect a dataset at each iteration and then it trains the next policy under the aggregate of all collected datasets \cite{DAgger-Ross:2011}. The policy used to collect the dataset depends on whether it is the simple version or the general version of DAgger, both represented in Algorithm \ref{al:DAgger}. During the first iteration, both versions initialize the policy as the expert’s policy $\pi^*$ (line 2). The difference is that, for the next iterations, the general version implements a modified policy $\pi_i=\beta_i\pi^*+ (1−\beta_i)\hat{\pi}_i$ (line 8) to better leverage the knowledge of the expert. Depending on $\beta = [0,1]$, the expert policy $\pi^*$, is able to collect part of the next dataset by itself. If $\beta = 1$, the expert has full control when collecting the data, opposite to $\beta=0$  which means that all the data is gathered by the current agent's policy.
+Therefore, we assume that the authors refer to the simple version of DAgger when classifying it as on-policy IL. But, even if referring to the simple version of DAgger, there is another reason to consider it off-policy. By its very nature, DAgger learns from a buffer, in other words, it learns from information gathered by older versions of the policy that are different from the current version.
 
 
 % For the simple version, it initializes the policy For the first iteration, DAgger uses the expert’s policy $\pi^*$ (line 2), to collect a dataset of trajectories $D$ and then, it trains a policy  $\hat{\pi}_2$ that best mimics the expert on those trajectories. Then at iteration $n$, it uses $\hat{\pi}_n$ to collect more trajectories and adds those trajectories to the dataset $D$. The next policy $\hat{\pi}_{n+1}$ is the policy that best mimics the expert on the whole dataset $D$. 
@@ -322,7 +332,14 @@ Therefore, we assume that the authors refer to the simple version of DAgger when
 \end{algorithm}
 
 
-To conclude this subsection, we provide Table \ref{tab:classification_table} with a classification of several imitation learning algorithms according to the proposed definitions of the terms on-policy / off-policy IL. Furthermore, we also differentiate the algorithms depending on whether they are online or offline IL. In offline imitation learning, the agent learns by imitating a demonstrator without additional online environment interactions unlike in the case of online IL \cite{offlineIL}. A list with a brief description of every method that appears in the table can be found in Annex \ref{appendix:List of Imitation Learning algorithms}.
+
+\subsection{Online and Offline Imitation Learning}
+\label{subsubsection:online and offlineImitation Learning}
+As it happens in RL, see Section \ref{subsection:Online and Offline}, imitation learning algorithms can also be classified as online or offline frameworks. In offline imitation learning, the agent learns by imitating a demonstrator without additional online environment interactions unlike in the case of online IL \cite{offlineIL}. This distinction between online and offline IL, which is similar to RL, justify our proposed definitions of on-policy IL and off-policy IL given that definitions for these terms found in the literature could be confused with the terms online and offline imitation learning.
+% . The definitions on-policy and off-policy found in the literature could be confuse with the terms online and offline.
+
+
+To conclude this subsection, we provide Table \ref{tab:classification_table} with a classification of several imitation learning algorithms according to the proposed definitions of the terms on-policy and off-policy IL as well as the terms online and offline IL. A list with a brief description of every method that appears in the table can be found in Annex \ref{appendix:List of Imitation Learning algorithms}.
 
 
 \input{tables/classification_table}
@@ -332,7 +349,7 @@ To conclude this subsection, we provide Table \ref{tab:classification_table} wit
 \section{Corrective Imitation Learning}
 \label{section:Corrective Imitation Learning}
 
-We denominate corrective imitation learning algorithms those IIL frameworks that use corrections as feedback. Corrective feedback improves the informativeness of evaluative feedback, by allowing the teacher to inform the agent whether the value of a taken action should be increased or decreased \cite{corrections-replay}. This approach requires less exploration compared to evaluative feedback \cite{types-feedback-najar:2020}. As explained before, the goal of this master thesis is to develop a novel corrective imitation learning algorithm that is able to learn by replaying past corrections saved in a memory buffer. This process is very similar to the experience replay technique presented in Section \ref{subsection:Experience Replay} and to emphasise the fact that we are replaying corrections we refer to this technique as \textit{corrections replay} \cite{corrections-replay}.
+As explained before, the goal of this master thesis is to develop a novel corrective imitation learning algorithm that is able to learn by replaying past corrections saved in a memory buffer. This process is very similar to the experience replay technique presented in Section \ref{subsection:Experience Replay} and to emphasise the fact that we are replaying corrections we refer to this technique as \textit{corrections replay} \cite{corrections-replay}.
 
 The new framework that we propose in Chapter \ref{chapter:Proposed Method} is based on the D-COACH algorithm which, in turn, derives from the COACH algorithm; both methods are presented next.
 % Section 4 concludes this review by explaining in detail the objective of this master thesis and the proposal to carry it out. 
@@ -351,7 +368,7 @@ The new framework that we propose in Chapter \ref{chapter:Proposed Method} is ba
 \label{subsection:COACH}
 
 The method Corrective Advice Communicated by Humans, COACH \cite{COACH-Celemin-Ruiz-del-Solar:2015}, is a CIL framework designed for non-expert humans teachers where the person supervising the learning agent, provides occasional corrections when the agent behaves wrongly. This corrective feedback $h$ is a binary signal that indicates the direction in which the executed action $a = \pi_\theta(s)$, should be modified.
-The parameters of the policy $\pi_\theta(s)$, $\theta$ are updated using a stochastic gradient descent (SGD) stategy in a supervised learning manner where the cost function $J(\theta)$ is the mean squared error between the applied and the desired action \cite{Gaussian-COACH-wout:2019}. Equation \eqref{eq:first-update-rule-D-COACH} shows the general update rule of the parameters $\theta$:
+The parameters of the policy $\pi_\theta(s)$, $\theta$ are updated using a stochastic gradient descent (SGD) strategy in a supervised learning manner where the cost function $J(\theta)$ is the mean squared error between the applied and the desired action \cite{Gaussian-COACH-wout:2019}. Equation \eqref{eq:first-update-rule-D-COACH} shows the general update rule of the parameters $\theta$:
 
 
 \begin{equation}
@@ -359,7 +376,7 @@ The parameters of the policy $\pi_\theta(s)$, $\theta$ are updated using a stoch
 \label{eq:first-update-rule-D-COACH}
 \end{equation}
 
-COACH works under the assumption that teachers are non-experts and that therefore they are just able to provide a correction trend that tells the sign of the policy error but not the error itself. To compute the exact magnitude of the error, COACH incorporates a hyperparameter $e$ that needs to be defined beforehand, resulting in $\text{error}_t = h_t \cdot e$  \cite{COACH-Celemin-Ruiz-del-Solar:2015}. The error needs to be defined as a function of the parameters in order to compute the gradient in the parameter space of the policy; thus, the error can be also described as the difference between the desired action generated with the teacher's feedback, $a^\text{target}_t = a_t + \text{error}_t$ , and $a_t$ is the current output of the policy, $a_t = \pi_\theta(o_t)$:
+COACH works under the assumption that teachers are non-experts and that therefore, they are just able to provide a correction trend that tells the sign of the policy error but not the error itself. To compute the exact magnitude of the error, COACH incorporates a hyperparameter $e$ that needs to be defined beforehand, resulting in $\text{error}_t = h_t \cdot e$  \cite{COACH-Celemin-Ruiz-del-Solar:2015}. The error needs to be defined as a function of the parameters in order to compute the gradient in the parameter space of the policy. Thus, the error can also be described as the difference between the desired action generated with the teacher's feedback, $a^\text{target}_t = a_t + \text{error}_t$ , and the current output of the policy, $a_t = \pi_\theta(o_t)$:
 
 
 \begin{equation}
@@ -393,7 +410,7 @@ Where $\nabla_\theta \pi_\theta$ is the gradient of the policy, $\frac{\partial 
 \If{$h_{t}$ is not \textbf{0}}
 \State $\text{error}_{t} = h_{t}\cdot e$
 \State $a_{\text{target}(t)} = a_{t} + \text{error}_{t}$
-\State \textbf{update} $\pi$ using SGD with pair ($o_{t}$, $a^{\text{target}}_{t}$)
+\State \textbf{update} $\pi$ using SGD with pair ($s_{t}$, $a^{\text{target}}_{t}$)
 \EndIf
 \EndWhile
 \end{algorithmic}
@@ -404,7 +421,8 @@ Where $\nabla_\theta \pi_\theta$ is the gradient of the policy, $\frac{\partial 
 \label{subsection:D-COACH}
 
 
-Deep COACH, D-COACH \cite{ResearchAssignmentpaper}, is the \quotes{deep} version of the COACH algorithm in the sense that it uses an artificial neural network to represent the policy of the agent; Algorithm \ref{al:D-COACH} shows the pseudocode of D-COACH whose essence is very similar to COACH. The current version of D-COACH implements the corrections replay technique to be more data efficient. During learning, tuples of old corrections, $(o_t, a^{\text{target}}_t)$, are stored in a memory buffer $\mathcal{B}$ and then they are replayed to update the current policy of the agent. However, the way that D-COACH implements the replaying of corrections has limitations. In this case, the replay buffer $\mathcal{B}$ works by assuming that \textit{recent} feedback is still being valid to update the most recent version of the policy. Due to this assumption, the size of the buffer that D-COACH implements needs to be drastically reduced, otherwise old corrections could update the policy in undesired directions of the policy’s parameter space. On the other hand, a very small replay buffer will provoke an  overfitting of the policy to data generated in the most recent trajectories, which limits the current version of D-COACH to work in short horizon problems.
+Deep COACH, D-COACH \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018}, is the \quotes{deep} version of the COACH algorithm in the sense that it uses an artificial neural network to represent the policy of the agent; Algorithm \ref{al:D-COACH} shows the pseudocode of D-COACH when learning from low-dimensional state space, and whose essence is very similar to COACH. The current version of D-COACH implements the corrections replay technique to be more data-efficient. During learning, tuples of old corrections, $(s_t, a^{\text{target}}_t)$, are stored in a memory buffer $\mathcal{B}$ and then they are replayed to update the current policy of the agent. However, the way that D-COACH implements the replaying of corrections has limitations. In this case, the replay buffer $\mathcal{B}$ works by assuming that \textit{recent} feedback is still being valid to update the most recent version of the policy. Due to this assumption, the size of the buffer that D-COACH implements, needs to be drastically reduced, otherwise old corrections could update the policy in undesired directions of the policy’s parameter space. On the other hand, a very small replay buffer will provoke an overfitting of the policy to data generated in the most recent trajectories, which limits the current version of D-COACH to work with low data intensive problems. It is necessary to mention that D-COACH \cite{D-COACH-Dattari-Celemin-Ruiz-del-Solar-Kober:2018} as well as  \cite{corrections-replay} and \cite{ResearchAssignmentpaper} which are based on D-COACH, employ state representation learning (SRL) strategies for learning a low-dimensional representation of the state, whose raw version consist on high-dimensional image states. This reduction of dimensionality makes the problem require less data and therefore it is easier to solve.
+
 
 
 
@@ -414,15 +432,15 @@ Deep COACH, D-COACH \cite{ResearchAssignmentpaper}, is the \quotes{deep} version
 \State \textbf{Require:} error magnitude $e$, buffer update interval $b$
 \State \textbf{Init:} $\mathcal{B} = [\quad]$  \emph{\# initialize memory buffer}
 \For{t = 1,2,...}{}
-\State \textbf{observe} state $o_{t}$
-\State \textbf{execute} action $a_{t}=\pi_{\theta}(o_{t})$
+\State \textbf{observe} state $s_{t}$
+\State \textbf{execute} action $a_{t}=\pi_{\theta}(s_{t})$
 \State \textbf{feedback} human corrective advice $h_{t}$
 \If{$h_{t}$ is not \textbf{0}}
 \State $\text{error}_{t} = h_{t}\cdot e$
 \State $a_{\text{target}(t)} = a_{t} + \text{error}_{t}$
-\State \textbf{update} $\pi$ using SGD with pair ($o_{t}$, $a^{\text{target}}_{t}$)
+\State \textbf{update} $\pi$ using SGD with pair ($s_{t}$, $a^{\text{target}}_{t}$)
 \State \textbf{update} $\pi$ using SGD with a mini-batch sampled from $\mathcal{B}$
-\State \textbf{append} $(o_{t}, a^{\text{target}}_{t})$ to $\mathcal{B}$
+\State \textbf{append} $(s_{t}, a^{\text{target}}_{t})$ to $\mathcal{B}$
 \EndIf
 \If{mod(t, b) is 0 }
 \State \textbf{update} $\pi_{\theta}$ using SGD with a mini-batch sampled from $\mathcal{B}$
@@ -433,12 +451,12 @@ Deep COACH, D-COACH \cite{ResearchAssignmentpaper}, is the \quotes{deep} version
 \end{algorithm}
 
 
-Figure \ref{fig:DCOACH_diagram} shows a graphical representation of the D-COACH algorithm. The red loop indicates a single update of the policy which happens on the time steps that the teacher provides a correction (line 10). On the other hand, the green loop represents a batch update in which by replaying corrections from the buffer, the policy is updated every time step that the teacher provides feedback (line 11) as well as every $b$ time steps (line 15).
+Figure \ref{fig:DCOACH_diagram} shows a graphical representation of the D-COACH algorithm. The red loop indicates a single update of the policy, which happens when the teacher provides a correction (line 10). On the other hand, the green loop represents a batch update in which by replaying corrections from the buffer, the policy is updated every time step that the teacher provides feedback (line 11) as well as every $b$ time steps (line 15).
 
 \begin{figure}[H]
     \centering
-    \adjustbox{trim=0cm 2cm 0cm 0cm}{%
-  \includesvg[width=.9\textwidth]{figures/DCOACH-diagram.svg}}
+    \adjustbox{trim=0cm 2.5cm 0cm 0cm}{%
+  \includesvg[width=.84\textwidth]{figures/DCOACH-diagram.svg}}
     \caption{D-COACH agent}
     \label{fig:DCOACH_diagram}
 \end{figure}
